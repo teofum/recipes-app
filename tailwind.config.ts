@@ -6,8 +6,8 @@ export default {
   theme: {
     fontFamily: {
       'sans': [ 'DM Sans', ...defaultTheme.fontFamily.sans ],
+      'display': [ 'DM Serif Display', ...defaultTheme.fontFamily.serif ],
     },
-    extend: {},
   },
   plugins: [],
 } satisfies Config;
