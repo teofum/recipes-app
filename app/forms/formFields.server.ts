@@ -1,6 +1,6 @@
 type FormFields = { [key: string]: 'string' | 'file' };
 
-export function validateFields<T extends FormFields>(
+export function validateFieldType<T extends FormFields>(
   data: FormData,
   expect: T,
 ): { [P in keyof T]: T[P] extends 'string' ? string : File } {

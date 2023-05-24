@@ -110,17 +110,18 @@ export const login = async (
     select: { id: true, username: true },
     where: { OR: [{ username: usernameOrEmail }, { email: usernameOrEmail }] },
   });
-  if (!user) throw new Error('Incorrect username/email or password');
+  if (!user) throw { password: 'Incorrect username/email or password' };
 
   // Then, query the auth table with the username to get the hashed password
   const auth = await db.auth.findUnique({
     where: { username: user.username },
   });
-  if (!auth) throw new Error('Authentication failed');
+  if (!auth) throw { password: 'Authentication failed' };
 
   // Finally, compare the password
   const passwordMatch = await bcryptjs.compare(password, auth.passwordHash);
-  if (!passwordMatch) throw new Error('Incorrect username/email or password');
+  if (!passwordMatch)
+    throw { password: 'Incorrect username/email or password' };
 
   return createUserSession(user.id, redirectUrl);
 };
@@ -144,10 +145,10 @@ export const register = async (
 ) => {
   const usernameTaken =
     (await db.user.findFirst({ where: { username } })) !== null;
-  if (usernameTaken) throw new Error(`The username ${username} is taken.`);
+  if (usernameTaken) throw { username: `The username ${username} is taken.` };
 
   const emailTaken = (await db.user.findFirst({ where: { email } })) !== null;
-  if (emailTaken) throw new Error(`Email ${email} is already in use.`);
+  if (emailTaken) throw { email: `Email ${email} is already in use.` };
 
   // Hash the password and create auth data
   const passwordHash = await bcryptjs.hash(password, 10);
@@ -159,7 +160,7 @@ export const register = async (
   const user = await db.user.create({
     data: { username, displayName, email },
   });
-  if (!user) throw new Error('Something went wrong creating the user.');
+  if (!user) throw { username: 'Something went wrong creating the user.' };
 
   return createUserSession(user.id, redirectUrl);
 };

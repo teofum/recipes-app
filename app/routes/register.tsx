@@ -1,19 +1,40 @@
 import type { ActionArgs } from '@remix-run/node';
-import { useActionData } from '@remix-run/react';
-import { validateFields } from '~/form/formFields.server';
-import { badRequest } from '~/server/request.server';
+import { withZod } from '@remix-validated-form/with-zod';
+import type { FieldErrors } from 'remix-validated-form';
+import { validationError } from 'remix-validated-form';
+import { z } from 'zod';
+
+import Form from '~/components/ui/Form';
+
 import { register } from '~/server/session.server';
+
+const validator = withZod(
+  z.object({
+    email: z.string().email('Must be a valid email address'),
+    username: z
+      .string()
+      .min(3, 'Username must be at least 3 characters long')
+      .max(20, 'Username must be at most 20 characters long')
+      .regex(
+        /^[a-zA-Z0-9_-]+$/,
+        'Username may only contain alphanumeric characters, underscores, and hyphens',
+      ),
+    displayName: z
+      .string()
+      .min(3, 'Display name must be at least 3 characters long')
+      .max(20, 'Display name must be at most 20 characters long'),
+    password: z
+      .string()
+      .min(8, 'Password must be at least 8 characters in length'),
+  }),
+);
 
 export async function action({ request }: ActionArgs) {
   const formData = await request.formData();
 
   try {
-    const data = validateFields(formData, {
-      username: 'string',
-      displayName: 'string',
-      email: 'string',
-      password: 'string',
-    });
+    const { data, error } = await validator.validate(formData);
+    if (error) return validationError(error, formData);
 
     return await register(
       data.username,
@@ -22,47 +43,41 @@ export async function action({ request }: ActionArgs) {
       data.password,
     );
   } catch (err: unknown) {
-    return badRequest({
-      formError: (err as Error).message,
-    });
+    return validationError({ fieldErrors: err as FieldErrors }, formData);
   }
 }
 
 export default function RegisterRoute() {
-  const actionData = useActionData<typeof action>();
-
   return (
-    <div>
-      <h1>Register</h1>
-      <form method="post">
-        <div>
-          <label>
-            Email
-            <input className="border" type="email" name="email" />
-          </label>
-        </div>
-        <div>
-          <label>
-            Username
-            <input className="border" type="text" name="username" />
-          </label>
-        </div>
-        <div>
-          <label>
-            Display Name
-            <input className="border" type="text" name="displayName" />
-          </label>
-        </div>
-        <div>
-          <label>
-            Password
-            <input className="border" type="password" name="password" />
-          </label>
-        </div>
-        <button type="submit">Submit</button>
-      </form>
+    <div className="min-h-screen grid place-items-center bg-green-300 bg-dots bg-repeat">
+      <div className="card flex flex-col gap-4 max-w-sm w-full">
+        <h1 className="font-display text-4xl font-semibold text-center">
+          Register
+        </h1>
 
-      <p className="text-red-700">{actionData?.formError}</p>
+        <Form.Root method="post" validator={validator}>
+          <Form.Field>
+            <Form.Label htmlFor="email">Email</Form.Label>
+            <Form.Input id="email" type="text" name="email" />
+          </Form.Field>
+          <Form.Field>
+            <Form.Label htmlFor="username">Username</Form.Label>
+            <Form.Input id="username" type="text" name="username" />
+          </Form.Field>
+          <Form.Field>
+            <Form.Label htmlFor="displayName">Display Name</Form.Label>
+            <Form.Input id="displayName" type="text" name="displayName" />
+          </Form.Field>
+          <Form.Field>
+            <Form.Label htmlFor="password">Password</Form.Label>
+            <Form.Input id="password" type="password" name="password" />
+          </Form.Field>
+
+          <Form.SubmitButton>
+            Register
+          </Form.SubmitButton>
+        </Form.Root>
+      </div>
     </div>
   );
 }
