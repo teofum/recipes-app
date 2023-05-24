@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider      = "mysql"
+  url           = env("DATABASE_URL")
+  relationMode  = "prisma"
 }
 
 model User {
@@ -14,10 +15,44 @@ model User {
   email         String    @unique
   username      String    @unique
   displayName   String
+  recipes       Recipe[]
 }
 
 model Auth {
   id            String    @id @default(uuid())
   username      String    @unique
   passwordHash  String
+}
+
+model Recipe {
+  id            String    @id @default(uuid())
+  author        User      @relation(fields: [authorId], references: [id])
+  authorId      String
+  name          String
+  description   String    @db.Text // A brief description
+  prepTime      Int       // Time to make the recipe, in minutes
+  imageUrl      String
+
+  ingredients   Ingredient[]
+  steps         RecipeStep[]
+
+  @@index([authorId])
+}
+
+model Ingredient {
+  id            String    @id @default(uuid())
+  recipes       Recipe[]
+
+  name          String    @unique
+}
+
+model RecipeStep {
+  id            String    @id @default(uuid())
+  recipe        Recipe    @relation(fields: [recipeId], references: [id])
+  recipeId      String
+
+  stepNumber    Int
+  content       String    @db.Text
+
+  @@index([recipeId])
 }
