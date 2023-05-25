@@ -25,25 +25,45 @@ model Auth {
 }
 
 model Recipe {
-  id            String    @id @default(uuid())
-  author        User      @relation(fields: [authorId], references: [id])
+  id            String                  @id @default(uuid())
+  author        User                    @relation(fields: [authorId], references: [id])
   authorId      String
   name          String
-  description   String    @db.Text // A brief description
-  prepTime      Int       // Time to make the recipe, in minutes
+  description   String                  @db.Text // A brief description
+  prepTime      Int                     // Time to make the recipe, in minutes
   imageUrl      String
 
-  ingredients   Ingredient[]
+  ingredients   IngredientsOnRecipes[]
   steps         RecipeStep[]
 
   @@index([authorId])
 }
 
 model Ingredient {
-  id            String    @id @default(uuid())
-  recipes       Recipe[]
+  id            String                  @id @default(uuid())
+  recipes       IngredientsOnRecipes[]
 
-  name          String    @unique
+  name          String                  @unique
+}
+
+model IngredientsOnRecipes {
+  recipe        Recipe      @relation(fields: [recipeId], references: [id])
+  recipeId      String
+  ingredient    Ingredient  @relation(fields: [ingredientId], references: [id])
+  ingredientId  String
+
+  amount        Float
+  unit          Unit        @default(UNITS)
+
+  @@id([recipeId, ingredientId])
+  @@index([recipeId])
+  @@index([ingredientId])
+}
+
+enum Unit {
+  GRAMS
+  LITERS
+  UNITS
 }
 
 model RecipeStep {
