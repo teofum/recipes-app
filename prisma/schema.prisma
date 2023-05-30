@@ -26,6 +26,8 @@ model Auth {
 
 model Recipe {
   id            String                  @id @default(uuid())
+  createdAt     DateTime                @default(now())
+  updatedAt     DateTime                @updatedAt
   author        User                    @relation(fields: [authorId], references: [id])
   authorId      String
   name          String
@@ -41,6 +43,8 @@ model Recipe {
 
 model Ingredient {
   id            String                  @id @default(uuid())
+  createdAt     DateTime                @default(now())
+  updatedAt     DateTime                @updatedAt
   recipes       IngredientsOnRecipes[]
 
   name          String                  @unique

@@ -7,6 +7,7 @@ import {
   useIsValid,
 } from 'remix-validated-form';
 import LoadingButton from './LoadingButton';
+import S from './Select';
 
 function Root({
   validator,
@@ -39,10 +40,9 @@ function Input({ id, name, type, className, ...props }: InputProps) {
   const { error, getInputProps } = useField(name);
 
   return (
-    <>
-      <input
-        className={cn(
-          `
+    <input
+      className={cn(
+        `
           text-sm
           bg-stone-50
           border border-black border-opacity-20
@@ -53,14 +53,34 @@ function Input({ id, name, type, className, ...props }: InputProps) {
           aria-[invalid]:border-red-500 aria-[invalid]:bg-red-50
           transition
           `,
-          className,
-        )}
-        aria-invalid={error ? true : undefined}
-        aria-errormessage={error ? `${id}__error` : undefined}
-        {...getInputProps({ type, id })}
-        {...props}
-      />
-    </>
+        className,
+      )}
+      aria-invalid={error ? true : undefined}
+      aria-errormessage={error ? `${id}__error` : undefined}
+      {...getInputProps({ type, id })}
+      {...props}
+    />
+  );
+}
+
+type SelectProps = { name: string } & React.ComponentProps<typeof S.Root>;
+
+function Select({ name, children, onOpenChange, ...props }: SelectProps) {
+  const { error, getInputProps } = useField(name);
+  const { onChange, onBlur, ...inputProps } = getInputProps();
+
+  return (
+    <S.Root
+      aria-invalid={error ? true : undefined}
+      onOpenChange={(open) => {
+        if (onOpenChange) onOpenChange(open);
+        if (!open && onBlur) onBlur(); // Triggers validation
+      }}
+      {...inputProps}
+      {...props}
+    >
+      {children}
+    </S.Root>
   );
 }
 
@@ -105,6 +125,7 @@ export default {
   Field,
   Label,
   Input,
+  Select,
   Error,
   SubmitButton,
 };
