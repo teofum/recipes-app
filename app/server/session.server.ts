@@ -76,16 +76,30 @@ export const requireLogin = async (
  * @param redirectUrl URL to redirect to after login, defaults to request URL
  * @returns
  */
-export const getUser = async (
+export const getUser = async (request: Request) => {
+  const userId = await getUserId(request);
+  if (!userId) return null;
+
+  const user = await db.user.findUnique({ where: { id: userId } });
+  if (!user) throw logout(request);
+
+  return user;
+};
+
+/**
+ * Get the logged user information.
+ * @param request Request object
+ * @param require Require login. If no session is active, the function redirects
+ * to login route if this parameter is `true`, otherwise it simply returns `null`.
+ * @param redirectUrl URL to redirect to after login, defaults to request URL
+ * @returns
+ */
+export const requireUser = async (
   request: Request,
-  require = false,
   redirectUrl = new URL(request.url).pathname,
 ) => {
   const userId = await getUserId(request);
-  if (!userId) {
-    if (require) throw redirect(`/login?redirectUrl=${redirectUrl}`);
-    else return null;
-  }
+  if (!userId) throw redirect(`/login?redirectUrl=${redirectUrl}`);
 
   const user = await db.user.findUnique({ where: { id: userId } });
   if (!user) throw logout(request);

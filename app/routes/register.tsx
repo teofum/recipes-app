@@ -59,23 +59,25 @@ export default function RegisterRoute() {
           <Form.Field>
             <Form.Label htmlFor="email">Email</Form.Label>
             <Form.Input id="email" type="text" name="email" />
+            <Form.Error id="email" name="email" />
           </Form.Field>
           <Form.Field>
             <Form.Label htmlFor="username">Username</Form.Label>
             <Form.Input id="username" type="text" name="username" />
+            <Form.Error id="username" name="username" />
           </Form.Field>
           <Form.Field>
             <Form.Label htmlFor="displayName">Display Name</Form.Label>
             <Form.Input id="displayName" type="text" name="displayName" />
+            <Form.Error id="displayName" name="displayName" />
           </Form.Field>
           <Form.Field>
             <Form.Label htmlFor="password">Password</Form.Label>
             <Form.Input id="password" type="password" name="password" />
+            <Form.Error id="password" name="password" />
           </Form.Field>
 
-          <Form.SubmitButton>
-            Register
-          </Form.SubmitButton>
+          <Form.SubmitButton>Register</Form.SubmitButton>
         </Form.Root>
       </div>
     </div>

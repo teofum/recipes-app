@@ -1,6 +1,11 @@
 import cn from 'classnames';
 import type { ElementProps } from '~/utils/ElementProps.type';
-import { ValidatedForm, useField, useIsSubmitting, useIsValid } from 'remix-validated-form';
+import {
+  ValidatedForm,
+  useField,
+  useIsSubmitting,
+  useIsValid,
+} from 'remix-validated-form';
 import LoadingButton from './LoadingButton';
 
 function Root({
@@ -38,14 +43,15 @@ function Input({ id, name, type, className, ...props }: InputProps) {
       <input
         className={cn(
           `
-        border-2 border-current
-        rounded-md
-        p-2
-        outline-none outline-offset-0
-        focus-visible:border-green-500 focus-visible:bg-green-50
-        aria-[invalid]:border-red-500 aria-[invalid]:bg-red-50
-        transition
-        `,
+          text-sm
+          border border-black border-opacity-20
+          rounded-md
+          p-2
+          outline-none outline-offset-0
+          focus-visible:border-green-500 focus-visible:bg-green-50
+          aria-[invalid]:border-red-500 aria-[invalid]:bg-red-50
+          transition
+          `,
           className,
         )}
         aria-invalid={error ? true : undefined}
@@ -53,10 +59,22 @@ function Input({ id, name, type, className, ...props }: InputProps) {
         {...getInputProps({ type, id })}
         {...props}
       />
-      <p id={`${id}__error`} className="text-sm text-red-500">
-        {error || ' '}
-      </p>
     </>
+  );
+}
+
+type ErrorProps = {
+  name: string;
+  id: string;
+};
+
+function Error({ name, id }: ErrorProps) {
+  const { error } = useField(name);
+
+  return (
+    <p id={`${id}__error`} className="text-sm text-red-500">
+      {error || ' '}
+    </p>
   );
 }
 
@@ -86,5 +104,6 @@ export default {
   Field,
   Label,
   Input,
+  Error,
   SubmitButton,
 };

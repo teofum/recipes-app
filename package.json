@@ -3,12 +3,13 @@
   "sideEffects": false,
   "scripts": {
     "build": "remix build",
-    "dev": "remix dev",
+    "dev": "remix dev -p 3001",
     "start": "remix-serve build",
     "typecheck": "tsc"
   },
   "dependencies": {
     "@prisma/client": "^4.14.1",
+    "@radix-ui/react-select": "^1.2.2",
     "@remix-run/css-bundle": "^1.16.1",
     "@remix-run/node": "^1.16.1",
     "@remix-run/react": "^1.16.1",
@@ -17,6 +18,7 @@
     "bcryptjs": "^2.4.3",
     "classnames": "^2.3.2",
     "isbot": "^3.6.8",
+    "nanoid": "^4.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "remix-validated-form": "^4.6.11",

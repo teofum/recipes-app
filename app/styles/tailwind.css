@@ -6,12 +6,7 @@
 
 @layer components {
   .card {
-    padding: theme('spacing.6');
-
-    background-color: theme('backgroundColor.white');
-    border-width: theme('borderWidth.2');
-    border-color: currentColor;
-    border-radius: theme('borderRadius.xl');
+    @apply bg-white border border-black border-opacity-20 rounded-xl p-6;
   }
 }
 

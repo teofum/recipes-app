@@ -6,7 +6,7 @@ export default {
   theme: {
     fontFamily: {
       'sans': [ 'Inter', ...defaultTheme.fontFamily.sans ],
-      'display': [ 'Bitter', ...defaultTheme.fontFamily.serif ],
+      'display': [ 'DM Serif Display', ...defaultTheme.fontFamily.serif ],
     },
     extend: {
       animation: {
