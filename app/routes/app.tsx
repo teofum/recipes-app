@@ -34,7 +34,7 @@ export default function AppRoute() {
           <div className="flex flex-row gap-2 items-center">
             <Avatar src="/img/curry.jpg" alt={user.displayName} />
             <div className="flex-1">
-              <div className="text-sm font-bold leading-5">{user.displayName}</div>
+              <div className="text-sm font-semibold leading-5">{user.displayName}</div>
               <div className="text-xs text-stone-500 leading-5">
                 @{user.username}
               </div>
@@ -45,9 +45,9 @@ export default function AppRoute() {
           </div>
         </Navbar>
       </aside>
-      <main className="overflow-y-auto">
+      <div className="overflow-y-auto">
         <Outlet />
-      </main>
+      </div>
     </div>
   );
 }

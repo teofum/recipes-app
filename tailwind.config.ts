@@ -5,7 +5,7 @@ export default {
   content: ["./app/**/*.{js,jsx,ts,tsx}"],
   theme: {
     fontFamily: {
-      'sans': [ 'Inter', ...defaultTheme.fontFamily.sans ],
+      'sans': [ 'Work Sans', ...defaultTheme.fontFamily.sans ],
       'display': [ 'DM Serif Display', ...defaultTheme.fontFamily.serif ],
     },
     extend: {

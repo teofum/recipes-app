@@ -1,15 +1,4 @@
 import type { Recipe } from '@prisma/client';
-import cn from 'classnames';
-
-/**
- * Background blur effect classnames
- */
-const bgBlurEffect = `
-absolute object-cover
-top-[-15px] left-[-15px]
-w-[calc(100%+30px)] h-[calc(100%+30px)] max-w-none
-blur-[30px]
-`;
 
 interface RecipeCardProps {
   recipe: Recipe;
@@ -21,10 +10,11 @@ export default function RecipeCard({ recipe }: RecipeCardProps) {
       <img
         src="/img/curry.jpg"
         alt="background"
-        className={cn(
-          bgBlurEffect,
-          'opacity-10 mix-blend-hard-light group-hover:scale-125 group-hover:opacity-20 transition duration-300',
-        )}
+        className="
+          bg-blur opacity-10 mix-blend-hard-light
+          group-hover:scale-125 group-hover:opacity-20
+          transition duration-300
+        "
       />
 
       <div className="relative">
@@ -36,9 +26,7 @@ export default function RecipeCard({ recipe }: RecipeCardProps) {
           />
         </div>
 
-        <h2 className="font-display text-4xl my-3">
-          {recipe.name}
-        </h2>
+        <h2 className="font-display text-4xl my-3">{recipe.name}</h2>
         <p className="border-t border-black border-opacity-20 leading-6 pt-2">
           {recipe.description}
         </p>
