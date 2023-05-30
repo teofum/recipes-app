@@ -18,7 +18,7 @@ function Root({ children, triggerProps, contentProps, ...props }: RootProps) {
           bg-stone-50
           border border-black border-opacity-20
           rounded-md
-          p-2
+          px-2 py-1.5
           outline-none outline-offset-0
           focus-visible:border-green-500 focus-visible:bg-green-50
           aria-[invalid]:border-red-500 aria-[invalid]:bg-red-50

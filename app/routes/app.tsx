@@ -34,7 +34,7 @@ export default function AppRoute() {
           <div className="flex flex-row gap-2 items-center">
             <Avatar src="/img/curry.jpg" alt={user.displayName} />
             <div className="flex-1">
-              <div className="text-sm font-semibold leading-5">{user.displayName}</div>
+              <div className="font-semibold leading-5">{user.displayName}</div>
               <div className="text-xs text-stone-500 leading-5">
                 @{user.username}
               </div>

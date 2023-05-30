@@ -15,10 +15,19 @@ import { db } from '~/server/db.server';
 import { requireLogin } from '~/server/session.server';
 import { units } from '~/types/unit.type';
 
+const DESCRIPTION_MAX_LENGTH = 140;
+const STEP_MAX_LENGTH = 140;
+
 const validator = withZod(
   z.object({
     name: z.string(),
-    description: z.string(),
+    description: z
+      .string()
+      .min(1, 'A description is required')
+      .max(
+        DESCRIPTION_MAX_LENGTH,
+        `Description must be at most ${DESCRIPTION_MAX_LENGTH} characters long`,
+      ),
     ingredients: z.array(
       z.object({
         id: z.string(),
@@ -28,7 +37,13 @@ const validator = withZod(
     ),
     steps: z.array(
       z.object({
-        content: z.string().min(1, 'Required'),
+        content: z
+          .string()
+          .min(1, 'Step content is required')
+          .max(
+            STEP_MAX_LENGTH,
+            `Description must be at most ${STEP_MAX_LENGTH} characters long`,
+          ),
       }),
     ),
   }),
@@ -149,9 +164,9 @@ export default function RecipesRoute() {
         <div
           className="
             relative w-full max-w-screen-lg mx-auto px-4 lg:px-8 pb-8
-            sm:grid sm:grid-cols-[1fr_auto] sm:grid-rows-[10rem_auto_auto_1fr]
-            sm:items-end
-            sm:gap-4
+            sm:grid sm:grid-cols-[1fr_15rem] sm:grid-rows-[10rem_auto_1fr]
+            sm:items-end sm:gap-4
+            md:grid-cols-[1fr_20rem]
           "
         >
           <Form.Field>
@@ -176,24 +191,44 @@ export default function RecipesRoute() {
               aspect-video object-cover
               rounded-xl
               outline outline-4 outline-stone-100
-              sm:w-60 sm:col-start-2 sm:row-span-3 sm:aspect-square
-              md:w-80 md:rounded-3xl
+              sm:w-full sm:col-start-2 sm:row-span-2 sm:aspect-square
+              md:rounded-3xl
             "
           />
 
-          <Form.Field>
-            <Form.Label htmlFor="description">Description</Form.Label>
-            <Form.Input name="description" id="description" />
-          </Form.Field>
+          <div
+            className="
+              sm:col-start-2 sm:row-start-3 sm:self-start
+              flex flex-col gap-4
+            "
+          >
+            <div className="card">
+              <h2 className="card-heading text-2xl">About this recipe</h2>
 
-          <div className="sm:col-start-1 sm:row-start-3 sm:row-span-2 flex flex-col gap-4">
+              <Form.Field>
+                <Form.Label htmlFor="description">Description</Form.Label>
+                <Form.Textarea
+                  maxLength={DESCRIPTION_MAX_LENGTH}
+                  name="description"
+                  id="description"
+                />
+              </Form.Field>
+            </div>
+          </div>
+
+          <div
+            className="
+              sm:col-start-1 sm:row-start-2 sm:row-span-2 sm:self-start
+              flex flex-col gap-4
+            "
+          >
             <div className="card">
               <h2 className="card-heading">Ingredients</h2>
 
               <div className="flex flex-col gap-2">
                 {ingredients.map((ingredient, index) => {
                   return (
-                    <div key={ingredient.key} className="flex flex-row gap-2">
+                    <div key={ingredient.key} className="flex flex-row gap-2 items-center">
                       <Form.Select
                         name={`ingredients[${index}].id`}
                         defaultValue={ingredient.id}
@@ -201,7 +236,7 @@ export default function RecipesRoute() {
                         contentProps={{
                           position: 'popper',
                           side: 'bottom',
-                          sideOffset: -40,
+                          sideOffset: -34,
                           className: 'w-[var(--radix-select-trigger-width)]',
                         }}
                       >
@@ -240,7 +275,6 @@ export default function RecipesRoute() {
                 })}
 
                 <Button
-                  className="self-end"
                   onClick={() =>
                     ingredientsControl.push({ name: '', key: iKey++ })
                   }
@@ -251,31 +285,52 @@ export default function RecipesRoute() {
             </div>
 
             <div className="card">
-              <h2 className="card-heading">Steps</h2>
+              <h2 className="card-heading">Preparation</h2>
 
-              {steps.map((step, index) => {
-                const id = `step-${index}`;
-                return (
-                  <Form.Field key={step.key}>
-                    <Form.Label htmlFor={id}>Step {index}</Form.Label>
-                    <div className="flex flex-row gap-2">
-                      <Form.Input name={`steps[${index}].content`} id={id} />
+              <div className="flex flex-col gap-4">
+                {steps.map((step, index) => {
+                  const id = `step-${index}`;
+
+                  return (
+                    <Form.Field
+                      key={step.key}
+                      className="flex flex-row gap-2 items-start"
+                    >
+                      <Form.Label
+                        htmlFor={id}
+                        className="
+                          w-10 h-10 rounded-full bg-green-50
+                          border border-green-700
+                          grid place-items-center
+                          font-display text-2xl text-green-700
+                        "
+                      >
+                        {index + 1}
+                      </Form.Label>
+                      <div className="flex flex-col gap-1 flex-1">
+                        <Form.Textarea
+                          maxLength={STEP_MAX_LENGTH}
+                          name={`steps[${index}].content`}
+                          id={id}
+                        />
+                        <Form.Error name={`steps[${index}].content`} id={id} />
+                      </div>
                       <Button onClick={() => stepsControl.remove(index)}>
                         Delete
                       </Button>
-                    </div>
-                  </Form.Field>
-                );
-              })}
+                    </Form.Field>
+                  );
+                })}
 
-              <Button
-                onClick={(ev) => {
-                  ev.preventDefault();
-                  stepsControl.push({ content: '', key: key++ });
-                }}
-              >
-                Add step
-              </Button>
+                <Button
+                  onClick={(ev) => {
+                    ev.preventDefault();
+                    stepsControl.push({ content: '', key: key++ });
+                  }}
+                >
+                  Add step
+                </Button>
+              </div>
             </div>
 
             <Form.SubmitButton>Submit</Form.SubmitButton>

@@ -55,9 +55,9 @@ export default function RecipeView({
       <div
         className="
             relative w-full max-w-screen-lg mx-auto px-4 lg:px-8
-            sm:grid sm:grid-cols-[1fr_auto] sm:grid-rows-[10rem_auto_auto]
-            sm:items-end
-            sm:gap-4
+            sm:grid sm:grid-cols-[1fr_15rem] sm:grid-rows-[10rem_auto_auto]
+            sm:items-end sm:gap-4
+            md:grid-cols-[1fr_20rem]
           "
       >
         <h1 className="font-display text-4xl md:text-5xl lg:text-6xl text-white mb-4">
@@ -71,8 +71,8 @@ export default function RecipeView({
               aspect-video object-cover
               rounded-xl
               outline outline-4 outline-stone-100
-              sm:w-60 sm:col-start-2 sm:row-span-2 sm:aspect-square
-              md:w-80 md:rounded-3xl
+              sm:w-full sm:col-start-2 sm:row-span-2 sm:aspect-square
+              md:rounded-3xl
             "
         />
 

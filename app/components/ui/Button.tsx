@@ -18,7 +18,7 @@ const CONTENT_CLASSNAMES = `
   border border-green-800
   rounded-md
   px-4 py-2
-  h-9
+  h-8
   -translate-y-[2px]
   group-hover:-translate-y-[3px]
   group-active:-translate-y-[1px]

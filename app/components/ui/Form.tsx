@@ -8,6 +8,7 @@ import {
 } from 'remix-validated-form';
 import LoadingButton from './LoadingButton';
 import S from './Select';
+import { useState } from 'react';
 
 function Root({
   validator,
@@ -24,11 +25,11 @@ function Root({
 }
 
 function Field({ className, ...props }: ElementProps<'div'>) {
-  return <div className={cn('flex flex-col gap-1', className)} {...props} />;
+  return <div className={className ?? 'flex flex-col gap-1'} {...props} />;
 }
 
 function Label({ className, ...props }: ElementProps<'label'>) {
-  return <label className={cn('text-sm', className)} {...props} />;
+  return <label className={className ?? 'text-sm'} {...props} />;
 }
 
 type InputProps = {
@@ -47,7 +48,7 @@ function Input({ id, name, type, className, ...props }: InputProps) {
           bg-stone-50
           border border-black border-opacity-20
           rounded-md
-          p-2
+          px-2 py-1.5
           outline-none outline-offset-0
           focus-visible:border-green-500 focus-visible:bg-green-50
           aria-[invalid]:border-red-500 aria-[invalid]:bg-red-50
@@ -63,18 +64,95 @@ function Input({ id, name, type, className, ...props }: InputProps) {
   );
 }
 
+type TextareaProps = {
+  name: string;
+  id: string;
+  containerClassName?: string;
+} & ElementProps<'textarea'>;
+
+function Textarea({
+  id,
+  name,
+  className,
+  containerClassName,
+  maxLength,
+  ...props
+}: TextareaProps) {
+  const { error, getInputProps } = useField(name);
+
+  const [length, setLength] = useState(0);
+
+  return (
+    <div
+      className={cn(
+        `
+        grid
+        after:content-[attr(data-replicated-value)]
+        after:text-sm after:p-2 after:border after:[grid-area:1/1/2/2]
+        after:whitespace-pre-wrap after:[visibility:hidden]
+        `,
+        containerClassName,
+      )}
+      data-replicated-value={props.value ?? props.defaultValue ?? ''}
+    >
+      <textarea
+        className={cn(
+          `
+          text-sm
+          bg-stone-50
+          border border-black border-opacity-20
+          rounded-md
+          p-2
+          outline-none outline-offset-0
+          focus-visible:border-green-500 focus-visible:bg-green-50
+          aria-[invalid]:border-red-500 aria-[invalid]:bg-red-50
+          transition
+          [grid-area:1/1/3/2] resize-none overflow-hidden
+          `,
+          className,
+        )}
+        aria-invalid={error ? true : undefined}
+        aria-errormessage={error ? `${id}__error` : undefined}
+        maxLength={maxLength}
+        {...getInputProps({ id })}
+        {...props}
+        onInput={(ev) => {
+          const ta = ev.target as HTMLTextAreaElement;
+          if (ta.parentElement)
+            ta.parentElement.dataset.replicatedValue = ta.value;
+
+          setLength(ta.value.length);
+        }}
+      />
+
+      {maxLength !== undefined && (
+        <span
+          className="
+            [grid-area:2/1/3/2] place-self-end
+            text-xs text-stone-500
+            px-2 pb-1 -mt-1
+          "
+        >
+          {length}/{maxLength}
+        </span>
+      )}
+    </div>
+  );
+}
+
 type SelectProps = { name: string } & React.ComponentProps<typeof S.Root>;
 
-function Select({ name, children, onOpenChange, ...props }: SelectProps) {
+function Select({ name, children, ...props }: SelectProps) {
   const { error, getInputProps } = useField(name);
   const { onChange, onBlur, ...inputProps } = getInputProps();
 
   return (
     <S.Root
       aria-invalid={error ? true : undefined}
-      onOpenChange={(open) => {
-        if (onOpenChange) onOpenChange(open);
-        if (!open && onBlur) onBlur(); // Triggers validation
+      onValueChange={(value) => {
+        console.log('change', name, value, onBlur);
+        onChange?.(); // Triggers validation?
+        props.onValueChange?.(value);
       }}
       {...inputProps}
       {...props}
@@ -125,6 +203,7 @@ export default {
   Field,
   Label,
   Input,
+  Textarea,
   Select,
   Error,
   SubmitButton,
