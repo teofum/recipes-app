@@ -42,12 +42,12 @@ export default function RecipeView({
         "
       >
         <img
-          src="/img/curry.jpg"
+          src={recipe.imageUrl}
           alt="background"
           className="bg-blur opacity-50 mix-blend-hard-light"
         />
 
-        <Link to="/app/recipes" className="relative text-white">
+        <Link to="/recipes" className="relative text-white">
           &lt; Back to recipes
         </Link>
       </div>
@@ -65,7 +65,7 @@ export default function RecipeView({
         </h1>
 
         <img
-          src="/img/curry.jpg"
+          src={recipe.imageUrl}
           alt="background"
           className="
               aspect-video object-cover

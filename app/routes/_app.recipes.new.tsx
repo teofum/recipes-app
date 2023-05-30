@@ -2,8 +2,9 @@ import { Unit } from '@prisma/client';
 import type { ActionArgs, LoaderArgs } from '@remix-run/node';
 import { redirect } from '@remix-run/node';
 import { json } from '@remix-run/node';
-import { Link, useLoaderData } from '@remix-run/react';
+import { Link, useFetcher, useLoaderData } from '@remix-run/react';
 import { withZod } from '@remix-validated-form/with-zod';
+import type { ValidationErrorResponseData } from 'remix-validated-form';
 import { useFieldArray, validationError } from 'remix-validated-form';
 import { z } from 'zod';
 
@@ -14,6 +15,8 @@ import Select from '~/components/ui/Select';
 import { db } from '~/server/db.server';
 import { requireLogin } from '~/server/session.server';
 import { units } from '~/types/unit.type';
+import type { ImageUploadAction } from './resources.image';
+import { imageUploadFormValidator } from './resources.image';
 
 const DESCRIPTION_MAX_LENGTH = 140;
 const STEP_MAX_LENGTH = 140;
@@ -28,6 +31,7 @@ const validator = withZod(
         DESCRIPTION_MAX_LENGTH,
         `Description must be at most ${DESCRIPTION_MAX_LENGTH} characters long`,
       ),
+    imageUrl: z.string().min(1),
     ingredients: z.array(
       z.object({
         id: z.string(),
@@ -49,19 +53,6 @@ const validator = withZod(
   }),
 );
 
-const v = validator.validate;
-const vf = validator.validateField;
-
-validator.validate = (data: any) => {
-  console.log('validating', data);
-  return v(data);
-};
-
-validator.validateField = (data: any, field: string) => {
-  console.log('validating', field, data);
-  return vf(data, field);
-};
-
 export async function action({ request }: ActionArgs) {
   const userId = await requireLogin(request);
   const formData = await request.formData();
@@ -76,7 +67,7 @@ export async function action({ request }: ActionArgs) {
       description: data.description,
       prepTime: 15,
       authorId: userId,
-      imageUrl: '',
+      imageUrl: data.imageUrl,
 
       ingredients: {
         create: data.ingredients.map((ingredient) => ({
@@ -96,7 +87,7 @@ export async function action({ request }: ActionArgs) {
   });
   if (!recipe) throw 'fuck';
 
-  return redirect(`/app/recipes/${recipe.id}`);
+  return redirect(`/recipes/${recipe.id}`);
 }
 
 export async function loader({ request }: LoaderArgs) {
@@ -125,8 +116,15 @@ interface Ingredient {
 let key = 0;
 let iKey = 0;
 
-export default function RecipesRoute() {
+function isSuccessResponse(
+  data: ValidationErrorResponseData | { fileId: string },
+): data is { fileId: string } {
+  return (data as { fileId: string }).fileId !== undefined;
+}
+
+export default function NewRecipeRoute() {
   const { allIngredients } = useLoaderData<typeof loader>();
+  const imageUpload = useFetcher<ImageUploadAction>();
 
   const [steps, stepsControl] = useFieldArray<Step>('steps', {
     formId: 'new-recipe-form',
@@ -139,6 +137,11 @@ export default function RecipesRoute() {
     },
   );
 
+  let imageUrl: string | undefined = undefined;
+  if (imageUpload.data && isSuccessResponse(imageUpload.data)) {
+    imageUrl = `/resources/image/${imageUpload.data.fileId}`;
+  }
+
   return (
     <div className="w-full">
       <div
@@ -150,17 +153,24 @@ export default function RecipesRoute() {
         "
       >
         <img
-          src="/img/curry.jpg"
+          src={imageUrl || '/img/curry.jpg'}
           alt="background"
           className="bg-blur opacity-50 mix-blend-hard-light"
         />
 
-        <Link to="/app/recipes" className="relative text-white">
+        <Link to="/recipes" className="relative text-white">
           &lt; Back to recipes
         </Link>
       </div>
 
       <Form.Root validator={validator} method="post" id="new-recipe-form">
+        <Form.Input
+          type="hidden"
+          name="imageUrl"
+          id="imageUrl"
+          value={imageUrl}
+        />
+
         <div
           className="
             relative w-full max-w-screen-lg mx-auto px-4 lg:px-8 pb-8
@@ -185,7 +195,7 @@ export default function RecipesRoute() {
           </Form.Field>
 
           <img
-            src="/img/curry.jpg"
+            src={imageUrl || '/img/curry.jpg'}
             alt="background"
             className="
               aspect-video object-cover
@@ -228,7 +238,10 @@ export default function RecipesRoute() {
               <div className="flex flex-col gap-2">
                 {ingredients.map((ingredient, index) => {
                   return (
-                    <div key={ingredient.key} className="flex flex-row gap-2 items-center">
+                    <div
+                      key={ingredient.key}
+                      className="flex flex-row gap-2 items-center"
+                    >
                       <Form.Select
                         name={`ingredients[${index}].id`}
                         defaultValue={ingredient.id}
@@ -336,6 +349,17 @@ export default function RecipesRoute() {
             <Form.SubmitButton>Submit</Form.SubmitButton>
           </div>
         </div>
+      </Form.Root>
+
+      <Form.Root
+        method="post"
+        encType="multipart/form-data"
+        action="/resources/image"
+        validator={imageUploadFormValidator}
+        fetcher={imageUpload}
+      >
+        <Form.Input type="file" name="file" id="image" />
+        <Form.SubmitButton>Upload image</Form.SubmitButton>
       </Form.Root>
     </div>
   );
