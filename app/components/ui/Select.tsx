@@ -15,7 +15,8 @@ function Root({ children, triggerProps, contentProps, ...props }: RootProps) {
           `
           flex flex-row justify-between items-center gap-2
           text-sm
-          border-2 border-current
+          bg-stone-50
+          border border-black border-opacity-20
           rounded-md
           p-2
           outline-none outline-offset-0
@@ -36,7 +37,7 @@ function Root({ children, triggerProps, contentProps, ...props }: RootProps) {
           className={cn(
             `
             bg-white
-            border-2 border-current
+            border border-black border-opacity-20
             rounded-md
             p-1
             `,

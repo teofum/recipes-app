@@ -44,6 +44,7 @@ function Input({ id, name, type, className, ...props }: InputProps) {
         className={cn(
           `
           text-sm
+          bg-stone-50
           border border-black border-opacity-20
           rounded-md
           p-2
