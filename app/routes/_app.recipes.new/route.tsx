@@ -40,7 +40,7 @@ const validator = withZod(
         DESCRIPTION_MAX_LENGTH,
         `Description must be at most ${DESCRIPTION_MAX_LENGTH} characters long`,
       ),
-    imageUrl: z.string().min(1, 'Image URL is required'),
+    imageUrl: z.string().min(1, 'A cover image is required'),
     ingredients: z.array(
       z.object({
         id: z.string(),
@@ -181,6 +181,7 @@ export default function NewRecipeRoute() {
                   name="description"
                   id="description"
                 />
+                <Form.Error name="description" id="descritpion" />
               </Form.Field>
 
               <Form.SubmitButton>Submit</Form.SubmitButton>

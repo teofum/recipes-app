@@ -1,4 +1,6 @@
-import { PLACEHOLDER_IMAGE_URL } from "./constants";
+import Button from '~/components/ui/Button';
+import { PLACEHOLDER_IMAGE_URL } from './constants';
+import Form from '~/components/ui/Form';
 
 interface ImageUploadProps {
   imageUrl?: string;
@@ -7,17 +9,19 @@ interface ImageUploadProps {
 
 export default function ImageUpload({ imageUrl, openFile }: ImageUploadProps) {
   return (
-    <img
-      src={imageUrl || PLACEHOLDER_IMAGE_URL}
-      alt="recipe"
+    <div
       className="
-        aspect-video object-cover
-        rounded-xl
-        outline outline-4 outline-stone-100
-        sm:w-full sm:col-start-2 sm:row-span-2 sm:aspect-square
-        md:rounded-3xl
+        card flex flex-col gap-4
+        sm:w-full sm:col-start-2 sm:row-span-2
       "
-      onClick={openFile}
-    />
+    >
+      <img
+        src={imageUrl || PLACEHOLDER_IMAGE_URL}
+        alt=" "
+        className="aspect-video object-cover rounded-md sm:aspect-square"
+      />
+      <Form.Error name="imageUrl" id="imageUrl" />
+      <Button onClick={openFile}>Upload image</Button>
+    </div>
   );
 }
