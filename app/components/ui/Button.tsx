@@ -1,3 +1,4 @@
+import React from 'react';
 import { Link } from '@remix-run/react';
 import cn from 'classnames';
 import type { ElementProps } from '~/utils/ElementProps.type';
@@ -48,32 +49,41 @@ interface BaseProps {
 type ButtonProps = BaseProps & ElementProps<'button'>;
 type LinkButtonProps = BaseProps & React.ComponentProps<typeof Link>;
 
-export default function Button({
-  className,
-  children,
-  variant,
-  ...props
-}: ButtonProps) {
-  const dataAttributes = useVariants(variant);
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  function ButtonComponent({ className, children, variant, ...props }, ref) {
+    const dataAttributes = useVariants(variant);
 
-  return (
-    <button className={cn('button', className)} {...dataAttributes} {...props}>
-      {children}
-    </button>
-  );
-}
+    return (
+      <button
+        ref={ref}
+        className={cn('button', className)}
+        {...dataAttributes}
+        {...props}
+      >
+        {children}
+      </button>
+    );
+  },
+);
 
-export function LinkButton({
-  className,
-  children,
-  variant,
-  ...props
-}: LinkButtonProps) {
-  const dataAttributes = useVariants(variant);
+export default Button;
 
-  return (
-    <Link className={cn('button', className)} {...dataAttributes} {...props}>
-      {children}
-    </Link>
-  );
-}
+export const LinkButton = React.forwardRef<HTMLAnchorElement, LinkButtonProps>(
+  function LinkButtonComponent(
+    { className, children, variant, ...props },
+    ref,
+  ) {
+    const dataAttributes = useVariants(variant);
+
+    return (
+      <Link
+        ref={ref}
+        className={cn('button', className)}
+        {...dataAttributes}
+        {...props}
+      >
+        {children}
+      </Link>
+    );
+  },
+);

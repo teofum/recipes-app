@@ -1,8 +1,10 @@
 import { Unit } from '@prisma/client';
+import { useFetcher } from '@remix-run/react';
 import { useFieldArray } from 'remix-validated-form';
 import { Delete } from '~/components/icons';
 
 import Button from '~/components/ui/Button';
+import FetcherComboBox from '~/components/ui/FetcherComboBox';
 import Form from '~/components/ui/Form';
 import Select from '~/components/ui/Select';
 
@@ -23,6 +25,7 @@ interface IngredientsFormProps {
 export default function IngredientsForm({
   allIngredients,
 }: IngredientsFormProps) {
+  const fetcher = useFetcher<Ingredient[]>();
   const [ingredients, { push, remove }] =
     useFieldArray<IngredientField>('ingredients');
 
@@ -37,23 +40,15 @@ export default function IngredientsForm({
               key={ingredient.key}
               className="flex flex-row gap-2 items-center"
             >
-              <Form.Select
+              <FetcherComboBox
                 name={`ingredients[${index}].id`}
                 defaultValue={ingredient.id}
                 triggerProps={{ className: 'flex-1' }}
-                contentProps={{
-                  position: 'popper',
-                  side: 'bottom',
-                  sideOffset: -34,
-                  className: 'w-[var(--radix-select-trigger-width)]',
-                }}
-              >
-                {allIngredients.map((ingredient) => (
-                  <Select.Item key={ingredient.id} value={ingredient.id}>
-                    {ingredient.name}
-                  </Select.Item>
-                ))}
-              </Form.Select>
+                endpoint={(search) => `/api/ingredients?search=${search}`}
+                fetcher={fetcher}
+                valueSelector={(item) => item.id}
+                displaySelector={(item) => item.name}
+              />
 
               <Form.Input
                 className="w-24 -mr-2 rounded-r-none border-r-0"
@@ -83,10 +78,7 @@ export default function IngredientsForm({
           );
         })}
 
-        <Button
-          variant="outlined"
-          onClick={() => push({ name: '', key: key++ })}
-        >
+        <Button onClick={() => push({ name: '', key: key++ })}>
           Add ingredient
         </Button>
       </div>

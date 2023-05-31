@@ -7,6 +7,7 @@ type RootProps = {
   placeholder?: string;
   triggerProps?: React.ComponentProps<typeof Select.Trigger>;
   contentProps?: React.ComponentProps<typeof Select.Content>;
+  renderValue?: React.ReactNode;
 } & React.ComponentProps<typeof Select.Root>;
 
 function Root({
@@ -14,6 +15,7 @@ function Root({
   triggerProps,
   contentProps,
   placeholder,
+  renderValue,
   ...props
 }: RootProps) {
   return (
@@ -26,7 +28,7 @@ function Root({
           bg-stone-50
           border border-black border-opacity-20
           rounded-md
-          px-2 py-1.5
+          px-2 py-1.5 min-h-[2.125rem]
           outline-none outline-offset-0
           focus-visible:border-green-500 focus-visible:bg-green-50
           aria-[invalid]:border-red-500 aria-[invalid]:bg-red-50
@@ -35,7 +37,9 @@ function Root({
           triggerProps?.className,
         )}
       >
-        <Select.Value placeholder={placeholder ?? 'Select an option'} />
+        <Select.Value placeholder={placeholder ?? 'Select an option'}>
+          {renderValue}
+        </Select.Value>
         <Select.Icon>
           <ExpandDown size={16} />
         </Select.Icon>

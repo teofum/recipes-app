@@ -59,7 +59,6 @@ export default function StepsForm() {
         })}
 
         <Button
-          variant="outlined"
           onClick={(ev) => {
             ev.preventDefault();
             push({ content: '', key: key++ });

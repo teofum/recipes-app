@@ -56,7 +56,7 @@
     cursor: not-allowed;
 
     color: var(--btn-text-disabled, var(--btn-text, var(--btn-color-400)));
-    background-color: var(--btn-bg-disabled, var(--btn-bg, transparent));
+    background-color: var(--btn-bg-disabled, var(--btn-bg, white));
     border-color: var(--btn-border-disabled, var(--btn-border, transparent));
   }
 
@@ -65,7 +65,7 @@
     cursor: wait;
 
     color: var(--btn-text, var(--btn-color-700));
-    background-color: var(--btn-bg, transparent);
+    background-color: var(--btn-bg, white);
     border-color: var(--btn-border, transparent);
   }
 
@@ -100,7 +100,7 @@
   /* Button style variants */
   .button[data-variant-style='text'] {
     --btn-text: var(--btn-color-700);
-    --btn-bg: transparent;
+    --btn-bg: theme(colors.white);
 
     --btn-bg-hover: var(--btn-color-50);
 
@@ -110,6 +110,18 @@
 
   .button[data-variant-style='outlined'] {
     --btn-text: var(--btn-color-700);
+    --btn-bg: theme(colors.white);
+    --btn-border: var(--btn-color-border);
+
+    --btn-bg-hover: var(--btn-color-50);
+
+    --btn-text-disabled: theme(colors.stone.400);
+    --btn-bg-disabled: theme(colors.stone.50);
+    --btn-border-disabled: theme(colors.black / 20%);
+  }
+
+  .button[data-variant-style='filled'] {
+    --btn-text: var(--btn-color-700);
     --btn-bg: var(--btn-color-50);
     --btn-border: var(--btn-color-border);
 
@@ -118,19 +130,6 @@
 
     --btn-text-disabled: theme(colors.stone.400);
     --btn-bg-disabled: theme(colors.stone.100);
-    --btn-border-disabled: theme(colors.black / 20%);
-  }
-
-  .button[data-variant-style='filled'] {
-    --btn-text: var(--btn-color-900);
-    --btn-bg: var(--btn-color-200);
-    --btn-border: var(--btn-color-border);
-
-    --btn-text-hover: var(--btn-color-950);
-    --btn-bg-hover: var(--btn-color-300);
-
-    --btn-text-disabled: theme(colors.stone.400);
-    --btn-bg-disabled: theme(colors.stone.200);
     --btn-border-disabled: theme(colors.black / 20%);
   }
 

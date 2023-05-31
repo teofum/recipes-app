@@ -21,7 +21,7 @@ export default function ImageUpload({ imageUrl, openFile }: ImageUploadProps) {
         className="aspect-video object-cover rounded-md sm:aspect-square"
       />
       <Form.Error name="imageUrl" id="imageUrl" />
-      <Button variant="outlined" onClick={openFile}>Upload image</Button>
+      <Button onClick={openFile}>Upload image</Button>
     </div>
   );
 }
