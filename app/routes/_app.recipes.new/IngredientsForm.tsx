@@ -1,3 +1,4 @@
+import { Unit } from '@prisma/client';
 import { useFieldArray } from 'remix-validated-form';
 
 import Button from '~/components/ui/Button';
@@ -54,18 +55,19 @@ export default function IngredientsForm({
               </Form.Select>
 
               <Form.Input
-                className="w-24"
+                className="w-24 -mr-2 rounded-r-none border-r-0"
                 name={`ingredients[${index}].amount`}
                 id={`ingredients-${index}-amt`}
               />
 
               <Form.Select
                 name={`ingredients[${index}].unit`}
-                triggerProps={{ className: 'w-24' }}
+                triggerProps={{ className: 'w-24 rounded-l-none' }}
+                defaultValue={Unit.UNITS}
               >
                 {units.map((unit) => (
                   <Select.Item key={unit.type} value={unit.type}>
-                    {unit.shortName}
+                    {unit.fullName}
                   </Select.Item>
                 ))}
               </Form.Select>

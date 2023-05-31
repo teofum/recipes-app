@@ -1,7 +1,7 @@
 import type { IconProps } from './props';
 import { useIconSize } from './useIconSize';
 
-const SvgWarning = ({ size = 'md', strokeWidth = 2, ...props }: IconProps) => {
+const SvgCheck = ({ size = 'md', strokeWidth = 2, ...props }: IconProps) => {
   const s = useIconSize(size);
 
   return (
@@ -18,10 +18,10 @@ const SvgWarning = ({ size = 'md', strokeWidth = 2, ...props }: IconProps) => {
         stroke="currentcolor"
         strokeLinecap="round"
         strokeLinejoin="round"
-        d="M12 8v7m0 3.005V18M10.499 2.893 2.225 18.498C1.623 19.633 2.446 21 3.73 21h16.548c1.284 0 2.107-1.367 1.505-2.502L13.51 2.893c-.64-1.208-2.37-1.208-3.011 0Z"
+        d="M20 8c-3.883 2.173-7.217 5.173-10 9l-5-5"
       />
     </svg>
   );
 };
 
-export default SvgWarning;
+export default SvgCheck;

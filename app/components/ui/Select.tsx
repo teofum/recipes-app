@@ -1,20 +1,28 @@
 import * as Select from '@radix-ui/react-select';
 import cn from 'classnames';
 import React from 'react';
+import { Check, ExpandDown, ExpandUp } from '../icons';
 
 type RootProps = {
+  placeholder?: string;
   triggerProps?: React.ComponentProps<typeof Select.Trigger>;
   contentProps?: React.ComponentProps<typeof Select.Content>;
 } & React.ComponentProps<typeof Select.Root>;
 
-function Root({ children, triggerProps, contentProps, ...props }: RootProps) {
+function Root({
+  children,
+  triggerProps,
+  contentProps,
+  placeholder,
+  ...props
+}: RootProps) {
   return (
     <Select.Root {...props}>
       <Select.Trigger
         className={cn(
           `
           flex flex-row justify-between items-center gap-2
-          text-sm
+          text-sm whitespace-nowrap overflow-hidden text-ellipsis
           bg-stone-50
           border border-black border-opacity-20
           rounded-md
@@ -27,8 +35,10 @@ function Root({ children, triggerProps, contentProps, ...props }: RootProps) {
           triggerProps?.className,
         )}
       >
-        <Select.Value />
-        <Select.Icon>v</Select.Icon>
+        <Select.Value placeholder={placeholder ?? 'Select an option'} />
+        <Select.Icon>
+          <ExpandDown size={16} />
+        </Select.Icon>
       </Select.Trigger>
 
       <Select.Portal>
@@ -44,9 +54,13 @@ function Root({ children, triggerProps, contentProps, ...props }: RootProps) {
             contentProps?.className,
           )}
         >
-          <Select.ScrollUpButton>u</Select.ScrollUpButton>
+          <Select.ScrollUpButton>
+            <ExpandUp size={16} />
+          </Select.ScrollUpButton>
           <Select.Viewport>{children}</Select.Viewport>
-          <Select.ScrollDownButton>d</Select.ScrollDownButton>
+          <Select.ScrollDownButton>
+            <ExpandDown size={16} />
+          </Select.ScrollDownButton>
         </Select.Content>
       </Select.Portal>
     </Select.Root>
@@ -77,7 +91,9 @@ const Item = React.forwardRef<
       {...props}
     >
       <Select.ItemText>{children}</Select.ItemText>
-      <Select.ItemIndicator>c</Select.ItemIndicator>
+      <Select.ItemIndicator>
+        <Check size={16} />
+      </Select.ItemIndicator>
     </Select.Item>
   );
 });

@@ -1,7 +1,11 @@
 import type { IconProps } from './props';
 import { useIconSize } from './useIconSize';
 
-const SvgWarning = ({ size = 'md', strokeWidth = 2, ...props }: IconProps) => {
+const SvgCheckCircle = ({
+  size = 'md',
+  strokeWidth = 2,
+  ...props
+}: IconProps) => {
   const s = useIconSize(size);
 
   return (
@@ -13,15 +17,24 @@ const SvgWarning = ({ size = 'md', strokeWidth = 2, ...props }: IconProps) => {
       strokeWidth={strokeWidth}
       {...props}
     >
+      <circle
+        fill="none"
+        stroke="currentcolor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        cx="12"
+        cy="12"
+        r="10"
+      />
       <path
         fill="none"
         stroke="currentcolor"
         strokeLinecap="round"
         strokeLinejoin="round"
-        d="M12 8v7m0 3.005V18M10.499 2.893 2.225 18.498C1.623 19.633 2.446 21 3.73 21h16.548c1.284 0 2.107-1.367 1.505-2.502L13.51 2.893c-.64-1.208-2.37-1.208-3.011 0Z"
+        d="M18 9c-3.134 2.059-5.815 4.711-8 8l-4-4"
       />
     </svg>
   );
 };
 
-export default SvgWarning;
+export default SvgCheckCircle;

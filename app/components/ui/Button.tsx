@@ -1,6 +1,7 @@
 import { Link } from '@remix-run/react';
 import cn from 'classnames';
 import type { ElementProps } from '~/utils/ElementProps.type';
+import type { Check } from '../icons';
 
 const BUTTON_CLASSNAMES = `
   group
@@ -17,7 +18,7 @@ const CONTENT_CLASSNAMES = `
   bg-green-700
   border border-green-800
   rounded-md
-  px-4 py-2
+  p-2
   h-8
   -translate-y-[2px]
   group-hover:-translate-y-[3px]
@@ -56,5 +57,28 @@ export function LinkButton({
     <Link className={cn(BUTTON_CLASSNAMES, className)} {...props}>
       <div className={cn(CONTENT_CLASSNAMES, contentClassName)}>{children}</div>
     </Link>
+  );
+}
+
+type IconButtonProps<T extends ButtonProps | LinkButtonProps> = {
+  Icon: typeof Check;
+} & Omit<T, 'children'>;
+
+export function IconButton({ Icon, ...props }: IconButtonProps<ButtonProps>) {
+  return (
+    <Button {...props}>
+      <Icon size="sm" />
+    </Button>
+  );
+}
+
+export function IconLinkButton({
+  Icon,
+  ...props
+}: IconButtonProps<LinkButtonProps>) {
+  return (
+    <LinkButton {...props}>
+      <Icon size="sm" />
+    </LinkButton>
   );
 }

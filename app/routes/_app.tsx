@@ -3,7 +3,7 @@ import { json } from '@remix-run/node';
 import { Outlet, useLoaderData } from '@remix-run/react';
 import { Error } from '~/components/icons';
 import Avatar from '~/components/ui/Avatar';
-import { LinkButton } from '~/components/ui/Button';
+import { IconLinkButton } from '~/components/ui/Button';
 import Navbar from '~/components/ui/Navbar';
 import { requireUser } from '~/server/session.server';
 
@@ -39,9 +39,7 @@ export default function AppRoute() {
                 @{user.username}
               </div>
             </div>
-            <LinkButton to="/logout">
-              <Error />
-            </LinkButton>
+            <IconLinkButton to="/logout" Icon={Error} />
           </div>
         </Navbar>
       </aside>

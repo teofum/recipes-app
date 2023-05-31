@@ -1,7 +1,13 @@
-import { Unit } from "@prisma/client";
-import formatNumberWithSIPrefix from "~/utils/formatNumberWithSIPrefix";
+import { Unit } from '@prisma/client';
+import formatNumberWithSIPrefix from '~/utils/formatNumberWithSIPrefix';
 
 export const units = [
+  {
+    type: Unit.UNITS,
+    fullName: 'Units',
+    shortName: 'u',
+    format: (amt: number) => `x${amt}`,
+  },
   {
     type: Unit.GRAMS,
     fullName: 'Grams',
@@ -14,10 +20,4 @@ export const units = [
     shortName: 'L',
     format: (amt: number) => `${formatNumberWithSIPrefix(amt)}L`,
   },
-  {
-    type: Unit.UNITS,
-    fullName: 'Units',
-    shortName: 'u',
-    format: (amt: number) => `x${amt}`,
-  }
 ];
