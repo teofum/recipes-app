@@ -1,8 +1,8 @@
 import type { Unit } from '@prisma/client';
-import { Link } from '@remix-run/react';
 import type { FullRecipe, RecipeIngredient } from '~/types/recipe.type';
 import { units } from '~/types/unit.type';
 import type { User } from '~/types/user.type';
+import RecipeViewHeader from './RecipeViewHeader';
 
 function formatAmount(amount: number, unit: Unit): string {
   const unitObject = units.find((u) => u.type === unit);
@@ -33,24 +33,7 @@ export default function RecipeView({
 
   return (
     <div className="w-full">
-      <div
-        className="
-          relative w-full aspect-video
-          bg-stone-900 overflow-hidden
-          border-b border-black border-opacity-20
-          max-h-64 -mb-40 p-6
-        "
-      >
-        <img
-          src={recipe.imageUrl}
-          alt="background"
-          className="bg-blur opacity-50 mix-blend-hard-light"
-        />
-
-        <Link to="/recipes" className="relative text-white">
-          &lt; Back to recipes
-        </Link>
-      </div>
+      <RecipeViewHeader imageUrl={recipe.imageUrl} />
 
       <div
         className="

@@ -1,14 +1,17 @@
+import React from 'react';
+import { useState } from 'react';
 import cn from 'classnames';
-import type { ElementProps } from '~/utils/ElementProps.type';
 import {
   ValidatedForm,
   useField,
   useIsSubmitting,
   useIsValid,
 } from 'remix-validated-form';
+
 import LoadingButton from './LoadingButton';
 import S from './Select';
-import { useState } from 'react';
+
+import type { ElementProps } from '~/utils/ElementProps.type';
 
 function Root({
   validator,
@@ -37,13 +40,14 @@ type InputProps = {
   id: string;
 } & ElementProps<'input'>;
 
-function Input({ id, name, type, className, ...props }: InputProps) {
-  const { error, getInputProps } = useField(name);
+const Input = React.forwardRef<HTMLInputElement, InputProps>(
+  function InputComponent({ id, name, type, className, ...props }, ref) {
+    const { error, getInputProps } = useField(name);
 
-  return (
-    <input
-      className={cn(
-        `
+    return (
+      <input
+        className={cn(
+          `
           text-sm
           bg-stone-50
           border border-black border-opacity-20
@@ -54,15 +58,17 @@ function Input({ id, name, type, className, ...props }: InputProps) {
           aria-[invalid]:border-red-500 aria-[invalid]:bg-red-50
           transition
           `,
-        className,
-      )}
-      aria-invalid={error ? true : undefined}
-      aria-errormessage={error ? `${id}__error` : undefined}
-      {...getInputProps({ type, id })}
-      {...props}
-    />
-  );
-}
+          className,
+        )}
+        aria-invalid={error ? true : undefined}
+        aria-errormessage={error ? `${id}__error` : undefined}
+        ref={ref}
+        {...getInputProps({ type, id })}
+        {...props}
+      />
+    );
+  },
+);
 
 type TextareaProps = {
   name: string;
@@ -79,7 +85,6 @@ function Textarea({
   ...props
 }: TextareaProps) {
   const { error, getInputProps } = useField(name);
-
   const [length, setLength] = useState(0);
 
   return (
