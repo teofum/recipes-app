@@ -24,7 +24,12 @@ import {
   STEP_MAX_LENGTH,
 } from './constants';
 import { useRef } from 'react';
+import NameInput from './NameInput';
+import ImageUpload from './ImageUpload';
 
+/**
+ * === Validation ==============================================================
+ */
 const validator = withZod(
   z.object({
     name: z.string(),
@@ -57,6 +62,9 @@ const validator = withZod(
   }),
 );
 
+/**
+ * === Action ==================================================================
+ */
 export async function action({ request }: ActionArgs) {
   const userId = await requireLogin(request);
   const formData = await request.formData();
@@ -94,6 +102,9 @@ export async function action({ request }: ActionArgs) {
   return redirect(`/recipes/${recipe.id}`);
 }
 
+/**
+ * === Loader ==================================================================
+ */
 export async function loader({ request }: LoaderArgs) {
   await requireLogin(request);
 
@@ -107,6 +118,9 @@ export async function loader({ request }: LoaderArgs) {
   return json({ allIngredients });
 }
 
+/**
+ * === Component ===============================================================
+ */
 function isSuccessResponse(
   data: ValidationErrorResponseData | { fileId: string },
 ): data is { fileId: string } {
@@ -144,32 +158,11 @@ export default function NewRecipeRoute() {
             md:grid-cols-[1fr_20rem]
           "
         >
-          <Form.Field>
-            <Form.Input
-              name="name"
-              id="name"
-              placeholder="New recipe"
-              className="
-                font-display text-4xl md:text-5xl lg:text-6xl
-                min-w-0 w-full
-                p-0 bg-transparent border-none text-white
-                focus-visible:bg-transparent
-                placeholder:text-white placeholder:text-opacity-50
-              "
-            />
-          </Form.Field>
+          <NameInput />
 
-          <img
-            src={imageUrl || PLACEHOLDER_IMAGE_URL}
-            alt="recipe"
-            className="
-              aspect-video object-cover
-              rounded-xl
-              outline outline-4 outline-stone-100
-              sm:w-full sm:col-start-2 sm:row-span-2 sm:aspect-square
-              md:rounded-3xl
-            "
-            onClick={() => fileInput.current?.click()}
+          <ImageUpload
+            imageUrl={imageUrl}
+            openFile={() => fileInput.current?.click()}
           />
 
           <div
