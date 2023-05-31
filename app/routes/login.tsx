@@ -45,7 +45,7 @@ export default function LoginRoute() {
             type="hidden"
             name="redirectUrl"
             id="redirect"
-            defaultValue={params.get('redirectUrl') ?? '/app/recipes'}
+            defaultValue={params.get('redirectUrl') ?? '/recipes'}
           />
 
           <Form.Field>

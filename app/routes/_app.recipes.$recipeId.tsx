@@ -9,6 +9,7 @@ import RecipeView from '~/components/RecipeView/RecipeView';
 import Form from '~/components/ui/Form';
 
 import { db } from '~/server/db.server';
+import { deleteRecipe } from '~/server/delete.server';
 import { forbidden, notFound } from '~/server/request.server';
 import { requireLogin, requireUser } from '~/server/session.server';
 
@@ -16,6 +17,7 @@ const validator = withZod(
   z.object({
     recipeId: z.string(),
     authorId: z.string(),
+    imageUrl: z.string(),
     intent: z.enum(['delete']),
   }),
 );
@@ -35,12 +37,8 @@ export async function action({ request }: ActionArgs) {
 
   switch (data.intent) {
     case 'delete': {
-      await db.ingredientsOnRecipes.deleteMany({
-        where: { recipeId: data.recipeId },
-      });
-      await db.recipeStep.deleteMany({ where: { recipeId: data.recipeId } });
-      await db.recipe.delete({ where: { id: data.recipeId } });
-      return redirect('/app/recipes');
+      await db.$transaction(deleteRecipe(data.recipeId, data.imageUrl));
+      return redirect('/recipes');
     }
   }
 }
@@ -77,6 +75,12 @@ export default function RecipesIndexRoute() {
         name="authorId"
         id="authorId"
         value={recipe.authorId}
+      />
+      <Form.Input
+        type="hidden"
+        name="imageUrl"
+        id="imageUrl"
+        value={recipe.imageUrl}
       />
       <Form.SubmitButton name="intent" value="delete" className="w-full mt-0">
         Delete

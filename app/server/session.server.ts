@@ -3,7 +3,7 @@ import bcryptjs from 'bcryptjs';
 import { db } from './db.server';
 import { createCookieSessionStorage, redirect } from '@remix-run/node';
 
-const DEFAULT_REDIRECT_URL = '/app/recipes';
+const DEFAULT_REDIRECT_URL = '/recipes';
 
 interface SessionData {
   userId: string;
