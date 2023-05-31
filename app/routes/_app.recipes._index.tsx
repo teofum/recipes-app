@@ -33,7 +33,9 @@ export default function RecipesIndexRoute() {
         "
       >
         <h1 className="font-display text-4xl">My recipes</h1>
-        <LinkButton to="new">Create new recipe</LinkButton>
+        <LinkButton variant="filled" to="new">
+          Create new recipe
+        </LinkButton>
       </header>
 
       {user.recipes.length > 0 ? (
