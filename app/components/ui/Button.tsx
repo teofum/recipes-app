@@ -1,34 +1,48 @@
 import { Link } from '@remix-run/react';
 import cn from 'classnames';
 import type { ElementProps } from '~/utils/ElementProps.type';
-import type { Check } from '../icons';
+import { useMemo } from 'react';
 
-const BUTTON_CLASSNAMES = `
-  group
-  text-sm text-white
-  bg-green-800
-  rounded-md
-  outline-none
-  focus-visible:outline-offset-0 focus-visible:outline-2
-  focus-visible:outline-green-500
-  disabled:opacity-50 disabled:cursor-not-allowed
-`;
-const CONTENT_CLASSNAMES = `
-  flex flex-row items-center justify-center
-  bg-green-700
-  border border-green-800
-  rounded-md
-  p-2
-  h-8
-  -translate-y-[2px]
-  group-hover:-translate-y-[3px]
-  group-active:-translate-y-[1px]
-  group-focus-visible:bg-green-600
-  group-disabled:-translate-y-[2px]
-`;
+type ButtonTypeVariant = 'text' | 'icon';
+type ButtonSizeVariant = 'sm' | 'md' | 'lg';
+type ButtonStyleVariant = 'text' | 'outlined' | 'filled' | 'heavy';
+type ButtonColorVariant = 'default' | 'warning' | 'danger' | 'neutral';
+
+interface ButtonVariants {
+  type?: ButtonTypeVariant;
+  size?: ButtonSizeVariant;
+  style?: ButtonStyleVariant;
+  color?: ButtonColorVariant;
+}
+
+const defaultVariants: Required<ButtonVariants> = {
+  type: 'text',
+  size: 'md',
+  style: 'text',
+  color: 'default',
+};
+
+function useVariants(variant?: ButtonVariants | ButtonStyleVariant) {
+  const dataAttributes = useMemo(() => {
+    const userVars = typeof variant === 'string' ? { style: variant } : variant;
+    const variants: { [key: string]: string } = {
+      ...defaultVariants,
+      ...userVars,
+    };
+
+    const data: { [key: string]: string } = {};
+    Object.keys(variants).forEach((key) => {
+      data[`data-variant-${key}`] = variants[key];
+    });
+
+    return data;
+  }, [variant]);
+
+  return dataAttributes;
+}
 
 interface BaseProps {
-  contentClassName?: string;
+  variant?: ButtonVariants | ButtonStyleVariant;
 }
 
 type ButtonProps = BaseProps & ElementProps<'button'>;
@@ -36,49 +50,30 @@ type LinkButtonProps = BaseProps & React.ComponentProps<typeof Link>;
 
 export default function Button({
   className,
-  contentClassName,
   children,
+  variant,
   ...props
 }: ButtonProps) {
+  const dataAttributes = useVariants(variant);
+
   return (
-    <button className={cn(BUTTON_CLASSNAMES, className)} {...props}>
-      <div className={cn(CONTENT_CLASSNAMES, contentClassName)}>{children}</div>
+    <button className={cn('button', className)} {...dataAttributes} {...props}>
+      {children}
     </button>
   );
 }
 
 export function LinkButton({
   className,
-  contentClassName,
   children,
+  variant,
   ...props
 }: LinkButtonProps) {
+  const dataAttributes = useVariants(variant);
+
   return (
-    <Link className={cn(BUTTON_CLASSNAMES, className)} {...props}>
-      <div className={cn(CONTENT_CLASSNAMES, contentClassName)}>{children}</div>
+    <Link className={cn('button', className)} {...dataAttributes} {...props}>
+      {children}
     </Link>
-  );
-}
-
-type IconButtonProps<T extends ButtonProps | LinkButtonProps> = {
-  Icon: typeof Check;
-} & Omit<T, 'children'>;
-
-export function IconButton({ Icon, ...props }: IconButtonProps<ButtonProps>) {
-  return (
-    <Button {...props}>
-      <Icon size="sm" />
-    </Button>
-  );
-}
-
-export function IconLinkButton({
-  Icon,
-  ...props
-}: IconButtonProps<LinkButtonProps>) {
-  return (
-    <LinkButton {...props}>
-      <Icon size="sm" />
-    </LinkButton>
   );
 }

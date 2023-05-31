@@ -4,6 +4,7 @@ import Button from '~/components/ui/Button';
 import Form from '~/components/ui/Form';
 
 import { STEP_MAX_LENGTH } from './constants';
+import { Delete } from '~/components/icons';
 
 interface StepField {
   key: string;
@@ -47,12 +48,18 @@ export default function StepsForm() {
                 />
                 <Form.Error name={`steps[${index}].content`} id={id} />
               </div>
-              <Button onClick={() => remove(index)}>Delete</Button>
+              <Button
+                variant={{ type: 'icon', color: 'danger' }}
+                onClick={() => remove(index)}
+              >
+                <Delete size="sm" />
+              </Button>
             </Form.Field>
           );
         })}
 
         <Button
+          variant="outlined"
           onClick={(ev) => {
             ev.preventDefault();
             push({ content: '', key: key++ });

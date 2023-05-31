@@ -184,7 +184,12 @@ export default function NewRecipeRoute() {
                 <Form.Error name="description" id="descritpion" />
               </Form.Field>
 
-              <Form.SubmitButton>Submit</Form.SubmitButton>
+              <Form.SubmitButton
+                className="w-full"
+                variant={{ size: 'lg', style: 'filled' }}
+              >
+                Create recipe
+              </Form.SubmitButton>
             </div>
           </div>
 

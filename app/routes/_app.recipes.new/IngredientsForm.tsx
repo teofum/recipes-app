@@ -1,5 +1,6 @@
 import { Unit } from '@prisma/client';
 import { useFieldArray } from 'remix-validated-form';
+import { Delete } from '~/components/icons';
 
 import Button from '~/components/ui/Button';
 import Form from '~/components/ui/Form';
@@ -72,12 +73,20 @@ export default function IngredientsForm({
                 ))}
               </Form.Select>
 
-              <Button onClick={() => remove(index)}>Delete</Button>
+              <Button
+                variant={{ type: 'icon', color: 'danger' }}
+                onClick={() => remove(index)}
+              >
+                <Delete size="sm" />
+              </Button>
             </div>
           );
         })}
 
-        <Button onClick={() => push({ name: '', key: key++ })}>
+        <Button
+          variant="outlined"
+          onClick={() => push({ name: '', key: key++ })}
+        >
           Add ingredient
         </Button>
       </div>

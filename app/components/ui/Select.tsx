@@ -79,10 +79,10 @@ const Item = React.forwardRef<
         text-sm
         rounded
         px-1 py-0.5
-        outline-none outline-offset-0
+        outline-none outline-offset-0 border border-green-800 border-opacity-0
         cursor-pointer
-        focus-visible:bg-green-500 focus-visible:text-white
-        hover:bg-green-500 hover:text-white
+        focus-visible:bg-green-50 focus-visible:text-green-700 focus-visible:border-opacity-20
+        hover:bg-green-50 hover:text-green-700 hover:border-opacity-20
         `,
         className,
       )}

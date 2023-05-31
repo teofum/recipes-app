@@ -5,12 +5,194 @@
 @tailwind utilities;
 
 @layer components {
+  /*
+  * Card
+  */
   .card {
     @apply bg-white border border-black border-opacity-20 rounded-xl p-6;
   }
 
   .card-heading {
     @apply font-display text-3xl mb-4 -mt-2 pb-2 border-b border-black border-opacity-20;
+  }
+
+  /*
+  * Button
+  */
+  .button {
+    outline: 2px solid transparent;
+    @apply rounded-md transition duration-200 focus-visible:outline-green-500;
+
+    color: var(--btn-text, var(--btn-color-700));
+    background-color: var(--btn-bg, transparent);
+    border-color: var(--btn-border, transparent);
+
+    border-width: 1px;
+    border-style: solid;
+
+    --btn-color-50: theme(colors.green.50);
+    --btn-color-100: theme(colors.green.100);
+    --btn-color-200: theme(colors.green.200);
+    --btn-color-300: theme(colors.green.300);
+    --btn-color-400: theme(colors.green.400);
+    --btn-color-500: theme(colors.green.500);
+    --btn-color-600: theme(colors.green.600);
+    --btn-color-700: theme(colors.green.700);
+    --btn-color-800: theme(colors.green.800);
+    --btn-color-900: theme(colors.green.900);
+    --btn-color-950: theme(colors.green.950);
+    --btn-color-contrast: theme(colors.white);
+    --btn-color-border: theme(colors.green.800 / 20%);
+  }
+
+  .button:hover,
+  .button:focus-visible {
+    color: var(--btn-text-hover, var(--btn-text, var(--btn-color-700)));
+    background-color: var(--btn-bg-hover, var(--btn-bg, transparent));
+    border-color: var(--btn-border-hover, var(--btn-border, transparent));
+  }
+
+  .button:disabled {
+    cursor: not-allowed;
+
+    color: var(--btn-text-disabled, var(--btn-text, var(--btn-color-400)));
+    background-color: var(--btn-bg-disabled, var(--btn-bg, transparent));
+    border-color: var(--btn-border-disabled, var(--btn-border, transparent));
+  }
+
+  /* Loading button */
+  .button[data-loading="true"] {
+    cursor: wait;
+
+    color: var(--btn-text, var(--btn-color-700));
+    background-color: var(--btn-bg, transparent);
+    border-color: var(--btn-border, transparent);
+  }
+
+  /* Button size variants */
+  .button[data-variant-size='sm'] {
+    @apply text-xs;
+
+    --btn-padding-base: theme(spacing.1);
+  }
+
+  .button[data-variant-size='md'] {
+    @apply text-sm;
+
+    --btn-padding-base: theme(spacing[1.5]);
+  }
+
+  .button[data-variant-size='lg'] {
+    @apply text-lg;
+
+    --btn-padding-base: theme(spacing.3);
+  }
+
+  /* Button type variants */
+  .button[data-variant-type='text'] {
+    padding: var(--btn-padding-base) calc(var(--btn-padding-base) * 2);
+  }
+
+  .button[data-variant-type='icon'] {
+    padding: var(--btn-padding-base);
+  }
+
+  /* Button style variants */
+  .button[data-variant-style='text'] {
+    --btn-text: var(--btn-color-700);
+    --btn-bg: transparent;
+
+    --btn-bg-hover: var(--btn-color-50);
+
+    --btn-text-disabled: theme(colors.stone.400);
+    --btn-bg-disabled: theme(colors.stone.50);
+  }
+
+  .button[data-variant-style='outlined'] {
+    --btn-text: var(--btn-color-700);
+    --btn-bg: var(--btn-color-50);
+    --btn-border: var(--btn-color-border);
+
+    --btn-text-hover: var(--btn-color-800);
+    --btn-bg-hover: var(--btn-color-100);
+
+    --btn-text-disabled: theme(colors.stone.400);
+    --btn-bg-disabled: theme(colors.stone.100);
+    --btn-border-disabled: theme(colors.black / 20%);
+  }
+
+  .button[data-variant-style='filled'] {
+    --btn-text: var(--btn-color-900);
+    --btn-bg: var(--btn-color-200);
+    --btn-border: var(--btn-color-border);
+
+    --btn-text-hover: var(--btn-color-950);
+    --btn-bg-hover: var(--btn-color-300);
+
+    --btn-text-disabled: theme(colors.stone.400);
+    --btn-bg-disabled: theme(colors.stone.200);
+    --btn-border-disabled: theme(colors.black / 20%);
+  }
+
+  .button[data-variant-style='heavy'] {
+    --btn-text: var(--btn-color-contrast);
+    --btn-bg: var(--btn-color-700);
+    --btn-border: var(--btn-color-border);
+
+    --btn-bg-hover: var(--btn-color-800);
+
+    --btn-text-disabled: theme(colors.stone.200);
+    --btn-bg-disabled: theme(colors.stone.400);
+    --btn-border-disabled: theme(colors.black / 20%);
+  }
+
+  /* Button color variants */
+  .button[data-variant-color='warning'] {
+    --btn-color-50: theme(colors.amber.50);
+    --btn-color-100: theme(colors.amber.100);
+    --btn-color-200: theme(colors.amber.200);
+    --btn-color-300: theme(colors.amber.300);
+    --btn-color-400: theme(colors.amber.400);
+    --btn-color-500: theme(colors.amber.500);
+    --btn-color-600: theme(colors.amber.600);
+    --btn-color-700: theme(colors.amber.700);
+    --btn-color-800: theme(colors.amber.800);
+    --btn-color-900: theme(colors.amber.900);
+    --btn-color-950: theme(colors.amber.950);
+    --btn-color-contrast: theme(colors.white);
+    --btn-color-border: theme(colors.amber.800 / 20%);
+  }
+
+  .button[data-variant-color='danger'] {
+    --btn-color-50: theme(colors.red.50);
+    --btn-color-100: theme(colors.red.100);
+    --btn-color-200: theme(colors.red.200);
+    --btn-color-300: theme(colors.red.300);
+    --btn-color-400: theme(colors.red.400);
+    --btn-color-500: theme(colors.red.500);
+    --btn-color-600: theme(colors.red.600);
+    --btn-color-700: theme(colors.red.700);
+    --btn-color-800: theme(colors.red.800);
+    --btn-color-900: theme(colors.red.900);
+    --btn-color-950: theme(colors.red.950);
+    --btn-color-contrast: theme(colors.white);
+    --btn-color-border: theme(colors.red.800 / 20%);
+  }
+
+  .button[data-variant-color='neutral'] {
+    --btn-color-50: theme(colors.stone.50);
+    --btn-color-100: theme(colors.stone.100);
+    --btn-color-200: theme(colors.stone.200);
+    --btn-color-300: theme(colors.stone.300);
+    --btn-color-400: theme(colors.stone.400);
+    --btn-color-500: theme(colors.stone.500);
+    --btn-color-600: theme(colors.stone.600);
+    --btn-color-700: theme(colors.stone.700);
+    --btn-color-800: theme(colors.stone.800);
+    --btn-color-900: theme(colors.stone.900);
+    --btn-color-950: theme(colors.stone.950);
+    --btn-color-contrast: theme(colors.white);
+    --btn-color-border: theme(colors.stone.800 / 20%);
   }
 }
 

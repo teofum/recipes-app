@@ -10,7 +10,6 @@ type LoadingButtonProps = {
 export default function LoadingButton({
   loading = false,
   className,
-  contentClassName,
   children,
   disabled,
   ...props
@@ -19,14 +18,7 @@ export default function LoadingButton({
     <Button
       data-loading={loading}
       disabled={disabled || loading}
-      className={cn(
-        'data-[loading="true"]:text-black data-[loading="true"]:cursor-wait',
-        className,
-      )}
-      contentClassName={cn(
-        'relative group-data-[loading="true"]:bg-green-300',
-        contentClassName,
-      )}
+      className={cn('relative', className)}
       {...props}
     >
       {loading && (

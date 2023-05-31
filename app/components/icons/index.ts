@@ -4,3 +4,6 @@ export { default as Check } from './Check';
 export { default as CheckCircle } from './CheckCircle';
 export { default as ExpandDown } from './ExpandDown';
 export { default as ExpandUp } from './ExpandUp';
+export { default as Delete } from './Delete';
+export { default as Exit } from './Exit';
+export { default as ExitAlt } from './ExitAlt';
