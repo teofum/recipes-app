@@ -26,7 +26,7 @@ export default function StepsForm() {
 
           return (
             <Form.Field
-              key={step.key}
+              key={step.key ?? 'DEFAULT'}
               className="flex flex-row gap-2 items-start group"
             >
               <div className="self-stretch flex-shrink-0 flex flex-col items-center">

@@ -28,7 +28,7 @@ export default function IngredientsForm() {
         {ingredients.map((ingredient, index) => {
           return (
             <div
-              key={ingredient.key}
+              key={ingredient.key ?? 'DEFAULT'}
               className="flex flex-row gap-2 items-center"
             >
               <IngredientsComboBox name={`ingredients[${index}].id`} />
