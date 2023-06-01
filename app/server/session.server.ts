@@ -20,7 +20,8 @@ const storage = createCookieSessionStorage<SessionData, SessionFlashData>({
   cookie: {
     name: 'AppSession',
     httpOnly: true,
-    secure: true,
+    // Safari doesn't like secure cookies on localhost...
+    secure: process.env.NODE_ENV === "production",
     secrets: [sessionSecret],
     path: '/',
     sameSite: 'lax',
