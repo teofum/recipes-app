@@ -26,6 +26,7 @@
       focus-visible:outline-green-500;
 
     gap: var(--btn-padding-base);
+    padding: var(--btn-padding-base) calc(var(--btn-padding-base) * 2);
 
     color: var(--btn-text, var(--btn-color-700));
     background-color: var(--btn-bg, transparent);
@@ -93,10 +94,6 @@
   }
 
   /* Button type variants */
-  .button[data-variant-type='text'] {
-    padding: var(--btn-padding-base) calc(var(--btn-padding-base) * 2);
-  }
-
   .button[data-variant-type='icon'] {
     padding: var(--btn-padding-base);
   }
