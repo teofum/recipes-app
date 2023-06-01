@@ -34,14 +34,14 @@ export default function IngredientsForm() {
               <IngredientsComboBox name={`ingredients[${index}].id`} />
 
               <Form.Input
-                className="w-24 -mr-2 rounded-r-none border-r-0"
+                className="w-16 -mr-2 rounded-r-none border-r-0"
                 name={`ingredients[${index}].amount`}
                 id={`ingredients-${index}-amt`}
               />
 
               <Form.Select
                 name={`ingredients[${index}].unit`}
-                triggerProps={{ className: 'w-24 rounded-l-none' }}
+                triggerProps={{ className: 'w-32 rounded-l-none' }}
                 defaultValue={Unit.UNITS}
               >
                 {units.map((unit) => (
