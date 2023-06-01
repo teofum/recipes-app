@@ -12,8 +12,8 @@ export default function RecipeCard({ recipe }: RecipeCardProps) {
         src={recipe.imageUrl ?? PLACEHOLDER_IMAGE_URL}
         alt="background"
         className="
-          bg-blur opacity-10 mix-blend-hard-light
-          group-hover:scale-125 group-hover:opacity-20
+          bg-blur opacity-20 mix-blend-hard-light
+          group-hover:scale-125 group-hover:opacity-30
           transition duration-300
         "
       />
