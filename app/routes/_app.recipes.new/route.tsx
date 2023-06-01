@@ -174,22 +174,24 @@ export default function NewRecipeRoute() {
             <div className="card">
               <h2 className="card-heading text-2xl">About this recipe</h2>
 
-              <Form.Field>
-                <Form.Label htmlFor="description">Description</Form.Label>
-                <Form.Textarea
-                  maxLength={DESCRIPTION_MAX_LENGTH}
-                  name="description"
-                  id="description"
-                />
-                <Form.Error name="description" id="descritpion" />
-              </Form.Field>
+              <div className="flex flex-col gap-2 -mt-2">
+                <Form.Field>
+                  <Form.Label htmlFor="description">Description</Form.Label>
+                  <Form.Textarea
+                    maxLength={DESCRIPTION_MAX_LENGTH}
+                    name="description"
+                    id="description"
+                  />
+                  <Form.Error name="description" id="descritpion" />
+                </Form.Field>
 
-              <Form.SubmitButton
-                className="w-full"
-                variant={{ size: 'lg', style: 'filled' }}
-              >
-                Create recipe
-              </Form.SubmitButton>
+                <Form.SubmitButton
+                  className="w-full"
+                  variant={{ size: 'lg', style: 'filled' }}
+                >
+                  Create recipe
+                </Form.SubmitButton>
+              </div>
             </div>
           </div>
 

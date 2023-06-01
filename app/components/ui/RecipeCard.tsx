@@ -29,7 +29,7 @@ export default function RecipeCard({ recipe }: RecipeCardProps) {
 
         <div className="p-2 pt-0">
           <h2 className="font-display text-4xl my-3">{recipe.name}</h2>
-          <p className="border-t border-black border-opacity-20 text-sm pt-2">
+          <p className="border-t border-black border-opacity-10 text-sm pt-2">
             {recipe.description}
           </p>
         </div>

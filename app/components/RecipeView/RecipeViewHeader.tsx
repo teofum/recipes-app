@@ -12,7 +12,6 @@ export default function RecipeViewHeader({ imageUrl }: RecipeViewHeaderProps) {
       className="
         relative w-full aspect-video
         bg-stone-900 overflow-hidden
-        border-b border-black border-opacity-20
         max-h-64 -mb-40 p-6
       "
     >

@@ -23,7 +23,7 @@ export default function AppRoute() {
         className="
           p-6
           border lg:border-0 lg:border-r
-          border-black border-opacity-20
+          border-black border-opacity-10
           bg-white
           rounded-xl lg:rounded-none
           fixed top-4 left-4 w-[calc(100%-2rem)] h-[calc(100%-2rem)] sm:w-64

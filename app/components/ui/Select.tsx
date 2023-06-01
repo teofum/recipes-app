@@ -31,7 +31,7 @@ function Root({
           flex flex-row justify-between items-center gap-2
           text-sm whitespace-nowrap overflow-hidden text-ellipsis
           bg-stone-50
-          border border-black border-opacity-20
+          border border-black border-opacity-10
           rounded-md
           px-2 py-1.5 min-h-[2.125rem]
           outline-none outline-offset-0
@@ -56,7 +56,7 @@ function Root({
           className={cn(
             `
             bg-white
-            border border-black border-opacity-20
+            border border-black border-opacity-10
             rounded-md
             p-1
             `,
@@ -88,10 +88,10 @@ const Item = React.forwardRef<
         text-sm
         rounded
         px-1 py-0.5
-        outline-none outline-offset-0 border border-green-800 border-opacity-0
+        outline-none outline-offset-0
         cursor-pointer
-        focus-visible:bg-green-50 focus-visible:text-green-700 focus-visible:border-opacity-20
-        hover:bg-green-50 hover:text-green-700 hover:border-opacity-20
+        focus-visible:bg-green-50 focus-visible:text-green-700
+        hover:bg-green-50 hover:text-green-700
         `,
         className,
       )}

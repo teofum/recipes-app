@@ -128,7 +128,7 @@ export default function FetcherComboBox<Item>({
         className="
           text-sm
           bg-stone-50
-          border border-black border-opacity-20
+          border border-black border-opacity-10
           rounded
           pl-2 pr-10 py-0.5 w-full
           outline-none outline-offset-0

@@ -81,7 +81,7 @@ export default function RecipeView({
             </div>
 
             {loggedUserIsOwner && (
-              <div className="mt-4 pt-4 border-t border-black border-opacity-20">
+              <div className="mt-4 pt-4 border-t border-black border-opacity-10">
                 {manageForm}
               </div>
             )}

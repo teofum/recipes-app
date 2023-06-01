@@ -8,7 +8,7 @@ export default function Navbar({ children }: NavbarProps) {
         <span className="text-green-700">Book</span>
       </div>
 
-      <div className="mt-auto pt-6 border-t border-black border-opacity-20">
+      <div className="mt-auto pt-6 border-t border-black border-opacity-10">
         {children}
       </div>
     </div>

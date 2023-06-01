@@ -61,7 +61,7 @@ export default function Dialog({
             </DialogPrimitive.Description>
           ) : null}
 
-          <div className="border-t border-black border-opacity-20 pt-2">
+          <div className="border-t border-black border-opacity-10 pt-2">
             {children}
           </div>
 

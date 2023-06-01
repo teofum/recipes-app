@@ -60,7 +60,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           `
           text-sm
           bg-stone-50
-          border border-black border-opacity-20
+          border border-black border-opacity-10
           rounded-md
           px-2 py-1.5
           outline-none outline-offset-0
@@ -118,7 +118,7 @@ function Textarea({
           `
           text-sm
           bg-stone-50
-          border border-black border-opacity-20
+          border border-black border-opacity-10
           rounded-md
           p-2
           outline-none outline-offset-0

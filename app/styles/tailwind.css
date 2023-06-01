@@ -9,11 +9,11 @@
   * Card
   */
   .card {
-    @apply bg-white border border-black border-opacity-20 rounded-xl p-6;
+    @apply bg-white rounded-xl p-6;
   }
 
   .card-heading {
-    @apply font-display text-3xl mb-6 -mt-1 pb-4 border-b border-black border-opacity-20;
+    @apply font-display text-3xl mb-6 -mt-1 pb-4 border-b border-black border-opacity-10;
   }
 
   /*
@@ -65,7 +65,7 @@
   }
 
   /* Loading button */
-  .button[data-loading="true"] {
+  .button[data-loading='true'] {
     cursor: wait;
 
     color: var(--btn-text, var(--btn-color-700));

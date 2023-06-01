@@ -13,7 +13,7 @@ function CreateIngredientPrompt() {
 
   return (
     <div
-      className={cn('w-full mt-1 pt-1 border-t border-opacity-20', {
+      className={cn('w-full mt-1 pt-1 border-t border-opacity-10', {
         'hidden -mt-1': !dirty,
       })}
       onKeyDown={(ev) => ev.stopPropagation()}
