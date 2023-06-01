@@ -10,6 +10,7 @@ export default function NameInput() {
         id="name"
         placeholder="New recipe"
         maxLength={NAME_MAX_LENGTH}
+        autoFocus
         className="
                 font-display text-4xl md:text-5xl lg:text-6xl
                 min-w-0 w-full

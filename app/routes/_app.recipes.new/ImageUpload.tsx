@@ -25,9 +25,11 @@ export default function ImageUpload({ imageUrl, openFile }: ImageUploadProps) {
         type="hidden"
         name="imageUrl"
         id="imageUrl"
-        value={imageUrl}
+        value={imageUrl ?? ''}
       />
-      <Button onClick={openFile}>Upload image</Button>
+      <Button type="button" onClick={openFile}>
+        Upload image
+      </Button>
     </div>
   );
 }

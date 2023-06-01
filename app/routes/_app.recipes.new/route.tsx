@@ -103,7 +103,7 @@ export async function action({ request }: ActionArgs) {
       description: data.description,
       prepTime: 15,
       authorId: userId,
-      imageUrl: data.imageUrl,
+      imageUrl: data.imageUrl === '' ? undefined : data.imageUrl,
 
       ingredients: {
         create: data.ingredients.map((ingredient) => ({
