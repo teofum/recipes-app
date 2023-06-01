@@ -30,6 +30,7 @@ import {
   STEP_MAX_LENGTH,
   PLACEHOLDER_IMAGE_URL,
 } from './constants';
+import { TimePickerFormInput } from '~/components/ui/TimePicker';
 
 /**
  * === Validation ==============================================================
@@ -50,11 +51,12 @@ const validator = withZod(
         DESCRIPTION_MAX_LENGTH,
         `Description must be at most ${DESCRIPTION_MAX_LENGTH} characters long`,
       ),
+    prepTime: z.coerce.number().min(0),
     imageUrl: z.string().optional(),
     ingredients: z.array(
       z.object({
         id: z.string(),
-        amount: z.coerce.number().min(0, 'Cannot have zero of an ingredient'),
+        amount: z.coerce.number().min(1, 'Cannot have zero of an ingredient'),
         unit: z.enum([Unit.GRAMS, Unit.LITERS, Unit.UNITS]),
       }),
     ),
@@ -105,7 +107,7 @@ export async function action({ request }: ActionArgs) {
     data: {
       name: data.name,
       description: data.description,
-      prepTime: 15,
+      prepTime: data.prepTime,
       authorId: userId,
       imageUrl: data.imageUrl === '' ? undefined : data.imageUrl,
 
@@ -205,6 +207,12 @@ export default function NewRecipeRoute() {
                     id="description"
                   />
                   <Form.Error name="description" id="descritpion" />
+                </Form.Field>
+
+                <Form.Field>
+                  <Form.Label htmlFor="timeInput">Preparation time</Form.Label>
+                  <TimePickerFormInput name="prepTime" id="timeInput" />
+                  <Form.Error name="prepTime" id="timeInput" />
                 </Form.Field>
 
                 <Form.SubmitButton

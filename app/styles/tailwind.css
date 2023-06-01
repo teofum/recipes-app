@@ -212,4 +212,13 @@
     width: calc(100% + 30px);
     height: calc(100% + 30px);
   }
+
+  .hide-scrollbars {
+    scrollbar-width: none;
+  }
+
+  .hide-scrollbars::-webkit-scrollbar {
+    background: transparent;
+    width: 0px;
+  }
 }
