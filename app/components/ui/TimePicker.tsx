@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import Form from './Form';
+import cn from 'classnames';
 
 const hours = Array.from(Array(24), (_, i) => i);
 const minutes = Array.from(Array(60), (_, i) => i);
@@ -18,7 +19,6 @@ export default function TimePicker({ onChange }: Props) {
   const [minute, setMinute] = useState(0);
 
   useEffect(() => {
-    console.log(`${hour}:${minute}`);
     onChange?.({ hour, minute });
   }, [hour, minute, onChange]);
 
@@ -63,14 +63,27 @@ export default function TimePicker({ onChange }: Props) {
       "
     >
       <div
-        className="w-10 h-20 overflow-y-auto snap-y snap-mandatory hide-scrollbars"
+        className="
+          w-10 h-20 overflow-y-auto snap-y snap-mandatory hide-scrollbars
+          group outline-none
+        "
         onScroll={(ev) => onScroll(ev, 'h')}
+        tabIndex={0}
       >
-        <div className="w-full leading-6 font-semibold px-2 py-7">
+        <div className="w-full leading-6 font-semibold py-7">
           {hours.map((h) => (
             <button
               key={h}
-              className="w-full text-right snap-center origin-center"
+              className={cn(
+                `
+                w-full text-right snap-center origin-center px-2 rounded-md
+                outline outline-2 outline-transparent
+                -outline-offset-2 transition-[outline]
+                `,
+                {
+                  'group-focus-visible:outline-green-500': h === hour,
+                },
+              )}
               tabIndex={-1}
               onClick={(ev) => scrollIntoView(ev, h)}
             >
@@ -82,14 +95,27 @@ export default function TimePicker({ onChange }: Props) {
       <div>hours</div>
 
       <div
-        className="w-10 h-20 overflow-y-auto snap-y snap-mandatory hide-scrollbars"
+        className="
+          w-10 h-20 overflow-y-auto snap-y snap-mandatory hide-scrollbars
+          group outline-none
+        "
         onScroll={(ev) => onScroll(ev, 'm')}
+        tabIndex={0}
       >
-        <div className="w-full leading-6 font-semibold px-2 py-7">
+        <div className="w-full leading-6 font-semibold py-7">
           {minutes.map((m) => (
             <button
               key={m}
-              className="w-full text-right snap-center origin-center"
+              className={cn(
+                `
+                w-full text-right snap-center origin-center px-2 rounded-md
+                outline outline-2 outline-transparent
+                -outline-offset-2 transition-[outline]
+                `,
+                {
+                  'group-focus-visible:outline-green-500': m === minute,
+                },
+              )}
               tabIndex={-1}
               onClick={(ev) => scrollIntoView(ev, m)}
             >
