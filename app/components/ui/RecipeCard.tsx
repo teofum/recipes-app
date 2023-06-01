@@ -23,7 +23,7 @@ export default function RecipeCard({ recipe }: RecipeCardProps) {
           <img
             src={recipe.imageUrl ?? PLACEHOLDER_IMAGE_URL}
             alt="background"
-            className="aspect-video object-cover group-hover:scale-105 transition duration-300"
+            className="aspect-video w-full object-cover group-hover:scale-105 transition duration-300"
           />
         </div>
 

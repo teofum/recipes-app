@@ -1,7 +1,12 @@
 import * as Select from '@radix-ui/react-select';
 import cn from 'classnames';
 import React from 'react';
-import { Check, ExpandDown, ExpandUp } from '../icons';
+import {
+  CaretDownIcon,
+  CheckIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+} from '@radix-ui/react-icons';
 
 type RootProps = {
   placeholder?: string;
@@ -41,7 +46,7 @@ function Root({
           {renderValue}
         </Select.Value>
         <Select.Icon>
-          <ExpandDown size={16} />
+          <CaretDownIcon />
         </Select.Icon>
       </Select.Trigger>
 
@@ -59,11 +64,11 @@ function Root({
           )}
         >
           <Select.ScrollUpButton>
-            <ExpandUp size={16} />
+            <ChevronUpIcon />
           </Select.ScrollUpButton>
           <Select.Viewport>{children}</Select.Viewport>
           <Select.ScrollDownButton>
-            <ExpandDown size={16} />
+            <ChevronDownIcon />
           </Select.ScrollDownButton>
         </Select.Content>
       </Select.Portal>
@@ -96,7 +101,7 @@ const Item = React.forwardRef<
     >
       <Select.ItemText>{children}</Select.ItemText>
       <Select.ItemIndicator>
-        <Check size={16} />
+        <CheckIcon />
       </Select.ItemIndicator>
     </Select.Item>
   );

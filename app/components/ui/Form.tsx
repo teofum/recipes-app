@@ -207,7 +207,6 @@ function Error({ name, id }: ErrorProps) {
 
 function SubmitButton({
   children = 'Submit',
-  className,
   disabled,
   ...props
 }: React.ComponentProps<typeof LoadingButton>) {
@@ -219,7 +218,6 @@ function SubmitButton({
       type="submit"
       disabled={!isValid || disabled}
       loading={isSubmitting}
-      className={cn('mt-4', className)}
       {...props}
     >
       {children}

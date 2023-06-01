@@ -82,7 +82,12 @@ export default function RecipesIndexRoute() {
         id="imageUrl"
         value={recipe.imageUrl ?? undefined}
       />
-      <Form.SubmitButton name="intent" value="delete" className="w-full mt-0">
+
+      <Form.SubmitButton
+        name="intent"
+        value="delete"
+        variant={{ color: 'danger' }}
+      >
         Delete
       </Form.SubmitButton>
     </Form.Root>

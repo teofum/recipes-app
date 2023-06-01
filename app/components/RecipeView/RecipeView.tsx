@@ -4,6 +4,14 @@ import { units } from '~/types/unit.type';
 import type { User } from '~/types/user.type';
 import RecipeViewHeader from './RecipeViewHeader';
 import { PLACEHOLDER_IMAGE_URL } from '~/routes/_app.recipes.new/constants';
+import { TimerIcon } from '@radix-ui/react-icons';
+
+function formatTime(totalMinutes: number): string {
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = Math.floor(totalMinutes % 60);
+
+  return (hours > 0 ? `${hours}'` : '') + `${minutes}"`;
+}
 
 function formatAmount(amount: number, unit: Unit): string {
   const unitObject = units.find((u) => u.type === unit);
@@ -38,8 +46,8 @@ export default function RecipeView({
 
       <div
         className="
-            relative w-full max-w-screen-lg mx-auto px-4 lg:px-8
-            sm:grid sm:grid-cols-[1fr_15rem] sm:grid-rows-[10rem_auto_auto]
+            relative w-full max-w-screen-lg mx-auto px-4 lg:px-8 pb-8
+            sm:grid sm:grid-cols-[1fr_15rem] sm:grid-rows-[10rem_auto_1fr]
             sm:items-end sm:gap-4
             md:grid-cols-[1fr_20rem]
           "
@@ -48,23 +56,29 @@ export default function RecipeView({
           {recipe.name}
         </h1>
 
-        <img
-          src={recipe.imageUrl ?? PLACEHOLDER_IMAGE_URL}
-          alt="background"
-          className="
-              aspect-video object-cover
-              rounded-xl
-              outline outline-4 outline-stone-100
-              sm:w-full sm:col-start-2 sm:row-span-2 sm:aspect-square
-              md:rounded-3xl
-            "
-        />
+        <div className="card flex p-2 sm:w-full sm:col-start-2 sm:row-span-2">
+          <img
+            src={recipe.imageUrl ?? PLACEHOLDER_IMAGE_URL}
+            alt="background"
+            className=" aspect-video object-cover w-full rounded-lg sm:aspect-square"
+          />
+        </div>
 
-        <aside className="sm:col-start-2">
+        <aside className="sm:col-start-2 sm:self-start">
           <div className="card">
             <h2 className="card-heading text-2xl">About this recipe</h2>
-            <div>{recipe.prepTime} minutes</div>
-            <div>Uploaded by {recipe.author.displayName}</div>
+            <div className="flex flex-col gap-2 -mt-2">
+              <p className="text-sm">{recipe.description}</p>
+
+              <div className="flex flex-row items-center gap-1">
+                <TimerIcon className="text-green-500" />
+                {formatTime(recipe.prepTime)}
+              </div>
+
+              <div className="text-sm text-stone-500">
+                Uploaded by {recipe.author.displayName}
+              </div>
+            </div>
 
             {loggedUserIsOwner && (
               <div className="mt-4 pt-4 border-t border-black border-opacity-20">
@@ -86,7 +100,7 @@ export default function RecipeView({
               {recipe.ingredients.map(ingredientMapper).map((ingredient) => (
                 <li
                   key={ingredient.id}
-                  className="flex flex-row gap-2 items-baseline"
+                  className="flex flex-row gap-2 items-baseline leading-relaxed"
                 >
                   <span>{ingredient.name}</span>
                   <span
@@ -109,8 +123,24 @@ export default function RecipeView({
               {recipe.steps
                 .sort((a, b) => a.stepNumber - b.stepNumber)
                 .map((step) => (
-                  <li key={step.id}>
-                    {step.stepNumber} - {step.content}
+                  <li
+                    key={step.id}
+                    className="flex flex-row gap-3 items-start group"
+                  >
+                    <div className="self-stretch flex-shrink-0 flex flex-col items-center">
+                      <div
+                        className="
+                          w-6 h-6 rounded-full text-sm font-medium
+                          bg-green-50 text-green-500 border border-green-500
+                          flex items-center justify-center
+                        "
+                      >
+                        {step.stepNumber}
+                      </div>
+                      <div className="w-px flex-1 bg-green-500 group-last:bg-transparent" />
+                    </div>
+
+                    <p className="mb-4">{step.content}</p>
                   </li>
                 ))}
             </ol>

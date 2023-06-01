@@ -6,6 +6,7 @@ import Avatar from '~/components/ui/Avatar';
 import { LinkButton } from '~/components/ui/Button';
 import Navbar from '~/components/ui/Navbar';
 import { requireUser } from '~/server/session.server';
+import { PLACEHOLDER_IMAGE_URL } from './_app.recipes.new/constants';
 
 export async function loader({ request }: LoaderArgs) {
   const user = await requireUser(request);
@@ -32,7 +33,7 @@ export default function AppRoute() {
       >
         <Navbar>
           <div className="flex flex-row gap-2 items-center">
-            <Avatar src="/img/curry.jpg" alt={user.displayName} />
+            <Avatar src={PLACEHOLDER_IMAGE_URL} alt={user.displayName} />
             <div className="flex-1">
               <div className="font-semibold leading-5">{user.displayName}</div>
               <div className="text-xs text-stone-500 leading-5">

@@ -1,5 +1,5 @@
 import { Unit } from '@prisma/client';
-import { MinusIcon, PlusCircledIcon } from '@radix-ui/react-icons';
+import { Cross1Icon, PlusCircledIcon } from '@radix-ui/react-icons';
 import { useFieldArray } from 'remix-validated-form';
 
 import Button from '~/components/ui/Button';
@@ -55,7 +55,7 @@ export default function IngredientsForm() {
                 variant={{ type: 'icon', color: 'danger' }}
                 onClick={() => remove(index)}
               >
-                <MinusIcon />
+                <Cross1Icon />
               </Button>
             </div>
           );
