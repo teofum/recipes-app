@@ -1,10 +1,14 @@
 import { Unit } from '@prisma/client';
 import type { ActionArgs } from '@remix-run/node';
+import { json } from '@remix-run/node';
 import { redirect } from '@remix-run/node';
-import { useFetcher } from '@remix-run/react';
+import { useFetcher, useLoaderData } from '@remix-run/react';
 import { withZod } from '@remix-validated-form/with-zod';
 import { useRef } from 'react';
-import type { ValidationErrorResponseData } from 'remix-validated-form';
+import type {
+  ValidationErrorResponseData,
+  ValidatorData,
+} from 'remix-validated-form';
 import { validationError } from 'remix-validated-form';
 import { z } from 'zod';
 
@@ -127,6 +131,18 @@ export async function action({ request }: ActionArgs) {
 }
 
 /**
+ * === Loader ==================================================================
+ */
+type LoaderData = Partial<ValidatorData<typeof validator>>;
+
+export function loader() {
+  return json<LoaderData>({
+    ingredients: [{ id: '', amount: 0, unit: Unit.UNITS }],
+    steps: [{ content: '' }],
+  });
+}
+
+/**
  * === Component ===============================================================
  */
 function isSuccessResponse(
@@ -136,8 +152,9 @@ function isSuccessResponse(
 }
 
 export default function NewRecipeRoute() {
-  const imageUpload = useFetcher<ImageUploadAction>();
+  const defaultValues = useLoaderData<typeof loader>();
 
+  const imageUpload = useFetcher<ImageUploadAction>();
   const fileInput = useRef<HTMLInputElement>(null);
 
   let imageUrl: string | undefined = undefined;
@@ -149,7 +166,12 @@ export default function NewRecipeRoute() {
     <div className="w-full">
       <RecipeViewHeader imageUrl={imageUrl || PLACEHOLDER_IMAGE_URL} />
 
-      <Form.Root validator={validator} method="post" id="new-recipe-form">
+      <Form.Root
+        validator={validator}
+        defaultValues={defaultValues}
+        method="post"
+        id="new-recipe-form"
+      >
         <div
           className="
             relative w-full max-w-screen-lg mx-auto px-4 lg:px-8 pb-8
