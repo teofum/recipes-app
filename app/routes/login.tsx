@@ -1,4 +1,4 @@
-import type { ActionArgs } from '@remix-run/node';
+import type { ActionArgs, V2_MetaFunction } from '@remix-run/node';
 import { useSearchParams } from '@remix-run/react';
 import { withZod } from '@remix-validated-form/with-zod';
 import type { FieldErrors } from 'remix-validated-form';
@@ -8,6 +8,10 @@ import { z } from 'zod';
 import Form from '~/components/ui/Form';
 
 import { login } from '~/server/session.server';
+
+export const meta: V2_MetaFunction = () => {
+  return [{ title: 'Login | CookBook' }];
+};
 
 const validator = withZod(
   z.object({

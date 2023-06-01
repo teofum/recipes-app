@@ -1,4 +1,4 @@
-import type { LoaderArgs } from '@remix-run/node';
+import type { LoaderArgs, V2_MetaFunction } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import { Link, useLoaderData } from '@remix-run/react';
 import { LinkButton } from '~/components/ui/Button';
@@ -7,6 +7,10 @@ import RecipeCard from '~/components/ui/RecipeCard';
 import { db } from '~/server/db.server';
 import { notFound } from '~/server/request.server';
 import { requireLogin } from '~/server/session.server';
+
+export const meta: V2_MetaFunction = () => {
+  return [{ title: 'My Recipes | CookBook' }];
+};
 
 export async function loader({ request }: LoaderArgs) {
   const userId = await requireLogin(request);

@@ -1,5 +1,5 @@
 import { Unit } from '@prisma/client';
-import type { ActionArgs } from '@remix-run/node';
+import type { ActionArgs, V2_MetaFunction } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import { redirect } from '@remix-run/node';
 import { useFetcher, useLoaderData } from '@remix-run/react';
@@ -31,6 +31,10 @@ import {
   PLACEHOLDER_IMAGE_URL,
 } from './constants';
 import { TimePickerFormInput } from '~/components/ui/TimePicker';
+
+export const meta: V2_MetaFunction = () => {
+  return [{ title: 'New Recipe | CookBook' }];
+};
 
 /**
  * === Validation ==============================================================

@@ -1,4 +1,4 @@
-import type { ActionArgs, LoaderArgs } from '@remix-run/node';
+import type { ActionArgs, LoaderArgs, V2_MetaFunction } from '@remix-run/node';
 import { redirect } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
@@ -12,6 +12,10 @@ import { db } from '~/server/db.server';
 import { deleteRecipe } from '~/server/delete.server';
 import { forbidden, notFound } from '~/server/request.server';
 import { requireLogin, requireUser } from '~/server/session.server';
+
+export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
+  return [{ title: `${data?.recipe.name ?? 'Recipe'} | CookBook` }];
+};
 
 const validator = withZod(
   z.object({
