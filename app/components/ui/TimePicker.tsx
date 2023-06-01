@@ -18,15 +18,17 @@ export default function TimePicker({ onChange }: Props) {
   const [minute, setMinute] = useState(0);
 
   useEffect(() => {
+    console.log(`${hour}:${minute}`);
     onChange?.({ hour, minute });
   }, [hour, minute, onChange]);
 
   const scrollIntoView = useCallback(
-    (ev: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-      (ev.target as HTMLButtonElement).scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
-      });
+    (ev: React.MouseEvent<HTMLButtonElement, MouseEvent>, index: number) => {
+      ev.preventDefault();
+      ev.stopPropagation();
+
+      const scroller = (ev.target as HTMLElement).parentElement?.parentElement;
+      scroller?.scrollTo({ top: index * 24, behavior: 'smooth' });
     },
     [],
   );
@@ -69,7 +71,8 @@ export default function TimePicker({ onChange }: Props) {
             <button
               key={h}
               className="w-full text-right snap-center origin-center"
-              onClick={scrollIntoView}
+              tabIndex={-1}
+              onClick={(ev) => scrollIntoView(ev, h)}
             >
               {h}
             </button>
@@ -87,7 +90,8 @@ export default function TimePicker({ onChange }: Props) {
             <button
               key={m}
               className="w-full text-right snap-center origin-center"
-              onClick={scrollIntoView}
+              tabIndex={-1}
+              onClick={(ev) => scrollIntoView(ev, m)}
             >
               {m}
             </button>
