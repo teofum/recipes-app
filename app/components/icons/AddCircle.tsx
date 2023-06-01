@@ -1,7 +1,7 @@
 import type { IconProps } from './props';
 import { useIconSize } from './useIconSize';
 
-const SvgCheckCircle = ({
+const SvgAddCircle = ({
   size = 'md',
   strokeWidth = 2,
   ...props
@@ -31,10 +31,10 @@ const SvgCheckCircle = ({
         stroke="currentcolor"
         strokeLinecap="round"
         strokeLinejoin="round"
-        d="M17.25 9c-2.742 1.802-5.088 4.122-7 7l-3.5-3.5"
+        d="M7 12h10M12 7v10"
       />
     </svg>
   );
 };
 
-export default SvgCheckCircle;
+export default SvgAddCircle;

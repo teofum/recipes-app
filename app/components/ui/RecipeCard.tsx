@@ -1,3 +1,4 @@
+import { PLACEHOLDER_IMAGE_URL } from '~/routes/_app.recipes.new/constants';
 import type { Recipe } from '~/types/recipe.type';
 
 interface RecipeCardProps {
@@ -8,7 +9,7 @@ export default function RecipeCard({ recipe }: RecipeCardProps) {
   return (
     <div className="card relative overflow-hidden p-2 group cursor-pointer h-full">
       <img
-        src={recipe.imageUrl}
+        src={recipe.imageUrl ?? PLACEHOLDER_IMAGE_URL}
         alt="background"
         className="
           bg-blur opacity-10 mix-blend-hard-light
@@ -20,7 +21,7 @@ export default function RecipeCard({ recipe }: RecipeCardProps) {
       <div className="relative">
         <div className="flex w-full rounded-md overflow-hidden">
           <img
-            src={recipe.imageUrl}
+            src={recipe.imageUrl ?? PLACEHOLDER_IMAGE_URL}
             alt="background"
             className="aspect-video object-cover group-hover:scale-105 transition duration-300"
           />

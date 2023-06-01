@@ -1,9 +1,9 @@
 import { Unit } from '@prisma/client';
-import type { ActionArgs, LoaderArgs } from '@remix-run/node';
+import type { ActionArgs } from '@remix-run/node';
 import { redirect } from '@remix-run/node';
-import { json } from '@remix-run/node';
-import { useFetcher, useLoaderData } from '@remix-run/react';
+import { useFetcher } from '@remix-run/react';
 import { withZod } from '@remix-validated-form/with-zod';
+import { useRef } from 'react';
 import type { ValidationErrorResponseData } from 'remix-validated-form';
 import { validationError } from 'remix-validated-form';
 import { z } from 'zod';
@@ -13,26 +13,32 @@ import RecipeViewHeader from '~/components/RecipeView/RecipeViewHeader';
 import HiddenImageForm from '~/components/forms/HiddenImageForm';
 import IngredientsForm from './IngredientsForm';
 import StepsForm from './StepsForm';
+import NameInput from './NameInput';
+import ImageUpload from './ImageUpload';
 
 import { db } from '~/server/db.server';
 import { requireLogin } from '~/server/session.server';
 import type { ImageUploadAction } from '../resources.image';
 
 import {
+  NAME_MAX_LENGTH,
   DESCRIPTION_MAX_LENGTH,
-  PLACEHOLDER_IMAGE_URL,
   STEP_MAX_LENGTH,
+  PLACEHOLDER_IMAGE_URL,
 } from './constants';
-import { useRef } from 'react';
-import NameInput from './NameInput';
-import ImageUpload from './ImageUpload';
 
 /**
  * === Validation ==============================================================
  */
 const validator = withZod(
   z.object({
-    name: z.string(),
+    name: z
+      .string()
+      .min(1, 'Name is required')
+      .max(
+        NAME_MAX_LENGTH,
+        `Name must be at most ${NAME_MAX_LENGTH} characters long`,
+      ),
     description: z
       .string()
       .min(1, 'A description is required')
@@ -40,11 +46,11 @@ const validator = withZod(
         DESCRIPTION_MAX_LENGTH,
         `Description must be at most ${DESCRIPTION_MAX_LENGTH} characters long`,
       ),
-    imageUrl: z.string().min(1, 'A cover image is required'),
+    imageUrl: z.string().optional(),
     ingredients: z.array(
       z.object({
         id: z.string(),
-        amount: z.coerce.number(),
+        amount: z.coerce.number().min(0, 'Cannot have zero of an ingredient'),
         unit: z.enum([Unit.GRAMS, Unit.LITERS, Unit.UNITS]),
       }),
     ),
@@ -61,6 +67,24 @@ const validator = withZod(
     ),
   }),
 );
+
+// Validator debug code
+// const v = validator.validate;
+// const vf = validator.validateField;
+
+// validator.validate = async (data) => {
+//   console.log('validating form', data);
+//   const res = await v(data);
+//   console.log('validated form', res);
+//   return res;
+// };
+
+// validator.validateField = async (data, field) => {
+//   console.log(`validating ${field}`, data);
+//   const res = await vf(data, field);
+//   console.log(`validated ${field}`, res);
+//   return res;
+// };
 
 /**
  * === Action ==================================================================
@@ -103,22 +127,6 @@ export async function action({ request }: ActionArgs) {
 }
 
 /**
- * === Loader ==================================================================
- */
-export async function loader({ request }: LoaderArgs) {
-  await requireLogin(request);
-
-  /**
-   * Just return all ingredients and let the frontend do the filtering work
-   * This is a terrible idea and won't scale well at all, check out
-   * https://www.algolia.com/doc/ when time comes to implement a proper search
-   */
-  const allIngredients = await db.ingredient.findMany();
-
-  return json({ allIngredients });
-}
-
-/**
  * === Component ===============================================================
  */
 function isSuccessResponse(
@@ -128,7 +136,6 @@ function isSuccessResponse(
 }
 
 export default function NewRecipeRoute() {
-  const { allIngredients } = useLoaderData<typeof loader>();
   const imageUpload = useFetcher<ImageUploadAction>();
 
   const fileInput = useRef<HTMLInputElement>(null);
@@ -143,13 +150,6 @@ export default function NewRecipeRoute() {
       <RecipeViewHeader imageUrl={imageUrl || PLACEHOLDER_IMAGE_URL} />
 
       <Form.Root validator={validator} method="post" id="new-recipe-form">
-        <Form.Input
-          type="hidden"
-          name="imageUrl"
-          id="imageUrl"
-          value={imageUrl || ''}
-        />
-
         <div
           className="
             relative w-full max-w-screen-lg mx-auto px-4 lg:px-8 pb-8
@@ -199,7 +199,7 @@ export default function NewRecipeRoute() {
               flex flex-col gap-4
             "
           >
-            <IngredientsForm allIngredients={allIngredients} />
+            <IngredientsForm />
             <StepsForm />
           </div>
         </div>

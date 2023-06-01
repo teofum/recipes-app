@@ -17,7 +17,7 @@ const validator = withZod(
   z.object({
     recipeId: z.string(),
     authorId: z.string(),
-    imageUrl: z.string(),
+    imageUrl: z.string().optional(),
     intent: z.enum(['delete']),
   }),
 );
@@ -80,7 +80,7 @@ export default function RecipesIndexRoute() {
         type="hidden"
         name="imageUrl"
         id="imageUrl"
-        value={recipe.imageUrl}
+        value={recipe.imageUrl ?? undefined}
       />
       <Form.SubmitButton name="intent" value="delete" className="w-full mt-0">
         Delete

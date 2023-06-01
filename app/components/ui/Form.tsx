@@ -13,6 +13,12 @@ import S from './Select';
 
 import type { ElementProps } from '~/utils/ElementProps.type';
 
+interface ValidationBehaviorOptions {
+  initial?: 'onChange' | 'onBlur' | 'onSubmit';
+  whenTouched?: 'onChange' | 'onBlur' | 'onSubmit';
+  whenSubmitted?: 'onChange' | 'onBlur' | 'onSubmit';
+}
+
 function Root({
   validator,
   className,
@@ -38,11 +44,15 @@ function Label({ className, ...props }: ElementProps<'label'>) {
 type InputProps = {
   name: string;
   id: string;
+  validationBehavior?: ValidationBehaviorOptions;
 } & ElementProps<'input'>;
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  function InputComponent({ id, name, type, className, ...props }, ref) {
-    const { error, getInputProps } = useField(name);
+  function InputComponent(
+    { id, name, type, className, validationBehavior, ...props },
+    ref,
+  ) {
+    const { error, getInputProps } = useField(name, { validationBehavior });
 
     return (
       <input
@@ -60,6 +70,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           `,
           className,
         )}
+        autoComplete="off"
         aria-invalid={error ? true : undefined}
         aria-errormessage={error ? `${id}__error` : undefined}
         ref={ref}
@@ -74,6 +85,7 @@ type TextareaProps = {
   name: string;
   id: string;
   containerClassName?: string;
+  validationBehavior?: ValidationBehaviorOptions;
 } & ElementProps<'textarea'>;
 
 function Textarea({
@@ -81,10 +93,11 @@ function Textarea({
   name,
   className,
   containerClassName,
+  validationBehavior,
   maxLength,
   ...props
 }: TextareaProps) {
-  const { error, getInputProps } = useField(name);
+  const { error, getInputProps } = useField(name, { validationBehavior });
   const [length, setLength] = useState(0);
 
   return (
@@ -119,6 +132,7 @@ function Textarea({
         aria-invalid={error ? true : undefined}
         aria-errormessage={error ? `${id}__error` : undefined}
         maxLength={maxLength}
+        autoComplete="off"
         {...getInputProps({ id })}
         {...props}
         onInput={(ev) => {
@@ -145,19 +159,28 @@ function Textarea({
   );
 }
 
-type SelectProps = { name: string } & React.ComponentProps<typeof S.Root>;
+type SelectProps = {
+  name: string;
+  validationBehavior?: ValidationBehaviorOptions;
+} & React.ComponentProps<typeof S.Root>;
 
-function Select({ name, children, ...props }: SelectProps) {
-  const { error, getInputProps } = useField(name);
+function Select({
+  name,
+  children,
+  validationBehavior,
+  onValueChange,
+  ...props
+}: SelectProps) {
+  const { error, getInputProps } = useField(name, { validationBehavior });
   const { onChange, onBlur, ...inputProps } = getInputProps();
 
   return (
     <S.Root
       aria-invalid={error ? true : undefined}
       onValueChange={(value) => {
-        console.log('change', name, value, onBlur);
+        console.log('valueChange formSelect');
         onChange?.(); // Triggers validation?
-        props.onValueChange?.(value);
+        onValueChange?.(value);
       }}
       {...inputProps}
       {...props}
@@ -185,6 +208,7 @@ function Error({ name, id }: ErrorProps) {
 function SubmitButton({
   children = 'Submit',
   className,
+  disabled,
   ...props
 }: React.ComponentProps<typeof LoadingButton>) {
   const isValid = useIsValid();
@@ -193,7 +217,7 @@ function SubmitButton({
   return (
     <LoadingButton
       type="submit"
-      disabled={!isValid}
+      disabled={!isValid || disabled}
       loading={isSubmitting}
       className={cn('mt-4', className)}
       {...props}

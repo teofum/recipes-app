@@ -1,11 +1,7 @@
 import type { IconProps } from './props';
 import { useIconSize } from './useIconSize';
 
-const SvgCheckCircle = ({
-  size = 'md',
-  strokeWidth = 2,
-  ...props
-}: IconProps) => {
+const SvgAdd = ({ size = 'md', strokeWidth = 2, ...props }: IconProps) => {
   const s = useIconSize(size);
 
   return (
@@ -17,24 +13,15 @@ const SvgCheckCircle = ({
       strokeWidth={strokeWidth}
       {...props}
     >
-      <circle
-        fill="none"
-        stroke="currentcolor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        cx="12"
-        cy="12"
-        r="10"
-      />
       <path
         fill="none"
         stroke="currentcolor"
         strokeLinecap="round"
         strokeLinejoin="round"
-        d="M17.25 9c-2.742 1.802-5.088 4.122-7 7l-3.5-3.5"
+        d="M19 12H5M12 5v14"
       />
     </svg>
   );
 };
 
-export default SvgCheckCircle;
+export default SvgAdd;

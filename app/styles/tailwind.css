@@ -21,7 +21,11 @@
   */
   .button {
     outline: 2px solid transparent;
-    @apply rounded-md transition duration-200 focus-visible:outline-green-500;
+    @apply rounded-md transition duration-200
+      flex flex-row justify-center items-center
+      focus-visible:outline-green-500;
+
+    gap: var(--btn-padding-base);
 
     color: var(--btn-text, var(--btn-color-700));
     background-color: var(--btn-bg, transparent);

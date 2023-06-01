@@ -20,7 +20,13 @@ export default function ImageUpload({ imageUrl, openFile }: ImageUploadProps) {
         alt=" "
         className="aspect-video object-cover rounded-md sm:aspect-square"
       />
-      <Form.Error name="imageUrl" id="imageUrl" />
+
+      <Form.Input
+        type="hidden"
+        name="imageUrl"
+        id="imageUrl"
+        value={imageUrl}
+      />
       <Button onClick={openFile}>Upload image</Button>
     </div>
   );

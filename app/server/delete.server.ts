@@ -10,7 +10,7 @@ export function deleteImage(imageUrl: string) {
   return [deleteImage, deleteFile];
 }
 
-export function deleteRecipe(recipeId: string, imageUrl: string) {
+export function deleteRecipe(recipeId: string, imageUrl?: string) {
   const deleteIngredients = db.ingredientsOnRecipes.deleteMany({
     where: { recipeId: recipeId },
   });
@@ -20,7 +20,7 @@ export function deleteRecipe(recipeId: string, imageUrl: string) {
   const deleteRecipe = db.recipe.delete({ where: { id: recipeId } });
 
   return [
-    ...deleteImage(imageUrl),
+    ...(imageUrl ? deleteImage(imageUrl) : []),
     deleteIngredients,
     deleteSteps,
     deleteRecipe,

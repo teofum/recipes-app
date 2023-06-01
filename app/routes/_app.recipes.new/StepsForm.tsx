@@ -5,6 +5,7 @@ import Form from '~/components/ui/Form';
 
 import { STEP_MAX_LENGTH } from './constants';
 import { Delete } from '~/components/icons';
+import { PlusCircledIcon } from '@radix-ui/react-icons';
 
 interface StepField {
   key: string;
@@ -64,6 +65,7 @@ export default function StepsForm() {
             push({ content: '', key: key++ });
           }}
         >
+          <PlusCircledIcon />
           Add step
         </Button>
       </div>

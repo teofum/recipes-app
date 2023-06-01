@@ -1,15 +1,13 @@
 import { Unit } from '@prisma/client';
-import { useFetcher } from '@remix-run/react';
+import { MinusIcon, PlusCircledIcon } from '@radix-ui/react-icons';
 import { useFieldArray } from 'remix-validated-form';
-import { Delete } from '~/components/icons';
 
 import Button from '~/components/ui/Button';
-import FetcherComboBox from '~/components/ui/FetcherComboBox';
 import Form from '~/components/ui/Form';
 import Select from '~/components/ui/Select';
 
-import type { Ingredient } from '~/types/ingredient.type';
 import { units } from '~/types/unit.type';
+import IngredientsComboBox from './IngredientsComboBox';
 
 interface IngredientField {
   key: string;
@@ -18,14 +16,7 @@ interface IngredientField {
 
 let key = 0;
 
-interface IngredientsFormProps {
-  allIngredients: Ingredient[];
-}
-
-export default function IngredientsForm({
-  allIngredients,
-}: IngredientsFormProps) {
-  const fetcher = useFetcher<Ingredient[]>();
+export default function IngredientsForm() {
   const [ingredients, { push, remove }] =
     useFieldArray<IngredientField>('ingredients');
 
@@ -40,15 +31,7 @@ export default function IngredientsForm({
               key={ingredient.key}
               className="flex flex-row gap-2 items-center"
             >
-              <FetcherComboBox
-                name={`ingredients[${index}].id`}
-                defaultValue={ingredient.id}
-                triggerProps={{ className: 'flex-1' }}
-                endpoint={(search) => `/api/ingredients?search=${search}`}
-                fetcher={fetcher}
-                valueSelector={(item) => item.id}
-                displaySelector={(item) => item.name}
-              />
+              <IngredientsComboBox name={`ingredients[${index}].id`} />
 
               <Form.Input
                 className="w-24 -mr-2 rounded-r-none border-r-0"
@@ -72,13 +55,14 @@ export default function IngredientsForm({
                 variant={{ type: 'icon', color: 'danger' }}
                 onClick={() => remove(index)}
               >
-                <Delete size="sm" />
+                <MinusIcon />
               </Button>
             </div>
           );
         })}
 
         <Button onClick={() => push({ name: '', key: key++ })}>
+          <PlusCircledIcon />
           Add ingredient
         </Button>
       </div>

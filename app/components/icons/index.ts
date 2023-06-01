@@ -7,3 +7,5 @@ export { default as ExpandUp } from './ExpandUp';
 export { default as Delete } from './Delete';
 export { default as Exit } from './Exit';
 export { default as ExitAlt } from './ExitAlt';
+export { default as Add } from './Add';
+export { default as AddCircle } from './AddCircle';

@@ -53,7 +53,7 @@ model Recipe {
   name          String
   description   String                  @db.Text // A brief description
   prepTime      Int                     // Time to make the recipe, in minutes
-  imageUrl      String
+  imageUrl      String?
 
   ingredients   IngredientsOnRecipes[]
   steps         RecipeStep[]

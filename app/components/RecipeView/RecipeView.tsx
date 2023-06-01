@@ -3,6 +3,7 @@ import type { FullRecipe, RecipeIngredient } from '~/types/recipe.type';
 import { units } from '~/types/unit.type';
 import type { User } from '~/types/user.type';
 import RecipeViewHeader from './RecipeViewHeader';
+import { PLACEHOLDER_IMAGE_URL } from '~/routes/_app.recipes.new/constants';
 
 function formatAmount(amount: number, unit: Unit): string {
   const unitObject = units.find((u) => u.type === unit);
@@ -33,7 +34,7 @@ export default function RecipeView({
 
   return (
     <div className="w-full">
-      <RecipeViewHeader imageUrl={recipe.imageUrl} />
+      <RecipeViewHeader imageUrl={recipe.imageUrl ?? PLACEHOLDER_IMAGE_URL} />
 
       <div
         className="
@@ -48,7 +49,7 @@ export default function RecipeView({
         </h1>
 
         <img
-          src={recipe.imageUrl}
+          src={recipe.imageUrl ?? PLACEHOLDER_IMAGE_URL}
           alt="background"
           className="
               aspect-video object-cover
