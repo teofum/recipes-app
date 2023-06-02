@@ -1,5 +1,5 @@
-import sharp from 'sharp';
+// import sharp from 'sharp';
 
-export default function withSharp(buffer: ArrayBuffer) {
-  return sharp(buffer);
-}
+// export default function withSharp(buffer: ArrayBuffer) {
+//   return sharp(buffer);
+// }
