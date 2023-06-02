@@ -169,6 +169,7 @@ function Select({
   children,
   validationBehavior,
   onValueChange,
+  onOpenChange,
   ...props
 }: SelectProps) {
   const { error, getInputProps } = useField(name, { validationBehavior });
@@ -178,9 +179,12 @@ function Select({
     <S.Root
       aria-invalid={error ? true : undefined}
       onValueChange={(value) => {
-        console.log('valueChange formSelect');
-        onChange?.(); // Triggers validation?
+        onChange?.(); // Triggers validation
         onValueChange?.(value);
+      }}
+      onOpenChange={(open) => {
+        if (!open) onBlur?.(); // Triggers validation
+        onOpenChange?.(open);
       }}
       {...inputProps}
       {...props}

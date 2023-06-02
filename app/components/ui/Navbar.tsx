@@ -1,4 +1,8 @@
-import { DashboardIcon, FilePlusIcon } from '@radix-ui/react-icons';
+import {
+  DashboardIcon,
+  FilePlusIcon,
+  MagnifyingGlassIcon,
+} from '@radix-ui/react-icons';
 import { LinkButton } from './Button';
 import cn from 'classnames';
 import type { RouteMatch } from '@remix-run/react';
@@ -45,6 +49,14 @@ export default function Navbar({ children }: NavbarProps) {
               route="/recipes"
               text="My Recipes"
               icon={<DashboardIcon />}
+            />
+          </li>
+          <li>
+            <NavbarLink
+              currentRoute={child}
+              route="/recipes/find"
+              text="Recipe Finder"
+              icon={<MagnifyingGlassIcon />}
             />
           </li>
           <li>

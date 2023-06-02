@@ -6,6 +6,13 @@
 
 @layer components {
   /*
+  * Responsive container
+  */
+  .responsive {
+    @apply w-full max-w-screen-lg mx-auto px-4 lg:px-8;
+  }
+
+  /*
   * Card
   */
   .card {

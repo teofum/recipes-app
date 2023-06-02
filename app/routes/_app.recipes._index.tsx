@@ -28,7 +28,7 @@ export default function RecipesIndexRoute() {
   const { user } = useLoaderData<typeof loader>();
 
   return (
-    <div className="w-full max-w-screen-lg mx-auto px-4 lg:px-8">
+    <div className="responsive">
       <header
         className="
           flex flex-row items-center justify-between

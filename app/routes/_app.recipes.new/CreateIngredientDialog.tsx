@@ -17,7 +17,6 @@ export default function CreateIngredientDialog() {
 
   useEffect(() => {
     if (fetcher.data) {
-      console.log(fetcher.data);
       close();
       setOpen(false);
       setTimeout(() => setItem(fetcher.data), 1);

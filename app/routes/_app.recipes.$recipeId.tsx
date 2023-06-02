@@ -63,7 +63,7 @@ export async function loader({ request, params }: LoaderArgs) {
   return json({ recipe, user });
 }
 
-export default function RecipesIndexRoute() {
+export default function RecipeRoute() {
   const { recipe, user } = useLoaderData<typeof loader>();
 
   const manageForm = (

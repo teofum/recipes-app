@@ -110,7 +110,6 @@ export default function FetcherComboBox<Item>({
       validationBehavior={{ initial: 'onChange' }}
       value={value}
       onValueChange={(value) => {
-        console.log('valueChange fetcherComboBox');
         if (open) setValue(value);
       }}
       open={open}
@@ -146,13 +145,6 @@ export default function FetcherComboBox<Item>({
         ref={input}
       />
 
-      {state !== 'idle' && (
-        <Loading
-          size="sm"
-          className="absolute top-[5px] right-2 text-green-500"
-        />
-      )}
-
       {data?.map((item) => (
         <Select.Item
           key={valueSelector(item)}
@@ -162,6 +154,13 @@ export default function FetcherComboBox<Item>({
           {displaySelector(item)}
         </Select.Item>
       ))}
+
+      {state !== 'idle' && (
+        <Loading
+          size="sm"
+          className="absolute top-[5px] right-2 text-green-500"
+        />
+      )}
 
       <FetcherComboBoxProvider
         item={item}

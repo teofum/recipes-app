@@ -46,7 +46,7 @@ export default function RecipeView({
 
       <div
         className="
-            relative w-full max-w-screen-lg mx-auto px-4 lg:px-8 pb-8
+            relative responsive pb-8
             sm:grid sm:grid-cols-[1fr_15rem] sm:grid-rows-[10rem_auto_1fr]
             sm:items-end sm:gap-4
             md:grid-cols-[1fr_20rem]
