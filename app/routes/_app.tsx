@@ -1,4 +1,3 @@
-import { ExitIcon } from '@radix-ui/react-icons';
 import type { LoaderArgs } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import { Form, Outlet, useLoaderData, useMatches } from '@remix-run/react';
@@ -33,21 +32,40 @@ export default function AppRoute() {
       >
         <Navbar>
           {user !== null ? (
-            <div className="flex flex-row gap-2 items-center">
-              <Avatar alt={user.displayName} />
-              <div className="flex-1">
-                <div className="font-semibold leading-5">
-                  {user.displayName}
-                </div>
-                <div className="text-xs text-stone-500 leading-5">
-                  @{user.username}
+            <div className="flex flex-col gap-2">
+              <div className="flex flex-row gap-2 items-center">
+                <Avatar alt={user.displayName} />
+                <div className="flex-1">
+                  <div className="font-semibold leading-5">
+                    {user.displayName}
+                  </div>
+                  <div className="text-xs text-stone-500 leading-5">
+                    @{user.username}
+                  </div>
                 </div>
               </div>
-              <Form method="post" action={`/logout?redirectUrl=${pathname}`}>
-                <Button type="submit" variant={{ type: 'icon', size: 'lg' }}>
-                  <ExitIcon />
-                </Button>
-              </Form>
+              <div className="flex flex-row gap-1">
+                <LinkButton
+                  to={`/account`}
+                  variant={{ size: 'sm' }}
+                  className="flex-1"
+                >
+                  Account
+                </LinkButton>
+                <Form
+                  method="post"
+                  action={`/logout?redirectUrl=${pathname}`}
+                  className="flex-1"
+                >
+                  <Button
+                    type="submit"
+                    variant={{ size: 'sm' }}
+                    className="w-full"
+                  >
+                    Logout
+                  </Button>
+                </Form>
+              </div>
             </div>
           ) : (
             <LinkButton to={`/login?redirectUrl=${pathname}`}>
