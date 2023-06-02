@@ -11,7 +11,7 @@ import Form from '~/components/ui/Form';
 import { db } from '~/server/db.server';
 import { deleteRecipe } from '~/server/delete.server';
 import { forbidden, notFound } from '~/server/request.server';
-import { requireLogin, requireUser } from '~/server/session.server';
+import { getUser } from '~/server/session.server';
 
 export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
   return [{ title: `${data?.recipe.name ?? 'Recipe'} | CookBook` }];
@@ -27,14 +27,14 @@ const validator = withZod(
 );
 
 export async function action({ request }: ActionArgs) {
-  const userId = await requireLogin(request);
+  const user = await getUser(request);
 
   const formData = await request.formData();
   const { data, error } = await validator.validate(formData);
   if (error) return validationError(error);
 
   // Make sure the logged user is definitely authorized
-  if (data.authorId !== userId)
+  if (data.authorId !== user?.id)
     throw forbidden({
       error: 'User is not authorized to perform this action.',
     });
@@ -48,7 +48,7 @@ export async function action({ request }: ActionArgs) {
 }
 
 export async function loader({ request, params }: LoaderArgs) {
-  const user = await requireUser(request);
+  const user = await getUser(request);
 
   const recipe = await db.recipe.findUnique({
     include: {

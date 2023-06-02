@@ -21,7 +21,7 @@ const storage = createCookieSessionStorage<SessionData, SessionFlashData>({
     name: 'AppSession',
     httpOnly: true,
     // Safari doesn't like secure cookies on localhost...
-    secure: process.env.NODE_ENV === "production",
+    secure: process.env.NODE_ENV === 'production',
     secrets: [sessionSecret],
     path: '/',
     sameSite: 'lax',
@@ -185,10 +185,10 @@ export const register = async (
  * @param request Request object
  * @returns redirect to login page with Set-Cookie header to destroy session
  */
-export const logout = async (request: Request) => {
+export const logout = async (request: Request, redirectUrl?: string) => {
   const session = await getUserSession(request);
 
-  return redirect('/login', {
+  return redirect(redirectUrl ?? '/login', {
     headers: {
       'Set-Cookie': await storage.destroySession(session),
     },

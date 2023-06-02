@@ -29,7 +29,7 @@ function ingredientMapper(ingredient: RecipeIngredient) {
 
 interface RecipeViewProps {
   recipe: FullRecipe;
-  user: User;
+  user?: User | null;
   manageForm?: React.ReactNode;
 }
 
@@ -38,7 +38,7 @@ export default function RecipeView({
   user,
   manageForm,
 }: RecipeViewProps) {
-  const loggedUserIsOwner = user.id === recipe.authorId;
+  const loggedUserIsOwner = user?.id === recipe.authorId;
 
   return (
     <div className="w-full">
