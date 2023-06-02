@@ -6,46 +6,63 @@ FROM node:${NODE_VERSION}-slim as base
 
 LABEL fly_launch_runtime="Remix/Prisma"
 
-# Remix/Prisma app lives here
-WORKDIR /app
-
-# Set production environment
-ENV NODE_ENV=production
-
-
-# Throw-away build stage to reduce size of final image
-FROM base as build
-
 # Install openssl for Prisma
 RUN apt-get update && apt-get install -y openssl && apt-get install -y ca-certificates
 
-# Install packages needed to build node modules
+# Install all node_modules, including dev dependencies
+FROM base as deps
+
+RUN mkdir /app
+WORKDIR /app
+
 RUN apt-get update -qq && \
     apt-get install -y python-is-python3 pkg-config build-essential openssl 
 
-# Install node modules
-COPY --link package.json package-lock.json ./
+ADD package.json package-lock.json ./
 RUN npm install --production=false
 
-# Generate Prisma Client
-COPY --link prisma .
-RUN npx prisma generate
+# Setup production node_modules
+FROM base as production-deps
 
-# Copy application code
-COPY --link . .
+RUN mkdir /app
+WORKDIR /app
 
-# Build application
-RUN npm run build
-
-# Remove development dependencies
+COPY --from=deps /app/node_modules /app/node_modules
+ADD package.json package-lock.json ./
 RUN npm prune --production
 
+# Build the app
+FROM base as build
 
-# Final stage for app image
+ENV NODE_ENV=production
+
+RUN mkdir /app
+WORKDIR /app
+
+COPY --from=deps /app/node_modules /app/node_modules
+
+# If we're using Prisma, uncomment to cache the prisma schema
+ADD prisma .
+RUN npx prisma generate
+
+ADD . .
+RUN npm run build
+
+# Finally, build the production image with minimal footprint
 FROM base
 
-# Copy built application
-COPY --from=build /app /app
+ENV NODE_ENV=production
 
-# Start the server by default, this can be overwritten at runtime
-CMD [ "npm", "run", "start" ]
+RUN mkdir /app
+WORKDIR /app
+
+COPY --from=production-deps /app/node_modules /app/node_modules
+
+# Uncomment if using Prisma
+COPY --from=build /app/node_modules/.prisma /app/node_modules/.prisma
+
+COPY --from=build /app/build /app/build
+COPY --from=build /app/public /app/public
+ADD . .
+
+CMD ["npm", "run", "start"]
