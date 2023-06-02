@@ -1,9 +1,8 @@
 import { ArrowLeftIcon } from '@radix-ui/react-icons';
-import { Link } from '@remix-run/react';
+import { LinkButton } from '../ui/Button';
 
 interface RecipeViewHeaderProps {
   imageUrl?: string;
-
 }
 
 export default function RecipeViewHeader({ imageUrl }: RecipeViewHeaderProps) {
@@ -21,9 +20,18 @@ export default function RecipeViewHeader({ imageUrl }: RecipeViewHeaderProps) {
         className="bg-blur opacity-50 mix-blend-hard-light"
       />
 
-      <Link to="/recipes" className="relative text-white flex items-center gap-1">
-        <ArrowLeftIcon /> Back to recipes
-      </Link>
+      <div className="relative responsive">
+        <LinkButton
+          to="/recipes"
+          className="
+            w-max bg-transparent text-white hover:text-white
+            hover:bg-white hover:bg-opacity-20
+            focus-visible:bg-white focus-visible:bg-opacity-20
+          "
+        >
+          <ArrowLeftIcon /> Back to recipes
+        </LinkButton>
+      </div>
     </div>
   );
 }
