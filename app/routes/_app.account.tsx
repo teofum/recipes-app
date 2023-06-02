@@ -1,6 +1,6 @@
 import bcryptjs from 'bcryptjs';
 
-import type { ActionArgs, LoaderArgs } from '@remix-run/node';
+import type { ActionArgs, LoaderArgs, V2_MetaFunction } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import { withZod } from '@remix-validated-form/with-zod';
@@ -12,6 +12,10 @@ import Dialog from '~/components/ui/Dialog';
 import Form from '~/components/ui/Form';
 import { db } from '~/server/db.server';
 import { requireUser } from '~/server/session.server';
+
+export const meta: V2_MetaFunction = () => {
+  return [{ title: 'My Account | CookBook' }];
+};
 
 const userInfoValidator = withZod(
   z.object({

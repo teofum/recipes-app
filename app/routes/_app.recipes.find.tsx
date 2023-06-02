@@ -1,4 +1,4 @@
-import type { LoaderArgs } from '@remix-run/node';
+import type { LoaderArgs, V2_MetaFunction } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import { withZod } from '@remix-validated-form/with-zod';
 import { z } from 'zod';
@@ -17,6 +17,10 @@ import { Cross1Icon, Cross2Icon } from '@radix-ui/react-icons';
 import { requireLogin } from '~/server/session.server';
 import { db } from '~/server/db.server';
 import RecipeCard from '~/components/ui/RecipeCard';
+
+export const meta: V2_MetaFunction = () => {
+  return [{ title: 'Recipe Finder | CookBook' }];
+};
 
 const validator = withZod(z.unknown());
 
