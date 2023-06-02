@@ -33,7 +33,7 @@ export default function AppRoute() {
       >
         <Navbar>
           <div className="flex flex-row gap-2 items-center">
-            <Avatar src={PLACEHOLDER_IMAGE_URL} alt={user.displayName} />
+            <Avatar alt={user.displayName} />
             <div className="flex-1">
               <div className="font-semibold leading-5">{user.displayName}</div>
               <div className="text-xs text-stone-500 leading-5">
