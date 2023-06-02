@@ -158,26 +158,31 @@ export const register = async (
   password: string,
   redirectUrl = DEFAULT_REDIRECT_URL,
 ) => {
-  const usernameTaken =
-    (await db.user.findFirst({ where: { username } })) !== null;
-  if (usernameTaken) throw { username: `The username ${username} is taken.` };
+  try {
+    const usernameTaken =
+      (await db.user.findFirst({ where: { username } })) !== null;
+    if (usernameTaken) throw { username: `The username ${username} is taken.` };
 
-  const emailTaken = (await db.user.findFirst({ where: { email } })) !== null;
-  if (emailTaken) throw { email: `Email ${email} is already in use.` };
+    const emailTaken = (await db.user.findFirst({ where: { email } })) !== null;
+    if (emailTaken) throw { email: `Email ${email} is already in use.` };
 
-  // Hash the password and create auth data
-  const passwordHash = await bcryptjs.hash(password, 10);
-  await db.auth.create({
-    data: { username, passwordHash },
-  });
+    // Hash the password and create auth data
+    const passwordHash = await bcryptjs.hash(password, 10);
+    await db.auth.create({
+      data: { username, passwordHash },
+    });
 
-  // Then create the actual user
-  const user = await db.user.create({
-    data: { username, displayName, email },
-  });
-  if (!user) throw { username: 'Something went wrong creating the user.' };
+    // Then create the actual user
+    const user = await db.user.create({
+      data: { username, displayName, email },
+    });
+    if (!user) throw { username: 'Something went wrong creating the user.' };
 
-  return createUserSession(user.id, redirectUrl);
+    return createUserSession(user.id, redirectUrl);
+  } catch (err: unknown) {
+    console.error(err);
+    throw err;
+  }
 };
 
 /**
