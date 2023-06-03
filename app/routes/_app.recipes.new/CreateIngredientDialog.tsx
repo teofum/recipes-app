@@ -11,7 +11,7 @@ import Button from '~/components/ui/Button';
 import { useFetcherComboBox } from '~/components/ui/FetcherComboBox';
 
 export default function CreateIngredientDialog() {
-  const { setItem, close, state } = useFetcherComboBox();
+  const { close, state } = useFetcherComboBox();
   const fetcher = useFetcher<IngredientsAction>();
   const [open, setOpen] = useState(false);
 
@@ -19,9 +19,8 @@ export default function CreateIngredientDialog() {
     if (fetcher.data) {
       close();
       setOpen(false);
-      setTimeout(() => setItem(fetcher.data), 1);
     }
-  }, [fetcher.data, setItem, close]);
+  }, [fetcher.data, close]);
 
   return (
     <Dialog
