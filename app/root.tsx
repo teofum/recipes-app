@@ -6,13 +6,15 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useRouteError,
 } from '@remix-run/react';
 
 import styles from '~/styles/tailwind.css';
+import RouteError from './components/RouteError';
 
 export const links: LinksFunction = () => [{ rel: 'stylesheet', href: styles }];
 
-export default function App() {
+function Document({ children }: React.PropsWithChildren<{}>) {
   return (
     <html lang="en">
       <head>
@@ -22,11 +24,29 @@ export default function App() {
         <Links />
       </head>
       <body className="bg-stone-100">
-        <Outlet />
+        {children}
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
       </body>
     </html>
+  );
+}
+
+export default function App() {
+  return (
+    <Document>
+      <Outlet />
+    </Document>
+  );
+}
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+
+  return (
+    <Document>
+      <RouteError error={error} />
+    </Document>
   );
 }

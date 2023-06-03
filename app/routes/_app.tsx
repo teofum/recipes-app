@@ -1,7 +1,9 @@
 import type { LoaderArgs } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import type { RouteMatch } from '@remix-run/react';
+import { useRouteError } from '@remix-run/react';
 import { Form, Outlet, useLoaderData, useMatches } from '@remix-run/react';
+import RouteError from '~/components/RouteError';
 import Avatar from '~/components/ui/Avatar';
 import Button, { LinkButton } from '~/components/ui/Button';
 import Navbar from '~/components/ui/Navbar';
@@ -81,4 +83,10 @@ export default function AppRoute() {
       </div>
     </div>
   );
+}
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+
+  return <RouteError error={error} />;
 }

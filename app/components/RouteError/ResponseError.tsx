@@ -56,9 +56,9 @@ export default function ResponseError({ error }: ResponseErrorProps) {
           {error.error && (
             <details
               className="
-              max-w-lg w-full text-left bg-stone-50
-              border border-black border-opacity-10 rounded-md
-            "
+                max-w-lg w-full text-left bg-stone-50
+                border border-black border-opacity-10 rounded-md
+              "
             >
               <summary className="text-sm p-2">Technical details</summary>
               <pre className="p-2 overflow-x-auto text-xs">
