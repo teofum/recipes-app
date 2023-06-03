@@ -32,7 +32,8 @@ function NavbarLink({ currentRoute, route, text, icon }: NavbarLinkProps) {
 }
 
 export default function Navbar({ children }: NavbarProps) {
-  const [, , child] = useMatches();
+  const matches = useMatches();
+  const currentRoute = matches.at(-1) as RouteMatch;
 
   return (
     <div className="flex flex-col h-full">
@@ -45,7 +46,7 @@ export default function Navbar({ children }: NavbarProps) {
         <ul className="mt-6 flex flex-col gap-1">
           <li>
             <NavbarLink
-              currentRoute={child}
+              currentRoute={currentRoute}
               route="/recipes"
               text="My Recipes"
               icon={<DashboardIcon />}
@@ -53,7 +54,7 @@ export default function Navbar({ children }: NavbarProps) {
           </li>
           <li>
             <NavbarLink
-              currentRoute={child}
+              currentRoute={currentRoute}
               route="/recipes/find"
               text="Recipe Finder"
               icon={<MagnifyingGlassIcon />}
@@ -61,7 +62,7 @@ export default function Navbar({ children }: NavbarProps) {
           </li>
           <li>
             <NavbarLink
-              currentRoute={child}
+              currentRoute={currentRoute}
               route="/recipes/new"
               text="New Recipe"
               icon={<FilePlusIcon />}

@@ -209,6 +209,16 @@
     background-size: 12px 12px;
   }
 
+  .bg-stripes {
+    background-image: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 1rem,
+      currentColor 1rem,
+      currentColor calc(2 * 1rem)
+    );
+  }
+
   .bg-blur {
     @apply absolute object-cover max-w-none blur-[30px];
     top: -15px;

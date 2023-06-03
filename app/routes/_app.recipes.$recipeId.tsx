@@ -5,7 +5,7 @@ import { useLoaderData } from '@remix-run/react';
 import { withZod } from '@remix-validated-form/with-zod';
 import { validationError } from 'remix-validated-form';
 import { z } from 'zod';
-import RecipeView from '~/components/RecipeView/RecipeView';
+import RecipeView from '~/components/RecipeView';
 import Form from '~/components/ui/Form';
 
 import { db } from '~/server/db.server';

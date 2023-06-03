@@ -1,5 +1,6 @@
 import type { LoaderArgs } from '@remix-run/node';
 import { json } from '@remix-run/node';
+import type { RouteMatch } from '@remix-run/react';
 import { Form, Outlet, useLoaderData, useMatches } from '@remix-run/react';
 import Avatar from '~/components/ui/Avatar';
 import Button, { LinkButton } from '~/components/ui/Button';
@@ -14,7 +15,8 @@ export async function loader({ request }: LoaderArgs) {
 
 export default function AppRoute() {
   const { user } = useLoaderData<typeof loader>();
-  const [, , { pathname }] = useMatches();
+  const matches = useMatches();
+  const currentRoute = matches.at(-1) as RouteMatch;
 
   return (
     <div className="h-screen grid grid-cols-1 lg:grid-cols-[auto_1fr]">
@@ -54,7 +56,7 @@ export default function AppRoute() {
                 </LinkButton>
                 <Form
                   method="post"
-                  action={`/logout?redirectUrl=${pathname}`}
+                  action={`/logout?redirectUrl=${currentRoute.pathname}`}
                   className="flex-1"
                 >
                   <Button
@@ -68,7 +70,7 @@ export default function AppRoute() {
               </div>
             </div>
           ) : (
-            <LinkButton to={`/login?redirectUrl=${pathname}`}>
+            <LinkButton to={`/login?redirectUrl=${currentRoute.pathname}`}>
               Sign in
             </LinkButton>
           )}
