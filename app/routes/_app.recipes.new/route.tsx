@@ -79,22 +79,22 @@ const validator = withZod(
 );
 
 // Validator debug code
-// const v = validator.validate;
-// const vf = validator.validateField;
+const v = validator.validate;
+const vf = validator.validateField;
 
-// validator.validate = async (data) => {
-//   console.log('validating form', data);
-//   const res = await v(data);
-//   console.log('validated form', res);
-//   return res;
-// };
+validator.validate = async (data) => {
+  console.log('validating form', [...data.entries()]);
+  const res = await v(data);
+  console.log('validated form', res);
+  return res;
+};
 
-// validator.validateField = async (data, field) => {
-//   console.log(`validating ${field}`, data);
-//   const res = await vf(data, field);
-//   console.log(`validated ${field}`, res);
-//   return res;
-// };
+validator.validateField = async (data, field) => {
+  console.log(`validating ${field}`, [...data.entries()]);
+  const res = await vf(data, field);
+  console.log(`validated ${field}`, res);
+  return res;
+};
 
 /**
  * === Action ==================================================================
