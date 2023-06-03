@@ -2,7 +2,7 @@ import { Unit } from '@prisma/client';
 import type { ActionArgs, V2_MetaFunction } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import { redirect } from '@remix-run/node';
-import { useFetcher, useLoaderData } from '@remix-run/react';
+import { useFetcher, useLoaderData, useRouteError } from '@remix-run/react';
 import { withZod } from '@remix-validated-form/with-zod';
 import { useRef } from 'react';
 import type {
@@ -31,6 +31,8 @@ import {
   PLACEHOLDER_IMAGE_URL,
 } from './constants';
 import { TimePickerFormInput } from '~/components/ui/TimePicker';
+import RouteError from '~/components/RouteError';
+import { serverError } from '~/server/request.server';
 
 export const meta: V2_MetaFunction = () => {
   return [{ title: 'New Recipe | CookBook' }];
@@ -130,7 +132,7 @@ export async function action({ request }: ActionArgs) {
       },
     },
   });
-  if (!recipe) throw 'fuck';
+  if (!recipe) throw serverError({ message: 'Failed to create recipe' });
 
   return redirect(`/recipes/${recipe.id}`);
 }
@@ -243,4 +245,10 @@ export default function NewRecipeRoute() {
       <HiddenImageForm fetcher={imageUpload} ref={fileInput} />
     </div>
   );
+}
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+
+  return <RouteError error={error} />;
 }

@@ -1,11 +1,12 @@
 import type { ActionArgs, LoaderArgs, V2_MetaFunction } from '@remix-run/node';
 import { redirect } from '@remix-run/node';
 import { json } from '@remix-run/node';
-import { useLoaderData } from '@remix-run/react';
+import { useLoaderData, useRouteError } from '@remix-run/react';
 import { withZod } from '@remix-validated-form/with-zod';
 import { validationError } from 'remix-validated-form';
 import { z } from 'zod';
-import RecipeView from '~/components/RecipeView/RecipeView';
+import RecipeView from '~/components/RecipeView';
+import RouteError from '~/components/RouteError';
 import Form from '~/components/ui/Form';
 
 import { db } from '~/server/db.server';
@@ -36,7 +37,7 @@ export async function action({ request }: ActionArgs) {
   // Make sure the logged user is definitely authorized
   if (data.authorId !== user?.id)
     throw forbidden({
-      error: 'User is not authorized to perform this action.',
+      message: 'User is not authorized to perform this action.',
     });
 
   switch (data.intent) {
@@ -58,7 +59,7 @@ export async function loader({ request, params }: LoaderArgs) {
     },
     where: { id: params.recipeId },
   });
-  if (!recipe) throw notFound({ error: 'Recipe not found' });
+  if (!recipe) throw notFound({ message: 'Recipe not found' });
 
   return json({ recipe, user });
 }
@@ -98,4 +99,10 @@ export default function RecipeRoute() {
   );
 
   return <RecipeView recipe={recipe} user={user} manageForm={manageForm} />;
+}
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+
+  return <RouteError error={error} />;
 }

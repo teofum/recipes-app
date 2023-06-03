@@ -1,8 +1,9 @@
 import { db } from './db.server';
+import { badRequest } from './request.server';
 
 export function deleteImage(imageUrl: string) {
   const fileId = imageUrl.split('/').at(-1);
-  if (!fileId) throw new Error('Bad file ID');
+  if (!fileId) throw badRequest({ message: 'Bad file ID' });
 
   const deleteImage = db.image.delete({ where: { fileId } });
   const deleteFile = db.file.delete({ where: { id: fileId } });

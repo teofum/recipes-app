@@ -1,11 +1,11 @@
 import type { LoaderArgs, V2_MetaFunction } from '@remix-run/node';
 import { json } from '@remix-run/node';
-import { Link, useLoaderData } from '@remix-run/react';
+import { Link, useLoaderData, useRouteError } from '@remix-run/react';
+import RouteError from '~/components/RouteError';
 import { LinkButton } from '~/components/ui/Button';
 import RecipeCard from '~/components/ui/RecipeCard';
 
 import { db } from '~/server/db.server';
-import { notFound } from '~/server/request.server';
 import { requireLogin } from '~/server/session.server';
 
 export const meta: V2_MetaFunction = () => {
@@ -15,17 +15,15 @@ export const meta: V2_MetaFunction = () => {
 export async function loader({ request }: LoaderArgs) {
   const userId = await requireLogin(request);
 
-  const user = await db.user.findUnique({
-    include: { recipes: true },
-    where: { id: userId },
+  const recipes = await db.recipe.findMany({
+    where: { authorId: userId },
   });
-  if (!user) throw notFound({ error: 'User data not found' });
 
-  return json({ user });
+  return json({ recipes });
 }
 
 export default function RecipesIndexRoute() {
-  const { user } = useLoaderData<typeof loader>();
+  const { recipes } = useLoaderData<typeof loader>();
 
   return (
     <div className="responsive">
@@ -42,9 +40,9 @@ export default function RecipesIndexRoute() {
         </LinkButton>
       </header>
 
-      {user.recipes.length > 0 ? (
+      {recipes.length > 0 ? (
         <ul className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-2">
-          {user.recipes.map((recipe) => (
+          {recipes.map((recipe) => (
             <li key={recipe.id}>
               <Link to={recipe.id}>
                 <RecipeCard recipe={recipe} />
@@ -57,4 +55,10 @@ export default function RecipesIndexRoute() {
       )}
     </div>
   );
+}
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+
+  return <RouteError error={error} />;
 }

@@ -2,7 +2,7 @@ import bcryptjs from 'bcryptjs';
 
 import type { ActionArgs, LoaderArgs, V2_MetaFunction } from '@remix-run/node';
 import { json } from '@remix-run/node';
-import { useLoaderData } from '@remix-run/react';
+import { useLoaderData, useRouteError } from '@remix-run/react';
 import { withZod } from '@remix-validated-form/with-zod';
 import { validationError } from 'remix-validated-form';
 import { z } from 'zod';
@@ -12,6 +12,7 @@ import Dialog from '~/components/ui/Dialog';
 import Form from '~/components/ui/Form';
 import { db } from '~/server/db.server';
 import { requireUser } from '~/server/session.server';
+import RouteError from '~/components/RouteError';
 
 export const meta: V2_MetaFunction = () => {
   return [{ title: 'My Account | CookBook' }];
@@ -47,7 +48,7 @@ export async function action({ request }: ActionArgs) {
   switch (subaction) {
     case 'userInfo': {
       const { data, error } = await userInfoValidator.validate(formData);
-      if (error) throw validationError(error);
+      if (error) return validationError(error);
 
       const newUser = await db.user.update({
         where: { id: user.id },
@@ -58,13 +59,13 @@ export async function action({ request }: ActionArgs) {
     }
     case 'password': {
       const { data, error } = await passwordValidator.validate(formData);
-      if (error) throw validationError(error);
+      if (error) return validationError(error);
 
       const auth = await db.auth.findUnique({
         where: { username: user.username },
       });
       if (!auth)
-        throw validationError({
+        return validationError({
           fieldErrors: { current: 'Authentication failed' },
         });
 
@@ -73,7 +74,7 @@ export async function action({ request }: ActionArgs) {
         auth.passwordHash,
       );
       if (!passwordMatch)
-        throw validationError({
+        return validationError({
           fieldErrors: { current: 'Incorrect password' },
         });
 
@@ -178,4 +179,10 @@ export default function AccountRoute() {
       </div>
     </div>
   );
+}
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+
+  return <RouteError error={error} />;
 }

@@ -9,6 +9,7 @@ import {
   useFetcher,
   useLoaderData,
   useNavigate,
+  useRouteError,
   useSearchParams,
 } from '@remix-run/react';
 import type { Ingredient } from '~/types/ingredient.type';
@@ -17,6 +18,7 @@ import { Cross1Icon, Cross2Icon } from '@radix-ui/react-icons';
 import { requireLogin } from '~/server/session.server';
 import { db } from '~/server/db.server';
 import RecipeCard from '~/components/ui/RecipeCard';
+import RouteError from '~/components/RouteError';
 
 export const meta: V2_MetaFunction = () => {
   return [{ title: 'Recipe Finder | CookBook' }];
@@ -207,4 +209,10 @@ export default function FindRecipeRoute() {
       </div>
     </div>
   );
+}
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+
+  return <RouteError error={error} />;
 }
