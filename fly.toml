@@ -1,5 +1,5 @@
 app = "teofum-recipes-app"
-primary_region = "iad"
+primary_region = "eze"
 
 [env]
   PORT = "8080"
