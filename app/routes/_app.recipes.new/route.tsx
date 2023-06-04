@@ -190,6 +190,7 @@ export default function NewRecipeRoute() {
           <NameInput />
 
           <ImageUpload
+            fetcher={imageUpload}
             imageUrl={imageUrl}
             openFile={() => fileInput.current?.click()}
           />
