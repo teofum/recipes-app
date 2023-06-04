@@ -139,7 +139,6 @@ export async function loader({ request }: LoaderArgs) {
   return json<{ user: PrismaUser; defaultValues: LoaderData }>({
     user,
     defaultValues: {
-      ingredients: [{ id: '', amount: 0, unit: Unit.UNITS }],
       steps: [{ content: '' }],
     },
   });

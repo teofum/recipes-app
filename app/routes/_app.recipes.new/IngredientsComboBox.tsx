@@ -27,21 +27,27 @@ function CreateIngredientPrompt() {
 }
 
 interface Props {
-  name: string;
+  onSelect: (id: string, name: string) => void;
 }
 
-export default function IngredientsComboBox({ name }: Props) {
+export default function IngredientsComboBox({ onSelect }: Props) {
   const fetcher = useFetcher<Ingredient[]>();
+
+  const onChange = (item: Ingredient | null) => {
+    if (item) onSelect(item.id, item.name);
+  };
 
   return (
     <FetcherComboBox
-      name={name}
+      name="__ingredients_add"
       fetcher={fetcher}
       triggerProps={{ className: 'flex-1' }}
       endpoint={(search) => `/api/ingredients?search=${search}`}
       valueSelector={(item) => item.id}
       displaySelector={(item) => item.name}
-      placeholder="Select an ingredient"
+      placeholder="Add an ingredient..."
+      selectedItem={null}
+      onChange={onChange}
     >
       <CreateIngredientPrompt />
     </FetcherComboBox>
