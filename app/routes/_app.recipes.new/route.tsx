@@ -1,38 +1,29 @@
+import type { User as PrismaUser } from '@prisma/client';
 import { Unit } from '@prisma/client';
-import type { ActionArgs, V2_MetaFunction } from '@remix-run/node';
+import type { ActionArgs, LoaderArgs, V2_MetaFunction } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import { redirect } from '@remix-run/node';
-import { useFetcher, useLoaderData, useRouteError } from '@remix-run/react';
+import { useLoaderData, useNavigation, useRouteError } from '@remix-run/react';
 import { withZod } from '@remix-validated-form/with-zod';
-import { useRef } from 'react';
-import type {
-  ValidationErrorResponseData,
-  ValidatorData,
-} from 'remix-validated-form';
+import type { ValidatorData } from 'remix-validated-form';
 import { validationError } from 'remix-validated-form';
 import { z } from 'zod';
 
-import Form from '~/components/ui/Form';
-import RecipeViewHeader from '~/components/RecipeView/RecipeViewHeader';
-import HiddenImageForm from '~/components/forms/HiddenImageForm';
-import IngredientsForm from './IngredientsForm';
-import StepsForm from './StepsForm';
-import NameInput from './NameInput';
-import ImageUpload from './ImageUpload';
-
 import { db } from '~/server/db.server';
-import { requireLogin } from '~/server/session.server';
-import type { ImageUploadAction } from '../resources.image';
+import { requireLogin, requireUser } from '~/server/session.server';
 
 import {
   NAME_MAX_LENGTH,
   DESCRIPTION_MAX_LENGTH,
   STEP_MAX_LENGTH,
-  PLACEHOLDER_IMAGE_URL,
 } from './constants';
-import { TimePickerFormInput } from '~/components/ui/TimePicker';
 import RouteError from '~/components/RouteError';
 import { serverError } from '~/server/request.server';
+import NewRecipeForm from './NewRecipeForm';
+import RecipeView from '~/components/RecipeView';
+import type { FullRecipe } from '~/types/recipe.type';
+import type { User } from '~/types/user.type';
+import { useEffect, useState } from 'react';
 
 export const meta: V2_MetaFunction = () => {
   return [{ title: 'New Recipe | CookBook' }];
@@ -41,57 +32,57 @@ export const meta: V2_MetaFunction = () => {
 /**
  * === Validation ==============================================================
  */
-const validator = withZod(
-  z.object({
-    name: z
-      .string()
-      .min(1, 'Name is required')
-      .max(
-        NAME_MAX_LENGTH,
-        `Name must be at most ${NAME_MAX_LENGTH} characters long`,
-      ),
-    description: z
-      .string()
-      .min(1, 'A description is required')
-      .max(
-        DESCRIPTION_MAX_LENGTH,
-        `Description must be at most ${DESCRIPTION_MAX_LENGTH} characters long`,
-      ),
-    prepTime: z.coerce.number().min(0),
-    imageUrl: z.string().optional(),
-    ingredients: z.array(
-      z.object({
-        id: z.string(),
-        amount: z.coerce.number().min(1, 'Cannot have zero of an ingredient'),
-        unit: z.enum([Unit.GRAMS, Unit.LITERS, Unit.UNITS]),
-      }),
+const schema = z.object({
+  name: z
+    .string()
+    .min(1, 'Name is required')
+    .max(
+      NAME_MAX_LENGTH,
+      `Name must be at most ${NAME_MAX_LENGTH} characters long`,
     ),
-    steps: z.array(
-      z.object({
-        content: z
-          .string()
-          .min(1, 'Step content is required')
-          .max(
-            STEP_MAX_LENGTH,
-            `Description must be at most ${STEP_MAX_LENGTH} characters long`,
-          ),
-      }),
+  description: z
+    .string()
+    .min(1, 'A description is required')
+    .max(
+      DESCRIPTION_MAX_LENGTH,
+      `Description must be at most ${DESCRIPTION_MAX_LENGTH} characters long`,
     ),
-  }),
-);
+  prepTime: z.coerce.number().min(0),
+  imageUrl: z.string().optional(),
+  ingredients: z.array(
+    z.object({
+      id: z.string(),
+      amount: z.coerce.number().min(1, 'Cannot have zero of an ingredient'),
+      unit: z.enum([Unit.GRAMS, Unit.LITERS, Unit.UNITS]),
+    }),
+  ),
+  steps: z.array(
+    z.object({
+      content: z
+        .string()
+        .min(1, 'Step content is required')
+        .max(
+          STEP_MAX_LENGTH,
+          `Description must be at most ${STEP_MAX_LENGTH} characters long`,
+        ),
+    }),
+  ),
+});
+
+export const newRecipeValidator = withZod(schema);
 
 // Validator debug code
-const v = validator.validate;
-const vf = validator.validateField;
+const v = newRecipeValidator.validate;
+const vf = newRecipeValidator.validateField;
 
-validator.validate = async (data) => {
+newRecipeValidator.validate = async (data) => {
   console.log('validating form', [...data.entries()]);
   const res = await v(data);
   console.log('validated form', res);
   return res;
 };
 
-validator.validateField = async (data, field) => {
+newRecipeValidator.validateField = async (data, field) => {
   console.log(`validating ${field}`, [...data.entries()]);
   const res = await vf(data, field);
   console.log(`validated ${field}`, res);
@@ -105,7 +96,7 @@ export async function action({ request }: ActionArgs) {
   const userId = await requireLogin(request);
   const formData = await request.formData();
 
-  const { data, error } = await validator.validate(formData);
+  const { data, error } = await newRecipeValidator.validate(formData);
   if (error) return validationError(error, formData);
 
   const recipe = await db.recipe.create({
@@ -140,111 +131,84 @@ export async function action({ request }: ActionArgs) {
 /**
  * === Loader ==================================================================
  */
-type LoaderData = Partial<ValidatorData<typeof validator>>;
+type LoaderData = Partial<ValidatorData<typeof newRecipeValidator>>;
 
-export function loader() {
-  return json<LoaderData>({
-    ingredients: [{ id: '', amount: 0, unit: Unit.UNITS }],
-    steps: [{ content: '' }],
+export async function loader({ request }: LoaderArgs) {
+  const user = await requireUser(request);
+
+  return json<{ user: PrismaUser; defaultValues: LoaderData }>({
+    user,
+    defaultValues: {
+      ingredients: [{ id: '', amount: 0, unit: Unit.UNITS }],
+      steps: [{ content: '' }],
+    },
   });
 }
 
 /**
  * === Component ===============================================================
  */
-function isSuccessResponse(
-  data: ValidationErrorResponseData | { fileId: string },
-): data is { fileId: string } {
-  return (data as { fileId: string }).fileId !== undefined;
+async function buildOptimisticRecipe(
+  formData: FormData,
+  user: User,
+): Promise<FullRecipe> {
+  try {
+    const { data, error } = await newRecipeValidator.validate(formData);
+    if (error) throw new Error('Validation failed');
+
+    return {
+      ...data,
+      imageUrl: data.imageUrl ?? null,
+      ingredients: data.ingredients.map((ingredient) => ({
+        ingredient: {
+          id: ingredient.id,
+          name: 'Unavailable',
+          createdAt: '',
+          updatedAt: '',
+        },
+        ingredientId: ingredient.id,
+        recipeId: '',
+        amount: ingredient.amount,
+        unit: ingredient.unit,
+      })),
+      steps: data.steps.map((step, index) => ({
+        id: `temp_step_${index}`, // We need an ID here because it's used as a react key
+        recipeId: '',
+        stepNumber: index,
+        content: step.content,
+      })),
+      authorId: user.id,
+      author: user,
+      // These are not needed to render optimistic UI
+      id: '',
+      createdAt: '',
+      updatedAt: '',
+    };
+  } catch (err) {
+    console.error(err);
+    throw new Error('Recipe parse error');
+  }
 }
 
 export default function NewRecipeRoute() {
-  const defaultValues = useLoaderData<typeof loader>();
+  const { user, defaultValues } = useLoaderData<typeof loader>();
 
-  const imageUpload = useFetcher<ImageUploadAction>();
-  const fileInput = useRef<HTMLInputElement>(null);
+  const { formData } = useNavigation();
+  const [parsedData, setParsedData] = useState<FullRecipe | null>(null);
 
-  let imageUrl: string | undefined = undefined;
-  if (imageUpload.data && isSuccessResponse(imageUpload.data)) {
-    imageUrl = `/resources/image/${imageUpload.data.fileId}`;
-  }
+  useEffect(() => {
+    const buildRecipe = async () => {
+      console.log('building recipe data', formData);
+      if (formData) setParsedData(await buildOptimisticRecipe(formData, user));
+    };
 
-  return (
-    <div className="w-full">
-      <RecipeViewHeader imageUrl={imageUrl || PLACEHOLDER_IMAGE_URL} />
+    buildRecipe();
+  }, [formData, user]);
 
-      <Form.Root
-        validator={validator}
-        defaultValues={defaultValues}
-        method="post"
-        id="new-recipe-form"
-      >
-        <div
-          className="
-            relative responsive pb-8
-            sm:grid sm:grid-cols-[1fr_15rem] sm:grid-rows-[10rem_auto_1fr]
-            sm:items-end sm:gap-4
-            md:grid-cols-[1fr_20rem]
-          "
-        >
-          <NameInput />
-
-          <ImageUpload
-            fetcher={imageUpload}
-            imageUrl={imageUrl}
-            openFile={() => fileInput.current?.click()}
-          />
-
-          <div
-            className="
-              sm:col-start-2 sm:row-start-3 sm:self-start
-              flex flex-col gap-4
-            "
-          >
-            <div className="card">
-              <h2 className="card-heading text-2xl">About this recipe</h2>
-
-              <div className="flex flex-col gap-2 -mt-2">
-                <Form.Field>
-                  <Form.Label htmlFor="description">Description</Form.Label>
-                  <Form.Textarea
-                    maxLength={DESCRIPTION_MAX_LENGTH}
-                    name="description"
-                    id="description"
-                  />
-                  <Form.Error name="description" id="descritpion" />
-                </Form.Field>
-
-                <Form.Field>
-                  <Form.Label htmlFor="timeInput">Preparation time</Form.Label>
-                  <TimePickerFormInput name="prepTime" id="timeInput" />
-                  <Form.Error name="prepTime" id="timeInput" />
-                </Form.Field>
-
-                <Form.SubmitButton
-                  className="w-full"
-                  variant={{ size: 'lg', style: 'filled' }}
-                >
-                  Create recipe
-                </Form.SubmitButton>
-              </div>
-            </div>
-          </div>
-
-          <div
-            className="
-              sm:col-start-1 sm:row-start-2 sm:row-span-2 sm:self-start
-              flex flex-col gap-4
-            "
-          >
-            <IngredientsForm />
-            <StepsForm />
-          </div>
-        </div>
-      </Form.Root>
-
-      <HiddenImageForm fetcher={imageUpload} ref={fileInput} />
-    </div>
+  return parsedData ? (
+    <RecipeView recipe={parsedData} user={user} manageForm={null} />
+  ) : (
+    <NewRecipeForm defaultValues={defaultValues} />
   );
 }
 
