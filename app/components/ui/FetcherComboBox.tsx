@@ -17,9 +17,6 @@ const allowedKeys = ['ArrowDown', 'Escape'];
  * Context, used to pass value/control/available data to children
  */
 interface FetcherComboBoxContextType<Item> {
-  item: Item | undefined;
-  setItem: React.Dispatch<React.SetStateAction<Item | undefined>>;
-
   data: Item[] | undefined;
   state: 'idle' | 'submitting' | 'loading';
   dirty: boolean;
@@ -28,8 +25,6 @@ interface FetcherComboBoxContextType<Item> {
 }
 
 const FetcherComboBoxContext = createContext<FetcherComboBoxContextType<any>>({
-  item: undefined,
-  setItem: () => {},
   data: undefined,
   state: 'idle',
   dirty: false,
@@ -60,6 +55,8 @@ type ComboBoxProps<Item> = {
   endpoint: (search: string) => string;
   fetcher: FetcherWithComponents<Item[]>;
   maxResults?: number;
+  selectedItem?: Item | null;
+  onChange?: (item: Item | null) => void;
 } & React.ComponentProps<typeof Form.Select>;
 
 export default function FetcherComboBox<Item>({
@@ -68,6 +65,8 @@ export default function FetcherComboBox<Item>({
   endpoint,
   fetcher,
   maxResults = 5,
+  selectedItem,
+  onChange,
   contentProps,
   placeholder,
   children,
@@ -85,15 +84,37 @@ export default function FetcherComboBox<Item>({
     setTimeout(() => input.current?.focus(), 0);
   }, [data]);
 
-  const [item, setItem] = useState<Item>();
+  /**
+   * State
+   */
+  const [_item, setItem] = useState<Item | null>(null);
   const [open, setOpen] = useState(false);
   const [dirty, setDirty] = useState(false);
 
+  /**
+   * External control: allows item to be set (controlled) externally via the
+   * selectedItem and onChange props
+   */
+  // External value overrides item
+  const item = selectedItem !== undefined ? selectedItem : _item; 
+  useEffect(() => {
+    console.log('onChange', _item);
+    onChange?.(_item); // Notify on internal value change
+  }, [_item, onChange]);
+
+  /**
+   * Internal control: finds and sets an item when the user interacts with the
+   * internal Select control
+   */
   const value = item ? valueSelector(item) : '';
   const setValue = (value: string) => {
-    setItem(data?.find((item) => valueSelector(item) === value));
+    const newItem = data?.find((item) => valueSelector(item) === value);
+    if (newItem) setItem(newItem);
   };
 
+  /**
+   * Display value
+   */
   const displayValue = item ? displaySelector(item) : placeholder;
 
   const close = useCallback(() => setOpen(false), [setOpen]);
@@ -163,8 +184,6 @@ export default function FetcherComboBox<Item>({
       )}
 
       <FetcherComboBoxProvider
-        item={item}
-        setItem={setItem}
         data={data}
         state={state}
         dirty={dirty}

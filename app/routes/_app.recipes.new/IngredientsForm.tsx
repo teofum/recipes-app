@@ -1,5 +1,5 @@
 import { Unit } from '@prisma/client';
-import { Cross1Icon, PlusCircledIcon } from '@radix-ui/react-icons';
+import { Cross1Icon } from '@radix-ui/react-icons';
 import { useFieldArray } from 'remix-validated-form';
 
 import Button from '~/components/ui/Button';
@@ -10,15 +10,18 @@ import { units } from '~/types/unit.type';
 import IngredientsComboBox from './IngredientsComboBox';
 
 interface IngredientField {
-  key: string;
   id: string;
+  name: string;
 }
-
-let key = 0;
 
 export default function IngredientsForm() {
   const [ingredients, { push, remove }] =
     useFieldArray<IngredientField>('ingredients');
+
+  const addIngredient = (id: string, name: string) => {
+    if (!ingredients.some((ingredient) => ingredient.id === id))
+      push({ id, name });
+  };
 
   return (
     <div className="card">
@@ -28,10 +31,23 @@ export default function IngredientsForm() {
         {ingredients.map((ingredient, index) => {
           return (
             <div
-              key={ingredient.key ?? 'DEFAULT'}
+              key={ingredient.id}
               className="flex flex-row gap-2 items-center"
             >
-              <IngredientsComboBox name={`ingredients[${index}].id`} />
+              <Form.Input
+                type="hidden"
+                name={`ingredients[${index}].id`}
+                id={`ingredients[${index}]-id`}
+                value={ingredient.id}
+              />
+              <Form.Input
+                type="hidden"
+                name={`ingredients[${index}].name`}
+                id={`ingredients[${index}]-name`}
+                value={ingredient.name}
+              />
+
+              <div className="text-sm flex-1">{ingredient.name}</div>
 
               <Form.Input
                 className="w-16 -mr-2 rounded-r-none border-r-0"
@@ -61,10 +77,7 @@ export default function IngredientsForm() {
           );
         })}
 
-        <Button onClick={() => push({ name: '', key: key++ })}>
-          <PlusCircledIcon />
-          Add ingredient
-        </Button>
+        <IngredientsComboBox onSelect={addIngredient} />
       </div>
     </div>
   );

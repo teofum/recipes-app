@@ -49,10 +49,11 @@ type InputProps = {
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   function InputComponent(
-    { id, name, type, className, validationBehavior, ...props },
+    { id, name, type, className, validationBehavior, value, ...props },
     ref,
   ) {
     const { error, getInputProps } = useField(name, { validationBehavior });
+    const { defaultValue, ...inputProps } = getInputProps({ type });
 
     return (
       <input
@@ -74,7 +75,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         aria-invalid={error ? true : undefined}
         aria-errormessage={error ? `${id}__error` : undefined}
         ref={ref}
-        {...getInputProps({ type, id })}
+        value={value}
+        defaultValue={value === undefined ? defaultValue : undefined}
+        {...inputProps}
         {...props}
       />
     );
