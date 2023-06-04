@@ -24,6 +24,7 @@ import RecipeView from '~/components/RecipeView';
 import type { FullRecipe } from '~/types/recipe.type';
 import type { User } from '~/types/user.type';
 import { useEffect, useState } from 'react';
+import Loading from '~/components/ui/Loading';
 
 export const meta: V2_MetaFunction = () => {
   return [{ title: 'New Recipe | CookBook' }];
@@ -52,6 +53,7 @@ const schema = z.object({
   ingredients: z.array(
     z.object({
       id: z.string(),
+      name: z.string(), // Not written to DB, only used to render optimistic UI
       amount: z.coerce.number().min(1, 'Cannot have zero of an ingredient'),
       unit: z.enum([Unit.GRAMS, Unit.LITERS, Unit.UNITS]),
     }),
@@ -147,6 +149,13 @@ export async function loader({ request }: LoaderArgs) {
 /**
  * === Component ===============================================================
  */
+/**
+ * Validates form data and creates recipe data before it's written to DB, used
+ * to render optimistic UI
+ * @param formData the form data that was submitted
+ * @param user logged user
+ * @returns recipe data
+ */
 async function buildOptimisticRecipe(
   formData: FormData,
   user: User,
@@ -161,7 +170,7 @@ async function buildOptimisticRecipe(
       ingredients: data.ingredients.map((ingredient) => ({
         ingredient: {
           id: ingredient.id,
-          name: 'Unavailable',
+          name: ingredient.name,
           createdAt: '',
           updatedAt: '',
         },
@@ -205,7 +214,11 @@ export default function NewRecipeRoute() {
   }, [formData, user]);
 
   return parsedData ? (
-    <RecipeView recipe={parsedData} user={user} manageForm={null} />
+    <RecipeView
+      recipe={parsedData}
+      user={user}
+      manageForm={<Loading className="text-green-700 mx-auto w-min" />}
+    />
   ) : (
     <NewRecipeForm defaultValues={defaultValues} />
   );
