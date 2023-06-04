@@ -158,7 +158,7 @@ async function buildOptimisticRecipe(
 
     return {
       ...data,
-      imageUrl: data.imageUrl ?? null,
+      imageUrl: data.imageUrl || null,
       ingredients: data.ingredients.map((ingredient) => ({
         ingredient: {
           id: ingredient.id,
