@@ -44,7 +44,7 @@ export default function RecipesIndexRoute() {
         <ul className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-2">
           {recipes.map((recipe) => (
             <li key={recipe.id}>
-              <Link to={recipe.id}>
+              <Link to={recipe.id} prefetch="intent">
                 <RecipeCard recipe={recipe} />
               </Link>
             </li>
