@@ -49,7 +49,10 @@ export async function action({ request }: ActionArgs) {
 }
 
 export async function loader({ request, params }: LoaderArgs) {
+  const start = Date.now();
+  console.log('start');
   const user = await getUser(request);
+  console.log('got user at', Date.now() - start, 'ms');
 
   const recipe = await db.recipe.findUnique({
     include: {
@@ -60,6 +63,7 @@ export async function loader({ request, params }: LoaderArgs) {
     where: { id: params.recipeId },
   });
   if (!recipe) throw notFound({ message: 'Recipe not found' });
+  console.log('got recipe at', Date.now() - start, 'ms');
 
   return json({ recipe, user });
 }
