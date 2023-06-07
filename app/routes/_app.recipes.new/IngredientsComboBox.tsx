@@ -18,7 +18,7 @@ function CreateIngredientPrompt() {
       })}
       onKeyDown={(ev) => ev.stopPropagation()}
     >
-      <div className="text-xs text-stone-500 text-center mb-0.5">
+      <div className="text-xs text-stone-600 text-center mb-0.5">
         Can't find what you need?
       </div>
       <CreateIngredientDialog />

@@ -2,8 +2,7 @@ import bcryptjs from 'bcryptjs';
 
 import { db } from './db.server';
 import { createCookieSessionStorage, redirect } from '@remix-run/node';
-
-const DEFAULT_REDIRECT_URL = '/recipes';
+import { DEFAULT_REDIRECT_URL, RESET_CODE_TTL } from '~/utils/constants';
 
 interface SessionData {
   userId: string;
@@ -183,6 +182,43 @@ export const register = async (
     console.error(err);
     throw err;
   }
+};
+
+export const resetPassword = async (
+  username: string,
+  resetCode: string,
+  newPassword: string,
+  redirectUrl = DEFAULT_REDIRECT_URL,
+) => {
+  const user = await db.user.findUnique({
+    select: { id: true },
+    where: { username },
+  });
+  if (!user) throw new Error('User does not exist');
+
+  // First, find the recovery code hash by username
+  const recovery = await db.recovery.findUnique({ where: { username } });
+  if (!recovery) throw { resetCode: `Reset code for ${username} not found.` };
+
+  // If we found one, make sure it's not expired
+  const age = Date.now() - recovery.updatedAt.valueOf();
+  if (age > RESET_CODE_TTL) {
+    // Delete it from the database, we don't need to keep expired codes around
+    await db.recovery.delete({ where: { username } });
+    throw { resetCode: `Reset code is expired.` };
+  }
+
+  // Check if it's a match
+  const codeMatch = await bcryptjs.compare(resetCode, recovery.oneTimeCodeHash);
+  if (!codeMatch) throw { resetCode: `Incorrect reset code.` };
+
+  // The code matches: delete used code from db, reset password and login user
+  await db.recovery.delete({ where: { username } });
+
+  const passwordHash = await bcryptjs.hash(newPassword, 10);
+  await db.auth.update({ where: { username }, data: { passwordHash } });
+
+  return createUserSession(user.id, redirectUrl);
 };
 
 /**

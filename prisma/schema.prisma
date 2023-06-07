@@ -44,6 +44,12 @@ model Auth {
   passwordHash  String
 }
 
+model Recovery {
+  username        String  @unique
+  updatedAt     DateTime  @updatedAt
+  oneTimeCodeHash String
+}
+
 model Recipe {
   id            String                  @id @default(uuid())
   createdAt     DateTime                @default(now())

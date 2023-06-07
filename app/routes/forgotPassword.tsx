@@ -5,20 +5,18 @@ import type { FieldErrors } from 'remix-validated-form';
 import { validationError } from 'remix-validated-form';
 import { z } from 'zod';
 import RouteError from '~/components/RouteError';
-import { LinkButton } from '~/components/ui/Button';
 
 import Form from '~/components/ui/Form';
 
-import { login } from '~/server/session.server';
+import { sendRecoveryEmail } from '~/server/notification.server';
 
 export const meta: V2_MetaFunction = () => {
-  return [{ title: 'Login | CookBook' }];
+  return [{ title: 'Forgot Password | CookBook' }];
 };
 
 const validator = withZod(
   z.object({
-    usernameOrEmail: z.string().min(1, 'Please enter a username or email'),
-    password: z.string().min(1, 'Please enter a password'),
+    usernameOrEmail: z.string().min(1, 'Please enter your username or email'),
     redirectUrl: z.string().optional(),
   }),
 );
@@ -30,24 +28,30 @@ export async function action({ request }: ActionArgs) {
     const { data, error } = await validator.validate(formData);
     if (error) return validationError(error, formData);
 
-    return await login(data.usernameOrEmail, data.password, data.redirectUrl);
-  } catch (err: unknown) {
+    return await sendRecoveryEmail(data.usernameOrEmail, data.redirectUrl);
+  } catch (err) {
+    if (err instanceof Error) throw err;
     return validationError({ fieldErrors: err as FieldErrors }, formData);
   }
 }
 
-export default function LoginRoute() {
+export default function ForgotPasswordRoute() {
   const [params] = useSearchParams();
   const redirectUrl = params.get('redirectUrl');
 
   return (
     <div className="min-h-screen grid place-items-center bg-green-300 bg-dots bg-repeat px-4">
-      <div className="card flex flex-col max-w-sm w-full">
+      <div className="card flex flex-col gap-4 max-w-sm w-full">
         <h1 className="font-display text-4xl font-semibold text-center">
-          Login
+          Reset your password
         </h1>
 
-        <Form.Root validator={validator} method="post" className="mt-4 mb-2">
+        <p className="text-sm text-stone-600">
+          Forgot your password? No problem! Just enter your username or email
+          and we'll send you a one-time reset code.
+        </p>
+
+        <Form.Root validator={validator} method="post">
           <Form.Input
             type="hidden"
             name="redirectUrl"
@@ -60,20 +64,8 @@ export default function LoginRoute() {
             <Form.Input type="text" name="usernameOrEmail" id="user" />
             <Form.Error name="usernameOrEmail" id="user" />
           </Form.Field>
-          <Form.Field>
-            <Form.Label htmlFor="password">Password</Form.Label>
-            <Form.Input type="password" name="password" id="password" />
-            <Form.Error name="password" id="password" />
-          </Form.Field>
-          <Form.SubmitButton variant="filled">Log in</Form.SubmitButton>
+          <Form.SubmitButton variant="filled">Send code</Form.SubmitButton>
         </Form.Root>
-
-        <LinkButton to={`/register?redirectUrl=${redirectUrl}`}>
-          I don't have an account
-        </LinkButton>
-        <LinkButton to={`/forgotPassword?redirectUrl=${redirectUrl}`}>
-          I forgot my password
-        </LinkButton>
       </div>
     </div>
   );
@@ -84,4 +76,3 @@ export function ErrorBoundary() {
 
   return <RouteError error={error} />;
 }
-

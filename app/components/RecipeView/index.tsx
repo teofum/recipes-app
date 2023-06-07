@@ -75,7 +75,7 @@ export default function RecipeView({
                 {formatTime(recipe.prepTime)}
               </div>
 
-              <div className="text-sm text-stone-500">
+              <div className="text-sm text-stone-600">
                 Uploaded by {recipe.author.displayName}
               </div>
             </div>

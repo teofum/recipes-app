@@ -91,7 +91,7 @@ export default function FindRecipeRoute() {
         "
       >
         <h1 className="font-display text-4xl">Recipe finder</h1>
-        <p className="text-sm mt-2 -mb-2 text-stone-500">
+        <p className="text-sm mt-2 -mb-2 text-stone-600">
           Find recipes using the ingredients you have on hand
         </p>
       </header>
@@ -153,7 +153,7 @@ export default function FindRecipeRoute() {
               Found <span className="font-semibold">{haveAll.length}</span>{' '}
               {haveAll.length > 1 ? 'recipes' : 'recipe'} with your ingredients
             </div>
-            <div className="text-sm text-stone-500 mb-3">
+            <div className="text-sm text-stone-600 mb-3">
               You have everything you need to make{' '}
               {haveAll.length > 1 ? 'these recipes' : 'this recipe'}!
             </div>
@@ -177,7 +177,7 @@ export default function FindRecipeRoute() {
               <span className="font-semibold">{haveSome.length}</span> partial{' '}
               {haveSome.length > 1 ? 'matches' : 'match'}
             </div>
-            <div className="text-sm text-stone-500 mb-3">
+            <div className="text-sm text-stone-600 mb-3">
               You may be able to make{' '}
               {haveSome.length > 1 ? 'these recipes' : 'this recipe'} with a few
               more ingredients.

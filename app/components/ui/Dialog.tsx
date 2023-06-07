@@ -56,7 +56,7 @@ export default function Dialog({
           </DialogPrimitive.Title>
 
           {description ? (
-            <DialogPrimitive.Description className="text-sm text-stone-500 mb-2">
+            <DialogPrimitive.Description className="text-sm text-stone-600 mb-2">
               {description}
             </DialogPrimitive.Description>
           ) : null}
