@@ -11,8 +11,8 @@ export default {
     extend: {
       animation: {
         'wave': '1s cubic-bezier(0.4, 0, 0.6, 1) 0s infinite normal both running wave',
-        'modalIn': '300ms cubic-bezier(0.4, 0, 0.6, 1) 100ms 1 normal both running modalIn',
-        'backdropIn': '300ms cubic-bezier(0.4, 0, 0.6, 1) 0s 1 normal both running backdropIn',
+        'modalIn': '150ms cubic-bezier(0.4, 0, 0.6, 1) 100ms 1 normal both running modalIn',
+        'backdropIn': '150ms cubic-bezier(0.4, 0, 0.6, 1) 0s 1 normal both running backdropIn',
       },
       keyframes: {
         'wave': {
