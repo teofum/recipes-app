@@ -19,14 +19,19 @@ export async function loader({ request }: LoaderArgs) {
   const search = url.searchParams.get('search');
   const take = Number(url.searchParams.get('take') ?? 5);
 
-  if (!search) return [];
+  if (!search) return json([]);
 
-  const ingredients = await db.ingredient.findMany({
-    where: { name: { contains: search } },
-    take,
-  });
+  try {
+    const ingredients = await db.ingredient.findMany({
+      where: { name: { contains: search } },
+      take,
+    });
 
-  return json([...ingredients]);
+    return json([...ingredients]);
+  } catch (err) {
+    console.error(err);
+    return json([]);
+  }
 }
 
 export async function action({ request }: ActionArgs) {
