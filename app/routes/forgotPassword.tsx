@@ -40,7 +40,7 @@ export default function ForgotPasswordRoute() {
   const redirectUrl = params.get('redirectUrl');
 
   return (
-    <div className="min-h-screen grid place-items-center bg-green-300 bg-dots bg-repeat">
+    <div className="min-h-screen grid place-items-center bg-green-300 bg-dots bg-repeat px-4">
       <div className="card flex flex-col gap-4 max-w-sm w-full">
         <h1 className="font-display text-4xl font-semibold text-center">
           Reset your password
