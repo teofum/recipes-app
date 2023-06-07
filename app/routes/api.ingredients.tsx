@@ -38,10 +38,25 @@ export async function action({ request }: ActionArgs) {
   const formData = await request.formData();
 
   const { data, error } = await ingredientValidator.validate(formData);
-  if (error) throw validationError(error);
+  if (error) return validationError(error);
 
-  const ingredient = await db.ingredient.create({ data });
-  return json(ingredient);
+  // Validate ingredient with same name doesn't exist already
+  const existing = await db.ingredient.findUnique({
+    where: { name: data.name },
+  });
+  if (existing)
+    return validationError({
+      fieldErrors: { name: `Ingredient ${data.name} already exists` },
+    });
+
+  try {
+    const ingredient = await db.ingredient.create({ data });
+    return json(ingredient);
+  } catch (err) {
+    return validationError({
+      fieldErrors: { name: 'Unable to create ingredient' },
+    });
+  }
 }
 
 export type IngredientsAction = typeof action;
