@@ -1,0 +1,108 @@
+import type { ActionArgs, V2_MetaFunction } from '@remix-run/node';
+import { useRouteError, useSearchParams } from '@remix-run/react';
+import { withZod } from '@remix-validated-form/with-zod';
+import type { FieldErrors } from 'remix-validated-form';
+import { validationError } from 'remix-validated-form';
+import { z } from 'zod';
+import RouteError from '~/components/RouteError';
+
+import Form from '~/components/ui/Form';
+
+import { resetPassword } from '~/server/session.server';
+
+export const meta: V2_MetaFunction = () => {
+  return [{ title: 'Reset Password | CookBook' }];
+};
+
+const validator = withZod(
+  z.object({
+    resetCode: z.string().regex(/^[A-Z0-9]{6}$/, 'Invalid reset code'),
+    newPassword: z
+      .string()
+      .min(8, 'Password must be at least 8 characters in length'),
+    username: z.string().min(1, 'Username unavailable'),
+    redirectUrl: z.string().optional(),
+  }),
+);
+
+export async function action({ request }: ActionArgs) {
+  const formData = await request.formData();
+
+  try {
+    const { data, error } = await validator.validate(formData);
+    if (error) return validationError(error, formData);
+
+    return await resetPassword(
+      data.username,
+      data.resetCode,
+      data.newPassword,
+      data.redirectUrl,
+    );
+  } catch (err) {
+    if (err instanceof Error) throw err;
+    return validationError({ fieldErrors: err as FieldErrors }, formData);
+  }
+}
+
+export default function ResetPasswordRoute() {
+  const [params] = useSearchParams();
+  const redirectUrl = params.get('redirectUrl');
+  const username = params.get('username');
+  const obfuscatedEmailAddress = params.get('email');
+
+  return (
+    <div className="min-h-screen grid place-items-center bg-green-300 bg-dots bg-repeat">
+      <div className="card flex flex-col gap-4 max-w-sm w-full">
+        <h1 className="font-display text-4xl font-semibold text-center">
+          Reset your password
+        </h1>
+
+        <p className="text-sm text-stone-600">
+          We just sent a one-time reset code to your email{' '}
+          <span className="text-black font-semibold">
+            {obfuscatedEmailAddress}
+          </span>
+          , valid for the next 15 minutes. Enter the code and a new password.
+        </p>
+
+        <Form.Root validator={validator} method="post">
+          <Form.Input
+            type="hidden"
+            name="redirectUrl"
+            id="redirect"
+            defaultValue={redirectUrl ?? '/recipes'}
+          />
+
+          <Form.Input
+            type="hidden"
+            name="username"
+            id="usename"
+            defaultValue={username ?? ''}
+          />
+
+          <Form.Field>
+            <Form.Label htmlFor="resetCode">Reset code</Form.Label>
+            <Form.Input type="text" name="resetCode" id="resetCode" />
+            <Form.Error name="resetCode" id="resetCode" />
+          </Form.Field>
+
+          <Form.Field>
+            <Form.Label htmlFor="password">New password</Form.Label>
+            <Form.Input type="password" name="newPassword" id="password" />
+            <Form.Error name="newPassword" id="password" />
+          </Form.Field>
+
+          <Form.SubmitButton variant="filled">
+            Reset password and sign in
+          </Form.SubmitButton>
+        </Form.Root>
+      </div>
+    </div>
+  );
+}
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+
+  return <RouteError error={error} />;
+}
