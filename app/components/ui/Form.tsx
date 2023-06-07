@@ -206,7 +206,7 @@ function Error({ name, id }: ErrorProps) {
   const { error } = useField(name);
 
   return (
-    <p id={`${id}__error`} className="text-sm text-red-500">
+    <p id={`${id}__error`} className="text-xs text-red-500">
       {error || ' '}
     </p>
   );

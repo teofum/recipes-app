@@ -9,32 +9,34 @@ interface HiddenImageFormProps {
   fetcher: ReturnType<typeof useFetcher<ImageUploadAction>>;
 }
 
-const HiddenImageForm = React.forwardRef<HTMLInputElement, HiddenImageFormProps>(
-  function HiddenImageFormComponent({ fetcher }, ref) {
-    return (
-      <Form.Root
-        method="post"
-        encType="multipart/form-data"
-        action="/resources/image"
-        validator={imageUploadFormValidator}
-        fetcher={fetcher}
-        className="hidden"
-      >
-        <Form.Input
-          type="file"
-          name="file"
-          id="image"
-          ref={ref}
-          onChange={(ev) =>
-            (
-              (ev.target as HTMLInputElement).nextSibling as HTMLButtonElement
-            ).click()
-          }
-        />
-        <Form.SubmitButton />
-      </Form.Root>
-    );
-  },
-);
+const HiddenImageForm = React.forwardRef<
+  HTMLInputElement,
+  HiddenImageFormProps
+>(function HiddenImageFormComponent({ fetcher }, ref) {
+  return (
+    <Form.Root
+      method="post"
+      encType="multipart/form-data"
+      action="/resources/image"
+      validator={imageUploadFormValidator}
+      resetAfterSubmit
+      fetcher={fetcher}
+      className="hidden"
+      id="__hidden_img_upload_form"
+    >
+      <Form.Input
+        type="file"
+        name="file"
+        id="image"
+        ref={ref}
+        onChange={(ev) => {
+          const target = ev.target as HTMLInputElement;
+          (target.nextSibling as HTMLButtonElement).click();
+        }}
+      />
+      <Form.SubmitButton />
+    </Form.Root>
+  );
+});
 
 export default HiddenImageForm;

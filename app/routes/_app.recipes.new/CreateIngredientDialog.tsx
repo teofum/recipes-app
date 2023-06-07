@@ -1,5 +1,6 @@
 import { PlusCircledIcon } from '@radix-ui/react-icons';
 import { useFetcher } from '@remix-run/react';
+import type { ValidationErrorResponseData } from 'remix-validated-form';
 
 import Dialog from '~/components/ui/Dialog';
 import Form from '~/components/ui/Form';
@@ -9,6 +10,13 @@ import { ingredientValidator } from '../api.ingredients';
 import { useEffect, useState } from 'react';
 import Button from '~/components/ui/Button';
 import { useFetcherComboBox } from '~/components/ui/FetcherComboBox';
+import type { Ingredient } from '~/types/ingredient.type';
+
+function isSuccessResponse(
+  data: Ingredient | ValidationErrorResponseData,
+): data is Ingredient {
+  return (data as ValidationErrorResponseData).fieldErrors === undefined;
+}
 
 export default function CreateIngredientDialog() {
   const { close, state } = useFetcherComboBox();
@@ -16,7 +24,7 @@ export default function CreateIngredientDialog() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    if (fetcher.data) {
+    if (fetcher.data && isSuccessResponse(fetcher.data)) {
       close();
       setOpen(false);
     }

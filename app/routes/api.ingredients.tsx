@@ -19,24 +19,44 @@ export async function loader({ request }: LoaderArgs) {
   const search = url.searchParams.get('search');
   const take = Number(url.searchParams.get('take') ?? 5);
 
-  if (!search) return [];
+  if (!search) return json([]);
 
-  const ingredients = await db.ingredient.findMany({
-    where: { name: { contains: search } },
-    take,
-  });
+  try {
+    const ingredients = await db.ingredient.findMany({
+      where: { name: { contains: search } },
+      take,
+    });
 
-  return json([...ingredients]);
+    return json([...ingredients]);
+  } catch (err) {
+    console.error(err);
+    return json([]);
+  }
 }
 
 export async function action({ request }: ActionArgs) {
   const formData = await request.formData();
 
   const { data, error } = await ingredientValidator.validate(formData);
-  if (error) throw validationError(error);
+  if (error) return validationError(error);
 
-  const ingredient = await db.ingredient.create({ data });
-  return json(ingredient);
+  // Validate ingredient with same name doesn't exist already
+  const existing = await db.ingredient.findUnique({
+    where: { name: data.name },
+  });
+  if (existing)
+    return validationError({
+      fieldErrors: { name: `Ingredient ${data.name} already exists` },
+    });
+
+  try {
+    const ingredient = await db.ingredient.create({ data });
+    return json(ingredient);
+  } catch (err) {
+    return validationError({
+      fieldErrors: { name: 'Unable to create ingredient' },
+    });
+  }
 }
 
 export type IngredientsAction = typeof action;

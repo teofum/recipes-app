@@ -1,10 +1,16 @@
 import type { FetcherWithComponents } from '@remix-run/react';
+import type { ValidationErrorResponseData } from 'remix-validated-form';
+import { useFormContext } from 'remix-validated-form';
 
 import Form from '~/components/ui/Form';
 import LoadingButton from '~/components/ui/LoadingButton';
 import Loading from '~/components/ui/Loading';
 
 import { PLACEHOLDER_IMAGE_URL } from './constants';
+
+function isErrorResponse(data: unknown): data is ValidationErrorResponseData {
+  return (data as ValidationErrorResponseData).fieldErrors !== undefined;
+}
 
 interface ImageUploadProps {
   fetcher: FetcherWithComponents<unknown>;
@@ -17,6 +23,8 @@ export default function ImageUpload({
   imageUrl,
   openFile,
 }: ImageUploadProps) {
+  const { clearAllErrors } = useFormContext('__hidden_img_upload_form');
+
   return (
     <div
       className="
@@ -51,12 +59,19 @@ export default function ImageUpload({
         onClick={(ev) => {
           ev.preventDefault();
           ev.stopPropagation();
+          clearAllErrors();
           openFile?.();
         }}
         loading={fetcher.state !== 'idle'}
       >
         Upload image
       </LoadingButton>
+
+      {fetcher.data && isErrorResponse(fetcher.data) ? (
+        <p className="text-xs text-red-500">
+          {fetcher.data.fieldErrors.file || ' '}
+        </p>
+      ) : null}
     </div>
   );
 }
