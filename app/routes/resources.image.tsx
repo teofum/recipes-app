@@ -10,7 +10,7 @@ import { z } from 'zod';
 import { db } from '~/server/db.server';
 import withSharp from '~/server/sharp.server';
 
-const MAX_SIZE = 1024 * 1024 * 10;
+const MAX_SIZE = 1024 * 1024 * 5;
 
 export const imageUploadFormValidator = withZod(
   z.object({
