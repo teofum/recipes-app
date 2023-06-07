@@ -8,7 +8,6 @@ import { withZod } from '@remix-validated-form/with-zod';
 import { validationError } from 'remix-validated-form';
 import { z } from 'zod';
 import { db } from '~/server/db.server';
-import { badRequest } from '~/server/request.server';
 import withSharp from '~/server/sharp.server';
 
 const MAX_SIZE = 1024 * 1024 * 10;
@@ -28,8 +27,10 @@ export async function action({ request }: ActionArgs) {
     Number.isFinite(contentLength) &&
     contentLength > MAX_SIZE
   ) {
-    throw badRequest({
-      error: `File size is too large (max ${MAX_SIZE / (1024 * 1024)}MB)`,
+    return validationError({
+      fieldErrors: {
+        file: `File size is too large (max ${MAX_SIZE / (1024 * 1024)}MB)`,
+      },
     });
   }
 
