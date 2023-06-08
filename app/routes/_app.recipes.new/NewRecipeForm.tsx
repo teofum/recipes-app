@@ -79,7 +79,7 @@ export default function NewRecipeForm<T extends Partial<unknown> | undefined>({
                     name="description"
                     id="description"
                   />
-                  <Form.Error name="description" id="descritpion" />
+                  <Form.Error name="description" id="description" />
                 </Form.Field>
 
                 <Form.Field>
