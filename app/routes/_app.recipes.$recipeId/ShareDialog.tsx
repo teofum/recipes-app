@@ -1,5 +1,11 @@
 import { useState } from 'react';
 import { Visibility } from '@prisma/client';
+import {
+  CheckCircledIcon,
+  CopyIcon,
+  EyeNoneIcon,
+  LockClosedIcon,
+} from '@radix-ui/react-icons';
 
 import Button from '~/components/ui/Button';
 import Dialog from '~/components/ui/Dialog';
@@ -7,13 +13,6 @@ import Form from '~/components/ui/Form';
 import type { Recipe } from '~/types/recipe.type';
 
 import { manageRecipeValidator } from './route';
-import {
-  CheckCircledIcon,
-  CopyIcon,
-  EyeNoneIcon,
-  LockClosedIcon,
-} from '@radix-ui/react-icons';
-import Select from '~/components/ui/Select';
 
 interface Props {
   recipe: Recipe;
@@ -69,16 +68,16 @@ export default function ShareDialog({ recipe }: Props) {
               defaultValue={recipe.visibility}
               triggerProps={{ className: 'flex-1' }}
             >
-              <Select.Item value={Visibility.UNLISTED}>
+              <Form.SelectItem value={Visibility.UNLISTED}>
                 <div className="flex flex-row items-center gap-2">
                   <EyeNoneIcon /> Unlisted
                 </div>
-              </Select.Item>
-              <Select.Item value={Visibility.PRIVATE}>
+              </Form.SelectItem>
+              <Form.SelectItem value={Visibility.PRIVATE}>
                 <div className="flex flex-row items-center gap-2">
                   <LockClosedIcon /> Private
                 </div>
-              </Select.Item>
+              </Form.SelectItem>
             </Form.Select>
             <Form.SubmitButton variant="filled">
               Change visibility

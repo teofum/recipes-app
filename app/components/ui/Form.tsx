@@ -173,6 +173,9 @@ function Select({
   );
 }
 
+// Re-export for convenience
+const SelectItem = S.Item;
+
 type ErrorProps = {
   name: string;
   id: string;
@@ -215,6 +218,7 @@ export default {
   Input,
   Textarea,
   Select,
+  SelectItem,
   Error,
   SubmitButton,
 };

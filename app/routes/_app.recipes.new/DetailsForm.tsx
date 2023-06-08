@@ -1,11 +1,11 @@
-import Form from '~/components/ui/Form';
-
-import { TimePickerFormInput } from '~/components/ui/TimePicker';
-import { DESCRIPTION_MAX_LENGTH } from './constants';
-import Select from '~/components/ui/Select';
+import { useState } from 'react';
 import { Visibility } from '@prisma/client';
 import { EyeNoneIcon, LockClosedIcon } from '@radix-ui/react-icons';
-import { useState } from 'react';
+
+import Form from '~/components/ui/Form';
+import { TimePickerFormInput } from '~/components/ui/TimePicker';
+
+import { DESCRIPTION_MAX_LENGTH } from './constants';
 
 const visibilityDescription = {
   PUBLIC:
@@ -46,16 +46,16 @@ export default function DetailsForm() {
             defaultValue={Visibility.UNLISTED}
             onValueChange={(value) => setVisibility(value as Visibility)}
           >
-            <Select.Item value={Visibility.UNLISTED}>
+            <Form.SelectItem value={Visibility.UNLISTED}>
               <div className="flex flex-row items-center gap-2">
                 <EyeNoneIcon /> Unlisted
               </div>
-            </Select.Item>
-            <Select.Item value={Visibility.PRIVATE}>
+            </Form.SelectItem>
+            <Form.SelectItem value={Visibility.PRIVATE}>
               <div className="flex flex-row items-center gap-2">
                 <LockClosedIcon /> Private
               </div>
-            </Select.Item>
+            </Form.SelectItem>
           </Form.Select>
           <Form.Error name="visibility" id="visibility" />
           <p className="text-xs text-stone-600">

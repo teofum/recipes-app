@@ -7,7 +7,6 @@ import {
   useState,
 } from 'react';
 import Form from './Form';
-import Select from './Select';
 import type { FetcherWithComponents } from '@remix-run/react';
 import Loading from './Loading';
 
@@ -166,13 +165,13 @@ export default function FetcherComboBox<Item>({
       />
 
       {data?.map((item) => (
-        <Select.Item
+        <Form.SelectItem
           key={valueSelector(item)}
           value={valueSelector(item)}
           className="first-of-type:mt-1"
         >
           {displaySelector(item)}
-        </Select.Item>
+        </Form.SelectItem>
       ))}
 
       {state !== 'idle' && (
