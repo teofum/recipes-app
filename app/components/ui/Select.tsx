@@ -28,16 +28,8 @@ function Root({
       <Select.Trigger
         className={cn(
           `
-          flex flex-row justify-between items-center gap-2
-          text-sm whitespace-nowrap overflow-hidden text-ellipsis
-          bg-stone-50
-          border border-black border-opacity-10
-          rounded-md
-          px-2 py-1.5 min-h-[2.125rem]
-          outline-none outline-offset-0
-          focus-visible:border-green-500 focus-visible:bg-green-50
-          aria-[invalid]:border-red-500 aria-[invalid]:bg-red-50
-          transition
+          input whitespace-nowrap overflow-hidden text-ellipsis
+          flex flex-row justify-between items-center gap-2 min-h-[2.125rem]
           `,
           triggerProps?.className,
         )}
@@ -59,6 +51,7 @@ function Root({
             border border-black border-opacity-10
             rounded-md
             p-1
+            z-50
             `,
             contentProps?.className,
           )}

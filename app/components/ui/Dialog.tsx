@@ -26,8 +26,8 @@ export default function Dialog({
       <DialogPrimitive.Portal>
         <DialogPrimitive.Overlay
           className="
-            fixed inset-0 z-40
-            bg-stone-700 bg-opacity-20 backdrop-blur
+            fixed inset-0 z-30
+            bg-black bg-opacity-20 backdrop-blur-sm
             animate-backdropIn
           "
         />
@@ -35,11 +35,12 @@ export default function Dialog({
         <DialogPrimitive.Content
           className={cn(
             `
-            fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50
+            fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-40
             w-[calc(100vw-2rem)] lg:w-[calc(100vw-4rem)]
             max-h-[calc(100vh-2rem)] lg:max-h-[calc(100vh-4rem)]
             p-6 rounded-2xl
-            bg-white border border-black border-opacity-20
+            bg-white bg-opacity-80 border border-black border-opacity-20
+            backdrop-blur-lg
             animate-modalIn
             `,
             {

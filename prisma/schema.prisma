@@ -45,8 +45,8 @@ model Auth {
 }
 
 model Recovery {
-  username        String  @unique
-  updatedAt     DateTime  @updatedAt
+  username        String    @unique
+  updatedAt       DateTime  @updatedAt
   oneTimeCodeHash String
 }
 
@@ -56,6 +56,8 @@ model Recipe {
   updatedAt     DateTime                @updatedAt
   author        User                    @relation(fields: [authorId], references: [id])
   authorId      String
+  visibility    Visibility              @default(UNLISTED)
+
   name          String
   description   String                  @db.Text // A brief description
   prepTime      Int                     // Time to make the recipe, in minutes
@@ -65,6 +67,12 @@ model Recipe {
   steps         RecipeStep[]
 
   @@index([authorId])
+}
+
+enum Visibility {
+  PUBLIC
+  UNLISTED
+  PRIVATE
 }
 
 model Ingredient {

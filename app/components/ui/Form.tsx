@@ -7,6 +7,7 @@ import {
   useIsSubmitting,
   useIsValid,
 } from 'remix-validated-form';
+import * as Radio from '@radix-ui/react-radio-group';
 
 import LoadingButton from './LoadingButton';
 import S from './Select';
@@ -57,20 +58,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
     return (
       <input
-        className={cn(
-          `
-          text-sm
-          bg-stone-50
-          border border-black border-opacity-10
-          rounded-md
-          px-2 py-1.5
-          outline-none outline-offset-0
-          focus-visible:border-green-500 focus-visible:bg-green-50
-          aria-[invalid]:border-red-500 aria-[invalid]:bg-red-50
-          transition
-          `,
-          className,
-        )}
+        className={cn('input', className)}
         autoComplete="off"
         aria-invalid={error ? true : undefined}
         aria-errormessage={error ? `${id}__error` : undefined}
@@ -118,18 +106,7 @@ function Textarea({
     >
       <textarea
         className={cn(
-          `
-          text-sm
-          bg-stone-50
-          border border-black border-opacity-10
-          rounded-md
-          p-2
-          outline-none outline-offset-0
-          focus-visible:border-green-500 focus-visible:bg-green-50
-          aria-[invalid]:border-red-500 aria-[invalid]:bg-red-50
-          transition
-          [grid-area:1/1/3/2] resize-none overflow-hidden
-          `,
+          'input p-2 [grid-area:1/1/3/2] resize-none overflow-hidden',
           className,
         )}
         aria-invalid={error ? true : undefined}
@@ -197,6 +174,59 @@ function Select({
   );
 }
 
+// Re-export for convenience
+const SelectItem = S.Item;
+
+type RadioGroupProps = {
+  name: string;
+  validationBehavior?: ValidationBehaviorOptions;
+} & React.ComponentProps<typeof Radio.Root>;
+
+function RadioGroup({
+  children,
+  name,
+  validationBehavior,
+  className,
+  ...props
+}: RadioGroupProps) {
+  const { error, getInputProps } = useField(name, { validationBehavior });
+
+  return (
+    <Radio.Root
+      className={cn('radio-group', className)}
+      aria-invalid={error ? true : undefined}
+      {...getInputProps()}
+      {...props}
+    >
+      {children}
+    </Radio.Root>
+  );
+}
+
+function RadioButton({
+  value,
+  id,
+  children,
+  className,
+  ...props
+}: React.ComponentProps<typeof Radio.Item>) {
+  return (
+    <div className={cn('radio-item', className)}>
+      <Radio.Item
+        className={cn('radio', className)}
+        value={value}
+        id={id}
+        {...props}
+      >
+        <Radio.Indicator className="radio-indicator" />
+      </Radio.Item>
+      <label className="radio-label" htmlFor={id}>
+        {children}
+      </label>
+    </div>
+  );
+}
+
 type ErrorProps = {
   name: string;
   id: string;
@@ -239,6 +269,9 @@ export default {
   Input,
   Textarea,
   Select,
+  SelectItem,
+  RadioGroup,
+  RadioButton,
   Error,
   SubmitButton,
 };

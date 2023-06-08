@@ -4,7 +4,6 @@ import { useFieldArray } from 'remix-validated-form';
 
 import Button from '~/components/ui/Button';
 import Form from '~/components/ui/Form';
-import Select from '~/components/ui/Select';
 
 import { units } from '~/types/unit.type';
 import IngredientsComboBox from './IngredientsComboBox';
@@ -61,9 +60,9 @@ export default function IngredientsForm() {
                 defaultValue={Unit.UNITS}
               >
                 {units.map((unit) => (
-                  <Select.Item key={unit.type} value={unit.type}>
+                  <Form.SelectItem key={unit.type} value={unit.type}>
                     {unit.fullName}
-                  </Select.Item>
+                  </Form.SelectItem>
                 ))}
               </Form.Select>
 

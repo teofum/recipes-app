@@ -34,13 +34,9 @@ export default {
         'backdropIn': {
           from: {
             opacity: '0',
-            'backdrop-filter': 'blur(0)',
-          },
-          '50%': {
-            opacity: '1',
           },
           to: {
-            'backdrop-filter': 'blur(12px)',
+            opacity: '1',
           },
         },
       }

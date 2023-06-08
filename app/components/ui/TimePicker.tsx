@@ -59,7 +59,8 @@ export default function TimePicker({ onChange }: Props) {
     <div
       className="
         flex flex-row items-center gap-1 relative
-        bg-white rounded-md overflow-hidden
+        bg-stone-50 rounded-md overflow-hidden
+        border border-black border-opacity-10
       "
     >
       <div
@@ -129,13 +130,13 @@ export default function TimePicker({ onChange }: Props) {
       <div
         className="
           absolute top-0 left-0 w-full h-7 pointer-events-none
-          from-white to-[rgb(255_255_255_/_50%)] bg-gradient-to-b
+          from-stone-50 to-transparent bg-gradient-to-b
         "
       />
       <div
         className="
           absolute bottom-0 left-0 w-full h-7 pointer-events-none
-          from-white to-[rgb(255_255_255_/_50%)] bg-gradient-to-t
+          from-stone-50 to-transparent bg-gradient-to-t
         "
       />
     </div>

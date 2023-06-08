@@ -1,4 +1,5 @@
 import type { User as PrismaUser } from '@prisma/client';
+import { Visibility } from '@prisma/client';
 import { Unit } from '@prisma/client';
 import type { ActionArgs, LoaderArgs, V2_MetaFunction } from '@remix-run/node';
 import { json } from '@remix-run/node';
@@ -48,6 +49,11 @@ const schema = z.object({
       DESCRIPTION_MAX_LENGTH,
       `Description must be at most ${DESCRIPTION_MAX_LENGTH} characters long`,
     ),
+  visibility: z.enum([
+    Visibility.PUBLIC,
+    Visibility.UNLISTED,
+    Visibility.PRIVATE,
+  ]),
   prepTime: z.coerce.number().min(0),
   imageUrl: z.string().optional(),
   ingredients: z.array(
@@ -108,6 +114,7 @@ export async function action({ request }: ActionArgs) {
       prepTime: data.prepTime,
       authorId: userId,
       imageUrl: data.imageUrl === '' ? undefined : data.imageUrl,
+      visibility: data.visibility,
 
       ingredients: {
         create: data.ingredients.map((ingredient) => ({
