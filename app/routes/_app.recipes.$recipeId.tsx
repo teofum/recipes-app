@@ -144,7 +144,7 @@ function DeleteConfirmationDialog({ recipe }: { recipe: Recipe }) {
         </Form.Field>
 
         <HoldSubmitButton
-          variant={{ color: 'danger' }}
+          variant={{ color: 'danger', style: 'filled' }}
           disabled={confirmation !== recipe.name}
         >
           Hold to delete

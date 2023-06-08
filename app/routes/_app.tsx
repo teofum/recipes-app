@@ -24,7 +24,7 @@ export default function AppRoute() {
     <div className="h-screen grid grid-cols-1 lg:grid-cols-[auto_1fr]">
       <aside
         className="
-          p-6
+          p-4
           border lg:border-0 lg:border-r
           border-black border-opacity-10
           bg-white

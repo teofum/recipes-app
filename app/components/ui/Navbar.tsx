@@ -21,11 +21,11 @@ function NavbarLink({ currentRoute, route, text, icon }: NavbarLinkProps) {
   return (
     <LinkButton
       to={route}
-      className={cn('py-2 px-4 justify-start rounded-lg transition', {
-        'bg-green-100': currentRoute.pathname === route,
+      className={cn('p-1 gap-2 justify-start rounded-lg transition duration-300', {
+        'bg-green-50': currentRoute.pathname === route,
       })}
     >
-      {icon}
+      <div className="p-2 rounded bg-green-400 bg-opacity-10">{icon}</div>
       <span>{text}</span>
     </LinkButton>
   );
