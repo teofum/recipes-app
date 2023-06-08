@@ -1,11 +1,6 @@
 import { useState } from 'react';
 import { Visibility } from '@prisma/client';
-import {
-  CheckCircledIcon,
-  CopyIcon,
-  EyeNoneIcon,
-  LockClosedIcon,
-} from '@radix-ui/react-icons';
+import { CheckCircledIcon, CopyIcon } from '@radix-ui/react-icons';
 
 import Button from '~/components/ui/Button';
 import Dialog from '~/components/ui/Dialog';
@@ -13,6 +8,7 @@ import Form from '~/components/ui/Form';
 import type { Recipe } from '~/types/recipe.type';
 
 import { manageRecipeValidator } from './route';
+import { visibility } from '~/types/visibility.type';
 
 interface Props {
   recipe: Recipe;
@@ -28,14 +24,7 @@ export default function ShareDialog({ recipe }: Props) {
   };
 
   return (
-    <Dialog
-      trigger={
-        <Button>
-          Share
-        </Button>
-      }
-      title="Share"
-    >
+    <Dialog trigger={<Button>Share</Button>} title="Share">
       <Form.Root
         validator={manageRecipeValidator}
         method="post"
@@ -62,28 +51,30 @@ export default function ShareDialog({ recipe }: Props) {
 
         <Form.Field>
           <Form.Label>Visibility</Form.Label>
-          <div className="flex flex-row gap-2">
-            <Form.Select
-              name="visibility"
-              defaultValue={recipe.visibility}
-              triggerProps={{ className: 'flex-1' }}
-            >
-              <Form.SelectItem value={Visibility.UNLISTED}>
+          <Form.RadioGroup name="visibility" defaultValue={recipe.visibility}>
+            {visibility.map((v) => (
+              <Form.RadioButton
+                key={v.value}
+                value={v.value}
+                id={`visibility_${v.value}`}
+              >
                 <div className="flex flex-row items-center gap-2">
-                  <EyeNoneIcon /> Unlisted
+                  <div className="p-2 bg-green-50 rounded">
+                    <v.icon className="text-green-700" />
+                  </div>
+                  <div>
+                    <div className="font-medium">{v.name}</div>
+                    <div className="text-xs text-stone-600">
+                      {v.description}
+                    </div>
+                  </div>
                 </div>
-              </Form.SelectItem>
-              <Form.SelectItem value={Visibility.PRIVATE}>
-                <div className="flex flex-row items-center gap-2">
-                  <LockClosedIcon /> Private
-                </div>
-              </Form.SelectItem>
-            </Form.Select>
-            <Form.SubmitButton variant="filled">
-              Change visibility
-            </Form.SubmitButton>
-          </div>
+              </Form.RadioButton>
+            ))}
+          </Form.RadioGroup>
         </Form.Field>
+
+        <Form.SubmitButton variant="filled">Save</Form.SubmitButton>
       </Form.Root>
 
       {recipe.visibility !== Visibility.PRIVATE ? (

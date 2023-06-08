@@ -1,22 +1,14 @@
 import { useState } from 'react';
 import { Visibility } from '@prisma/client';
-import { EyeNoneIcon, LockClosedIcon } from '@radix-ui/react-icons';
 
 import Form from '~/components/ui/Form';
 import { TimePickerFormInput } from '~/components/ui/TimePicker';
 
 import { DESCRIPTION_MAX_LENGTH } from './constants';
-
-const visibilityDescription = {
-  PUBLIC:
-    '(NOT IMPLEMENTED) The recipe may be shown to other users. Only you can edit.',
-  UNLISTED:
-    'Anyone with the link can view. Will not be shown to other users. Only you can edit.',
-  PRIVATE: 'Only you can view and edit this recipe.',
-};
+import { visibility } from '~/types/visibility.type';
 
 export default function DetailsForm() {
-  const [visibility, setVisibility] = useState<Visibility>(Visibility.UNLISTED);
+  const [description, setDescription] = useState(visibility[0].description);
 
   return (
     <div className="card">
@@ -44,23 +36,22 @@ export default function DetailsForm() {
           <Form.Select
             name="visibility"
             defaultValue={Visibility.UNLISTED}
-            onValueChange={(value) => setVisibility(value as Visibility)}
+            onValueChange={(value) =>
+              setDescription(
+                visibility.find((v) => v.value === value)?.description ?? '',
+              )
+            }
           >
-            <Form.SelectItem value={Visibility.UNLISTED}>
-              <div className="flex flex-row items-center gap-2">
-                <EyeNoneIcon /> Unlisted
-              </div>
-            </Form.SelectItem>
-            <Form.SelectItem value={Visibility.PRIVATE}>
-              <div className="flex flex-row items-center gap-2">
-                <LockClosedIcon /> Private
-              </div>
-            </Form.SelectItem>
+            {visibility.map((v) => (
+              <Form.SelectItem key={v.value} value={v.value}>
+                <div className="flex flex-row items-center gap-2">
+                  <v.icon /> {v.value}
+                </div>
+              </Form.SelectItem>
+            ))}
           </Form.Select>
           <Form.Error name="visibility" id="visibility" />
-          <p className="text-xs text-stone-600">
-            {visibilityDescription[visibility]}
-          </p>
+          <p className="text-xs text-stone-600">{description}</p>
         </Form.Field>
 
         <Form.SubmitButton
