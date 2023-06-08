@@ -32,23 +32,6 @@ const validator = withZod(
   }),
 );
 
-const v = validator.validate;
-const vf = validator.validateField;
-
-validator.validate = async (data) => {
-  console.log('validating form', [...data.entries()]);
-  const res = await v(data);
-  console.log('validated form', res);
-  return res;
-};
-
-validator.validateField = async (data, field) => {
-  console.log(`validating ${field}`, [...data.entries()]);
-  const res = await vf(data, field);
-  console.log(`validated ${field}`, res);
-  return res;
-};
-
 export async function action({ request }: ActionArgs) {
   const user = await getUser(request);
 
@@ -71,10 +54,7 @@ export async function action({ request }: ActionArgs) {
 }
 
 export async function loader({ request, params }: LoaderArgs) {
-  const start = Date.now();
-  console.log('start');
   const user = await getUser(request);
-  console.log('got user at', Date.now() - start, 'ms');
 
   const recipe = await db.recipe.findUnique({
     include: {
@@ -85,7 +65,6 @@ export async function loader({ request, params }: LoaderArgs) {
     where: { id: params.recipeId },
   });
   if (!recipe) throw notFound({ message: 'Recipe not found' });
-  console.log('got recipe at', Date.now() - start, 'ms');
 
   return json({ recipe, user });
 }
@@ -144,7 +123,7 @@ function DeleteConfirmationDialog({ recipe }: { recipe: Recipe }) {
         </Form.Field>
 
         <HoldSubmitButton
-          variant={{ color: 'danger' }}
+          variant={{ color: 'danger', style: 'filled' }}
           disabled={confirmation !== recipe.name}
         >
           Hold to delete

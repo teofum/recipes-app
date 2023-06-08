@@ -25,7 +25,7 @@ export default function LoadingButton({
         <div
           className="
             absolute top-0 left-0 w-full h-full bg-inherit rounded-md
-            flex items-center justify-center
+            flex items-center justify-center pointer-events-none
           "
         >
           <Loading />

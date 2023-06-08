@@ -12,7 +12,6 @@ function useHoldButton(onLongPress?: () => void) {
 
   const start = (ev: React.PointerEvent<HTMLButtonElement>) => {
     if ((ev.target as HTMLButtonElement).disabled) return;
-
     setCompleted(false);
 
     setTimeoutRef(
@@ -35,11 +34,12 @@ function useHoldButton(onLongPress?: () => void) {
   const classNames = cn(
     `
       absolute inset-0 pointer-events-none z-10
-      bg-[var(--btn-text)] opacity-20 origin-left scale-x-0
-      transition duration-300 ease-out
+      bg-[var(--btn-text)] opacity-10 origin-left scale-x-0
+      transition duration-300
     `,
     {
-      'scale-x-100 duration-[1500ms] ease-in': timeoutRef !== null,
+      'ease-out': timeoutRef === null,
+      'scale-x-100 duration-[1500ms] opacity-25 ease-in': timeoutRef !== null,
       'origin-right duration-100': completed,
     },
   );
