@@ -1,3 +1,4 @@
+import { Visibility } from '@prisma/client';
 import type { ActionArgs, LoaderArgs, V2_MetaFunction } from '@remix-run/node';
 import { redirect } from '@remix-run/node';
 import { json } from '@remix-run/node';
@@ -65,6 +66,11 @@ export async function loader({ request, params }: LoaderArgs) {
     where: { id: params.recipeId },
   });
   if (!recipe) throw notFound({ message: 'Recipe not found' });
+
+  // Check the user is authorized to see the recipe, private recipes are only
+  // visible to their creator
+  if (recipe.visibility === Visibility.PRIVATE && user?.id !== recipe.authorId)
+    throw notFound({ message: 'Recipe not found' });
 
   return json({ recipe, user });
 }
