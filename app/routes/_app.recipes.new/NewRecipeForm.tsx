@@ -5,16 +5,16 @@ import type { ValidationErrorResponseData } from 'remix-validated-form';
 import Form from '~/components/ui/Form';
 import RecipeViewHeader from '~/components/RecipeView/RecipeViewHeader';
 import HiddenImageForm from '~/components/forms/HiddenImageForm';
-import { TimePickerFormInput } from '~/components/ui/TimePicker';
-import ImageUpload from './ImageUpload';
-import IngredientsForm from './IngredientsForm';
 import NameInput from './NameInput';
+import ImageUpload from './ImageUpload';
+import DetailsForm from './DetailsForm';
+import IngredientsForm from './IngredientsForm';
 import StepsForm from './StepsForm';
 
 import type { ImageUploadAction } from '../resources.image';
 import { newRecipeValidator } from './route';
 
-import { PLACEHOLDER_IMAGE_URL, DESCRIPTION_MAX_LENGTH } from './constants';
+import { PLACEHOLDER_IMAGE_URL } from './constants';
 
 function isSuccessResponse(
   data: ValidationErrorResponseData | { fileId: string },
@@ -68,34 +68,7 @@ export default function NewRecipeForm<T extends Partial<unknown> | undefined>({
               flex flex-col gap-4
             "
           >
-            <div className="card">
-              <h2 className="card-heading text-2xl">About this recipe</h2>
-
-              <div className="flex flex-col gap-2 -mt-2">
-                <Form.Field>
-                  <Form.Label htmlFor="description">Description</Form.Label>
-                  <Form.Textarea
-                    maxLength={DESCRIPTION_MAX_LENGTH}
-                    name="description"
-                    id="description"
-                  />
-                  <Form.Error name="description" id="description" />
-                </Form.Field>
-
-                <Form.Field>
-                  <Form.Label htmlFor="timeInput">Preparation time</Form.Label>
-                  <TimePickerFormInput name="prepTime" id="timeInput" />
-                  <Form.Error name="prepTime" id="timeInput" />
-                </Form.Field>
-
-                <Form.SubmitButton
-                  className="w-full"
-                  variant={{ size: 'lg', style: 'filled' }}
-                >
-                  Create recipe
-                </Form.SubmitButton>
-              </div>
-            </div>
+            <DetailsForm />
           </div>
 
           <div
