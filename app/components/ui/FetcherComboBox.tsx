@@ -98,7 +98,6 @@ export default function FetcherComboBox<Item>({
   // External value overrides item
   const item = selectedItem !== undefined ? selectedItem : _item; 
   useEffect(() => {
-    console.log('onChange', _item);
     onChange?.(_item); // Notify on internal value change
   }, [_item, onChange]);
 
