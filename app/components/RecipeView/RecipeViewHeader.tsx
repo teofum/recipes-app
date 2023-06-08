@@ -26,7 +26,7 @@ export default function RecipeViewHeader({ imageUrl }: RecipeViewHeaderProps) {
           className="
             w-max bg-transparent text-white hover:text-white
             hover:bg-white hover:bg-opacity-20
-            focus-visible:bg-white focus-visible:bg-opacity-20
+            focus-visible:bg-white focus-visible:bg-opacity-20 focus-visible:text-white
           "
         >
           <ArrowLeftIcon /> Back to recipes
