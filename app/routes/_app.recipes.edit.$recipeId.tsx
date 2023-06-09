@@ -133,8 +133,7 @@ export async function loader({ request, params }: LoaderArgs) {
  */
 
 export default function EditRecipeRoute() {
-  const { user, recipe, defaultValues } = useLoaderData<typeof loader>();
-  console.log(recipe);
+  const { user, defaultValues } = useLoaderData<typeof loader>();
 
   const { formData } = useNavigation();
   const [parsedData, setParsedData] = useState<FullRecipe | null>(null);

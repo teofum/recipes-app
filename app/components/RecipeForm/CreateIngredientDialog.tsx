@@ -1,5 +1,5 @@
-import { PlusCircledIcon } from '@radix-ui/react-icons';
 import { useFetcher } from '@remix-run/react';
+import { useEffect } from 'react';
 import type { ValidationErrorResponseData } from 'remix-validated-form';
 
 import Dialog from '~/components/ui/Dialog';
@@ -7,9 +7,6 @@ import Form from '~/components/ui/Form';
 
 import type { IngredientsAction } from '~/routes/api.ingredients';
 import { ingredientValidator } from '~/routes/api.ingredients';
-import { useEffect, useState } from 'react';
-import Button from '~/components/ui/Button';
-import { useFetcherComboBox } from '~/components/ui/FetcherComboBox';
 import type { Ingredient } from '~/types/ingredient.type';
 
 function isSuccessResponse(
@@ -18,26 +15,28 @@ function isSuccessResponse(
   return (data as ValidationErrorResponseData).fieldErrors === undefined;
 }
 
-export default function CreateIngredientDialog() {
-  const { close, state } = useFetcherComboBox();
+interface CreateIngredientDialogProps {
+  open?: boolean;
+  setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
+  onCreateIngredient?: (data: Ingredient) => void;
+}
+
+export default function CreateIngredientDialog({
+  open,
+  setOpen,
+  onCreateIngredient,
+}: CreateIngredientDialogProps) {
   const fetcher = useFetcher<IngredientsAction>();
-  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     if (fetcher.data && isSuccessResponse(fetcher.data)) {
-      close();
-      setOpen(false);
+      onCreateIngredient?.(fetcher.data);
     }
-  }, [fetcher.data, close]);
+  }, [fetcher.data, onCreateIngredient]);
 
   return (
     <Dialog
-      trigger={
-        <Button className="w-full" disabled={state !== 'idle'}>
-          <PlusCircledIcon />
-          Add new ingredient
-        </Button>
-      }
+      trigger={null}
       title="New ingredient"
       description="Can't find the right ingredient? Add it yourself. This ingredient will be available for all recipes going forward."
       open={open}
