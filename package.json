@@ -6,6 +6,7 @@
     "build": "remix build",
     "dev": "remix dev -p 3001",
     "start": "remix-serve build",
+    "start:with-migrate": "prisma migrate deploy && npm run start",
     "typecheck": "tsc"
   },
   "dependencies": {
