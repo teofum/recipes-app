@@ -3,7 +3,7 @@ import { useRef } from 'react';
 import type { ValidationErrorResponseData } from 'remix-validated-form';
 
 import Form from '~/components/ui/Form';
-import RecipeViewHeader from '~/components/RecipeView/RecipeViewHeader';
+import RecipeViewHeader from '~/components/RecipeView/RecipeHeader';
 import HiddenImageForm from '~/components/forms/HiddenImageForm';
 import NameInput from './NameInput';
 import ImageUpload from './ImageUpload';
@@ -11,10 +11,10 @@ import DetailsForm from './DetailsForm';
 import IngredientsForm from './IngredientsForm';
 import StepsForm from './StepsForm';
 
-import type { ImageUploadAction } from '../resources.image';
-import { newRecipeValidator } from './route';
+import type { ImageUploadAction } from '~/routes/resources.image';
 
-import { PLACEHOLDER_IMAGE_URL } from './constants';
+import { PLACEHOLDER_IMAGE_URL } from '~/utils/constants';
+import { newRecipeValidator } from './validators';
 
 function isSuccessResponse(
   data: ValidationErrorResponseData | { fileId: string },
@@ -24,22 +24,30 @@ function isSuccessResponse(
 
 interface NewRecipeFormProps<T> {
   defaultValues: T;
+  mode?: 'create' | 'edit';
 }
 
 export default function NewRecipeForm<T extends Partial<unknown> | undefined>({
   defaultValues,
+  mode = 'create',
 }: NewRecipeFormProps<T>) {
   const imageUpload = useFetcher<ImageUploadAction>();
   const fileInput = useRef<HTMLInputElement>(null);
 
-  let imageUrl: string | undefined = undefined;
+  let imageUrl =
+    (defaultValues as { imageUrl: string | null } | undefined)?.imageUrl ??
+    undefined;
+
   if (imageUpload.data && isSuccessResponse(imageUpload.data)) {
     imageUrl = `/resources/image/${imageUpload.data.fileId}`;
   }
 
   return (
     <div className="w-full">
-      <RecipeViewHeader imageUrl={imageUrl || PLACEHOLDER_IMAGE_URL} />
+      <RecipeViewHeader
+        imageUrl={imageUrl || PLACEHOLDER_IMAGE_URL}
+        hideBackButton={mode === 'edit'}
+      />
 
       <Form.Root
         validator={newRecipeValidator}
@@ -68,7 +76,7 @@ export default function NewRecipeForm<T extends Partial<unknown> | undefined>({
               flex flex-col gap-4
             "
           >
-            <DetailsForm />
+            <DetailsForm mode={mode} />
           </div>
 
           <div

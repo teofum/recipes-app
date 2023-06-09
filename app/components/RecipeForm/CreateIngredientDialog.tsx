@@ -5,8 +5,8 @@ import type { ValidationErrorResponseData } from 'remix-validated-form';
 import Dialog from '~/components/ui/Dialog';
 import Form from '~/components/ui/Form';
 
-import type { IngredientsAction } from '../api.ingredients';
-import { ingredientValidator } from '../api.ingredients';
+import type { IngredientsAction } from '~/routes/api.ingredients';
+import { ingredientValidator } from '~/routes/api.ingredients';
 import { useEffect, useState } from 'react';
 import Button from '~/components/ui/Button';
 import { useFetcherComboBox } from '~/components/ui/FetcherComboBox';

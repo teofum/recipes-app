@@ -11,6 +11,7 @@ import IngredientsComboBox from './IngredientsComboBox';
 interface IngredientField {
   id: string;
   name: string;
+  unit: Unit;
 }
 
 export default function IngredientsForm() {
@@ -57,7 +58,7 @@ export default function IngredientsForm() {
               <Form.Select
                 name={`ingredients[${index}].unit`}
                 triggerProps={{ className: 'w-32 rounded-l-none' }}
-                defaultValue={Unit.UNITS}
+                defaultValue={ingredient.unit ?? Unit.UNITS}
               >
                 {units.map((unit) => (
                   <Form.SelectItem key={unit.type} value={unit.type}>

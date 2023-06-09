@@ -5,8 +5,7 @@ import { useFormContext } from 'remix-validated-form';
 import Form from '~/components/ui/Form';
 import LoadingButton from '~/components/ui/LoadingButton';
 import Loading from '~/components/ui/Loading';
-
-import { PLACEHOLDER_IMAGE_URL } from './constants';
+import { PLACEHOLDER_IMAGE_URL } from '~/utils/constants';
 
 function isErrorResponse(data: unknown): data is ValidationErrorResponseData {
   return (data as ValidationErrorResponseData).fieldErrors !== undefined;

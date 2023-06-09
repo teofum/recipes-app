@@ -6,7 +6,7 @@ import Form from '~/components/ui/Form';
 import { HoldSubmitButton } from '~/components/ui/HoldButton';
 import type { Recipe } from '~/types/recipe.type';
 
-import { manageRecipeValidator } from './route';
+import { manageRecipeValidator } from '~/routes/_app.recipes.$recipeId/route';
 
 interface Props {
   recipe: Recipe;

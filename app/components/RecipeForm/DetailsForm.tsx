@@ -1,13 +1,25 @@
 import { useState } from 'react';
 import { Visibility } from '@prisma/client';
+import { useField } from 'remix-validated-form';
 
 import Form from '~/components/ui/Form';
 import { TimePickerFormInput } from '~/components/ui/TimePicker';
 
 import { DESCRIPTION_MAX_LENGTH } from './constants';
 import { visibility } from '~/types/visibility.type';
+import { LinkButton } from '../ui/Button';
+import { useMatches } from '@remix-run/react';
 
-export default function DetailsForm() {
+interface DetailsFormProps {
+  mode?: 'create' | 'edit';
+}
+
+export default function DetailsForm({ mode = 'create' }: DetailsFormProps) {
+  const matches = useMatches();
+  const recipeId = matches.at(-1)?.params.recipeId;
+
+  const visibilityField = useField('visibility');
+  const prepTimeField = useField('prepTime');
   const [description, setDescription] = useState(visibility[0].description);
 
   return (
@@ -27,7 +39,11 @@ export default function DetailsForm() {
 
         <Form.Field>
           <Form.Label htmlFor="timeInput">Preparation time</Form.Label>
-          <TimePickerFormInput name="prepTime" id="timeInput" />
+          <TimePickerFormInput
+            name="prepTime"
+            id="timeInput"
+            defaultValue={prepTimeField.defaultValue}
+          />
           <Form.Error name="prepTime" id="timeInput" />
         </Form.Field>
 
@@ -35,7 +51,7 @@ export default function DetailsForm() {
           <Form.Label htmlFor="visibility">Visibility</Form.Label>
           <Form.Select
             name="visibility"
-            defaultValue={Visibility.UNLISTED}
+            defaultValue={visibilityField.defaultValue ?? Visibility.UNLISTED}
             onValueChange={(value) =>
               setDescription(
                 visibility.find((v) => v.value === value)?.description ?? '',
@@ -45,7 +61,7 @@ export default function DetailsForm() {
             {visibility.map((v) => (
               <Form.SelectItem key={v.value} value={v.value}>
                 <div className="flex flex-row items-center gap-2">
-                  <v.icon /> {v.value}
+                  <v.icon /> {v.name}
                 </div>
               </Form.SelectItem>
             ))}
@@ -56,10 +72,16 @@ export default function DetailsForm() {
 
         <Form.SubmitButton
           className="w-full mt-4"
-          variant={{ size: 'lg', style: 'filled' }}
+          variant={{ size: mode === 'edit' ? 'md' : 'lg', style: 'filled' }}
         >
-          Create recipe
+          {mode === 'edit' ? 'Save changes' : 'Create recipe'}
         </Form.SubmitButton>
+
+        {mode === 'edit' ? (
+          <LinkButton to={`/recipes/${recipeId}`}>
+            Discard changes
+          </LinkButton>
+        ) : null}
       </div>
     </div>
   );

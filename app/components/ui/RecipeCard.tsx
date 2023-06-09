@@ -1,4 +1,4 @@
-import { PLACEHOLDER_IMAGE_URL } from '~/routes/_app.recipes.new/constants';
+import { PLACEHOLDER_IMAGE_URL } from '~/utils/constants';
 import type { Recipe } from '~/types/recipe.type';
 
 interface RecipeCardProps {
