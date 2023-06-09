@@ -51,7 +51,6 @@ function Root({
             border border-black border-opacity-10
             rounded-md
             p-1
-            z-50
             `,
             contentProps?.className,
           )}
