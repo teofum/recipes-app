@@ -3,7 +3,7 @@ import { useRef } from 'react';
 import type { ValidationErrorResponseData } from 'remix-validated-form';
 
 import Form from '~/components/ui/Form';
-import RecipeViewHeader from '~/components/RecipeView/RecipeHeader';
+import RecipeHeader from '~/components/RecipeView/RecipeHeader';
 import HiddenImageForm from '~/components/forms/HiddenImageForm';
 import NameInput from './NameInput';
 import ImageUpload from './ImageUpload';
@@ -44,7 +44,7 @@ export default function NewRecipeForm<T extends Partial<unknown> | undefined>({
 
   return (
     <div className="w-full">
-      <RecipeViewHeader
+      <RecipeHeader
         imageUrl={imageUrl || PLACEHOLDER_IMAGE_URL}
         hideBackButton={mode === 'edit'}
       />
@@ -57,34 +57,29 @@ export default function NewRecipeForm<T extends Partial<unknown> | undefined>({
         <div
           className="
             relative responsive pb-8
-            sm:grid sm:grid-cols-[1fr_15rem] sm:grid-rows-[10rem_auto_1fr]
-            sm:items-end sm:gap-4
+            flex flex-col gap-4
+            sm:grid sm:grid-cols-[1fr_15rem] sm:grid-rows-[10rem_1fr] sm:items-start
             md:grid-cols-[1fr_20rem]
           "
         >
           <NameInput />
 
-          <ImageUpload
-            fetcher={imageUpload}
-            imageUrl={imageUrl}
-            openFile={() => fileInput.current?.click()}
-          />
-
           <div
             className="
-              sm:col-start-2 sm:row-start-3 sm:self-start
-              flex flex-col gap-4
+              card flex flex-col gap-4
+              sm:w-full sm:col-start-2 sm:row-span-2
             "
           >
+            <ImageUpload
+              fetcher={imageUpload}
+              imageUrl={imageUrl}
+              openFile={() => fileInput.current?.click()}
+            />
+
             <DetailsForm mode={mode} />
           </div>
 
-          <div
-            className="
-              sm:col-start-1 sm:row-start-2 sm:row-span-2 sm:self-start
-              flex flex-col gap-4
-            "
-          >
+          <div className="flex flex-col gap-4 sm:col-start-1 sm:row-start-2">
             <IngredientsForm />
             <StepsForm />
           </div>

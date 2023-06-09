@@ -25,12 +25,7 @@ export default function ImageUpload({
   const { clearAllErrors } = useFormContext('__hidden_img_upload_form');
 
   return (
-    <div
-      className="
-        card flex flex-col gap-4
-        sm:w-full sm:col-start-2 sm:row-span-2
-      "
-    >
+    <>
       {fetcher.state === 'idle' ? (
         <img
           src={imageUrl || PLACEHOLDER_IMAGE_URL}
@@ -71,6 +66,6 @@ export default function ImageUpload({
           {fetcher.data.fieldErrors.file || ' '}
         </p>
       ) : null}
-    </div>
+    </>
   );
 }

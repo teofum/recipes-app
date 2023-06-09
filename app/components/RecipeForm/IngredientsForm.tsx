@@ -25,7 +25,9 @@ export default function IngredientsForm() {
 
   return (
     <div className="card">
-      <h2 className="card-heading">Ingredients</h2>
+      <div className="card-heading">
+        <h2>Ingredients</h2>
+      </div>
 
       <div className="flex flex-col gap-2">
         {ingredients.map((ingredient, index) => {

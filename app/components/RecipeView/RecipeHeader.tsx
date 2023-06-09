@@ -1,21 +1,20 @@
 import { ArrowLeftIcon } from '@radix-ui/react-icons';
 import { LinkButton } from '../ui/Button';
 
-interface RecipeViewHeaderProps {
+interface RecipeHeaderProps {
   imageUrl?: string;
   hideBackButton?: boolean;
 }
 
-export default function RecipeViewHeader({
+export default function RecipeHeader({
   imageUrl,
   hideBackButton = false,
-}: RecipeViewHeaderProps) {
+}: RecipeHeaderProps) {
   return (
     <div
       className="
-        relative w-full aspect-video
+        relative w-full h-64 -mb-40 py-6 sm:px-6
         bg-stone-900 overflow-hidden
-        max-h-64 -mb-40 p-6
       "
     >
       <img

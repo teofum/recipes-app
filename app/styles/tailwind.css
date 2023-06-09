@@ -21,7 +21,13 @@
   }
 
   .card-heading {
-    @apply font-display text-3xl mb-6 -mt-1 pb-4 border-b border-black border-opacity-10;
+    @apply flex flex-row items-center justify-between mb-6 -mt-1 pb-4;
+
+    border-bottom: 1px solid theme('colors.black / 10%');
+  }
+
+  .card-heading > h2 {
+    @apply font-display text-3xl;
   }
   /*#endregion*/
 

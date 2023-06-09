@@ -98,7 +98,9 @@ export default function FindRecipeRoute() {
 
       <div className="flex flex-col gap-6 pb-8">
         <div className="card">
-          <h2 className="card-heading">Your ingredients</h2>
+          <div className="card-heading">
+            <h2>Your ingredients</h2>
+          </div>
 
           {ingredients.length > 0 ? (
             <ul className="flex flex-row flex-wrap gap-2 mb-4">

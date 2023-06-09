@@ -1,13 +1,17 @@
+import { useState } from 'react';
 import type { LoaderArgs } from '@remix-run/node';
 import { json } from '@remix-run/node';
-import type { RouteMatch } from '@remix-run/react';
 import { useRouteError } from '@remix-run/react';
-import { Form, Outlet, useLoaderData, useMatches } from '@remix-run/react';
+import { Outlet, useLoaderData } from '@remix-run/react';
+import cn from 'classnames';
+
+import { SidenavIcon } from '~/components/icons';
 import RouteError from '~/components/RouteError';
-import Avatar from '~/components/ui/Avatar';
-import Button, { LinkButton } from '~/components/ui/Button';
-import Navbar from '~/components/ui/Navbar';
+import Button from '~/components/ui/Button';
+import Sidenav from '~/components/ui/Sidenav';
+
 import { getUser } from '~/server/session.server';
+import MobileNavbar from '~/components/ui/MobileNavbar';
 
 export async function loader({ request }: LoaderArgs) {
   const user = await getUser(request);
@@ -17,69 +21,81 @@ export async function loader({ request }: LoaderArgs) {
 
 export default function AppRoute() {
   const { user } = useLoaderData<typeof loader>();
-  const matches = useMatches();
-  const currentRoute = matches.at(-1) as RouteMatch;
+
+  const [expanded, setExpanded] = useState(false);
 
   return (
-    <div className="h-screen grid grid-cols-1 lg:grid-cols-[auto_1fr]">
-      <aside
+    <div
+      className="
+        h-screen grid grid-cols-1 grid-rows-[1fr_auto]
+        sm:grid-rows-[auto_1fr]
+        xl:grid-cols-[auto_1fr]
+      "
+    >
+      {/* Header, shown on sm+, hidden again on xl+ */}
+      <header
         className="
-          p-4
-          border lg:border-0 lg:border-r
-          border-black border-opacity-10
-          bg-white
-          rounded-xl lg:rounded-none
-          fixed top-4 left-4 w-[calc(100%-2rem)] h-[calc(100%-2rem)] sm:w-64
-          lg:static lg:h-full
-          z-20
+          hidden sm:flex xl:hidden
+          flex-row items-center p-2 h-14
+          bg-white border-b border-black border-opacity-10
+          row-start-1 row-span-1 col-start-1
+          xl:col-[1/span_2]
         "
       >
-        <Navbar>
-          {user !== null ? (
-            <div className="flex flex-col gap-2">
-              <div className="flex flex-row gap-2 items-center">
-                <Avatar alt={user.displayName} />
-                <div className="flex-1">
-                  <div className="font-semibold leading-5">
-                    {user.displayName}
-                  </div>
-                  <div className="text-xs text-stone-500 leading-5">
-                    @{user.username}
-                  </div>
-                </div>
-              </div>
-              <div className="flex flex-row gap-1">
-                <LinkButton
-                  to={`/account`}
-                  variant={{ size: 'sm' }}
-                  className="flex-1"
-                >
-                  Account
-                </LinkButton>
-                <Form
-                  method="post"
-                  action={`/logout?redirectUrl=${currentRoute.pathname}`}
-                  className="flex-1"
-                >
-                  <Button
-                    type="submit"
-                    variant={{ size: 'sm' }}
-                    className="w-full"
-                  >
-                    Logout
-                  </Button>
-                </Form>
-              </div>
-            </div>
-          ) : (
-            <LinkButton to={`/login?redirectUrl=${currentRoute.pathname}`}>
-              Sign in
-            </LinkButton>
-          )}
-        </Navbar>
-      </aside>
-      <div className="overflow-y-auto">
+        <div className="flex flex-row gap-2 w-60 items-center z-20">
+          <div className="w-7 xl:hidden" />
+
+          <div className="flex-1 font-display text-3xl leading-none text-center">
+            Cook
+            <span className="text-green-700">Book</span>
+          </div>
+
+          <Button
+            className="xl:hidden"
+            variant={{ type: 'icon' }}
+            onClick={() => setExpanded(!expanded)}
+          >
+            <SidenavIcon />
+          </Button>
+        </div>
+      </header>
+
+      {/* Sidenav, shown on sm+, collapsible until xl+  */}
+      <div
+        className={cn(
+          'hidden sm:block',
+          'col-start-1 col-span-1 row-start-1 row-span-2 h-full z-10',
+          'overflow-hidden transition-all',
+          {
+            'w-0 xl:w-64': !expanded,
+            'w-64': expanded,
+          },
+        )}
+      >
+        <aside
+          className="
+            p-4 border-r border-black border-opacity-10
+            bg-white bg-opacity-70 backdrop-blur-lg h-full w-64
+          "
+        >
+          <Sidenav user={user} />
+        </aside>
+      </div>
+
+      {/* Main content */}
+      <div
+        className="
+          overflow-y-auto row-span-1 row-start-1 col-start-1
+          sm:row-start-2
+          xl:col-start-2
+        "
+      >
         <Outlet />
+      </div>
+
+      {/* Mobile navbar, hidden on sm+ */}
+      <div className="h-16 sm:hidden bg-white border-t border-black border-opacity-10">
+        <MobileNavbar user={user} />
       </div>
     </div>
   );

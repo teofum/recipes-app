@@ -9,6 +9,9 @@ export default {
       'display': [ 'DM Serif Display', ...defaultTheme.fontFamily.serif ],
     },
     extend: {
+      aspectRatio: {
+        '3/2': '3/2',
+      },
       animation: {
         'wave': '1s cubic-bezier(0.4, 0, 0.6, 1) 0s infinite normal both running wave',
         'modalIn': '150ms cubic-bezier(0.4, 0, 0.6, 1) 100ms 1 normal both running modalIn',

@@ -4,14 +4,27 @@ import { TimerIcon } from '@radix-ui/react-icons';
 import type { FullRecipe, RecipeIngredient } from '~/types/recipe.type';
 import { units } from '~/types/unit.type';
 import type { User } from '~/types/user.type';
-import RecipeViewHeader from './RecipeHeader';
+import RecipeHeader from './RecipeHeader';
 import { PLACEHOLDER_IMAGE_URL } from '~/utils/constants';
 
 function formatTime(totalMinutes: number): string {
   const hours = Math.floor(totalMinutes / 60);
   const minutes = Math.floor(totalMinutes % 60);
 
-  return (hours > 0 ? `${hours}'` : '') + `${minutes}"`;
+  return (
+    (hours > 0 ? `${hours} ${hours > 1 ? 'hours' : 'hour'}, ` : '') +
+    `${minutes} ${minutes > 1 ? 'minutes' : 'minute'}`
+  );
+}
+
+function formatTimeShort(totalMinutes: number): string {
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = Math.floor(totalMinutes % 60);
+
+  return (
+    (hours > 0 ? `${hours} h, ` : '') +
+    `${minutes} min`
+  );
 }
 
 function formatAmount(amount: number, unit: Unit): string {
@@ -43,46 +56,36 @@ export default function RecipeView({
 
   return (
     <div className="w-full">
-      <RecipeViewHeader imageUrl={recipe.imageUrl ?? PLACEHOLDER_IMAGE_URL} />
+      <RecipeHeader imageUrl={recipe.imageUrl ?? PLACEHOLDER_IMAGE_URL} />
 
       <div
         className="
             relative responsive pb-8
-            sm:grid sm:grid-cols-[1fr_15rem] sm:grid-rows-[10rem_auto_1fr]
-            sm:items-end sm:gap-4
+            flex flex-col gap-4
+            sm:grid sm:grid-cols-[1fr_15rem] sm:grid-rows-[10rem_1fr] sm:items-start
             md:grid-cols-[1fr_20rem]
           "
       >
-        <h1 className="font-display text-4xl md:text-5xl lg:text-6xl text-white mb-4">
+        <h1 className="font-display text-5xl lg:text-6xl text-white mb-4 sm:self-end">
           {recipe.name}
         </h1>
 
-        <div className="card flex p-2 sm:w-full sm:col-start-2 sm:row-span-2">
+        <aside className="card flex flex-col gap-4 p-2 sm:w-full sm:col-start-2 sm:row-span-2">
           <img
             src={recipe.imageUrl ?? PLACEHOLDER_IMAGE_URL}
             alt="background"
-            className=" aspect-video object-cover w-full rounded-lg sm:aspect-square"
+            className="aspect-video object-cover w-full rounded-lg sm:aspect-square"
           />
-        </div>
 
-        <aside className="sm:col-start-2 sm:self-start">
-          <div className="card">
-            <h2 className="card-heading text-2xl">About this recipe</h2>
-            <div className="flex flex-col gap-2 -mt-2">
-              <p className="text-sm">{recipe.description}</p>
+          <div className="flex flex-col gap-2 p-4">
+            <p className="text-sm">{recipe.description}</p>
 
-              <div className="flex flex-row items-center gap-1">
-                <TimerIcon className="text-green-500" />
-                {formatTime(recipe.prepTime)}
-              </div>
-
-              <div className="text-sm text-stone-600">
-                Uploaded by {recipe.author.displayName}
-              </div>
+            <div className="text-sm text-stone-600">
+              Uploaded by {recipe.author.displayName}
             </div>
 
             {loggedUserIsOwner && (
-              <div className="mt-4 pt-4 border-t border-black border-opacity-10">
+              <div className="mt-2 pt-4 border-t border-black border-opacity-10">
                 {manageForm}
               </div>
             )}
@@ -91,12 +94,15 @@ export default function RecipeView({
 
         <main
           className="
-            sm:col-start-1 sm:row-start-2 sm:row-span-2 sm:min-h-full
+            sm:col-start-1 sm:row-start-2 sm:min-h-full
             flex flex-col gap-4
           "
         >
           <div className="card">
-            <h2 className="card-heading">Ingredients</h2>
+            <div className="card-heading">
+              <h2>Ingredients</h2>
+            </div>
+
             <ul>
               {recipe.ingredients.map(ingredientMapper).map((ingredient) => (
                 <li
@@ -119,7 +125,24 @@ export default function RecipeView({
           </div>
 
           <div className="card">
-            <h2 className="card-heading">Preparation</h2>
+            <div className="card-heading">
+              <h2>Preparation</h2>
+              <div
+                className="
+                  flex flex-row items-center gap-2 py-1 px-2
+                  border border-black border-opacity-10 rounded-full
+                "
+              >
+                <TimerIcon className="text-green-500" />
+                <span className="text-sm hidden sm:inline">
+                  {formatTime(recipe.prepTime)}
+                </span>
+                <span className="text-sm sm:hidden">
+                  {formatTimeShort(recipe.prepTime)}
+                </span>
+              </div>
+            </div>
+
             <ol>
               {recipe.steps
                 .sort((a, b) => a.stepNumber - b.stepNumber)
