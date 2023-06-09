@@ -108,7 +108,7 @@ export default function AccountRoute() {
           <h2>Account Information</h2>
         </div>
 
-        <div className="flex flex-row gap-4">
+        <div className="flex flex-col sm:flex-row items-center gap-4">
           <div>
             <Avatar alt="user pic" size="xl" />
           </div>
@@ -118,17 +118,17 @@ export default function AccountRoute() {
               validator={userInfoValidator}
               subaction="userInfo"
               method="post"
-              className="grid grid-cols-[auto_1fr] max-w-lg gap-2 content-start items-baseline text-sm"
+              className="grid grid-cols-1 sm:grid-cols-[auto_1fr] max-w-lg gap-2 content-start items-baseline text-sm"
             >
-              <div className="font-semibold text-right">Username</div>
-              <div className="leading-8">{user.username}</div>
+              <div className="font-semibold sm:text-right">Username</div>
+              <div className="sm:leading-8">{user.username}</div>
 
-              <div className="font-semibold text-right">Email</div>
-              <div className="leading-8">{user.email}</div>
+              <div className="font-semibold sm:text-right">Email</div>
+              <div className="sm:leading-8">{user.email}</div>
 
               <Form.Label
                 htmlFor="displayName"
-                className="font-semibold text-right"
+                className="font-semibold sm:text-right"
               >
                 Display name
               </Form.Label>

@@ -31,7 +31,9 @@ export default function LoadingButton({
           <Loading />
         </div>
       )}
-      {children}
+      <div className="flex flex-row justify-center items-center">
+        {children}
+      </div>
     </Button>
   );
 }
