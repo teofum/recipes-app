@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Form from './Form';
 import cn from 'classnames';
 
@@ -12,15 +12,29 @@ interface Time {
 
 interface Props {
   onChange?: (time: Time) => void;
+  defaultHour?: number;
+  defaultMinute?: number;
 }
 
-export default function TimePicker({ onChange }: Props) {
-  const [hour, setHour] = useState(0);
-  const [minute, setMinute] = useState(0);
+export default function TimePicker({
+  onChange,
+  defaultHour,
+  defaultMinute,
+}: Props) {
+  const [hour, setHour] = useState(defaultHour ?? 0);
+  const [minute, setMinute] = useState(defaultMinute ?? 0);
+
+  const hoursElement = useRef<HTMLDivElement>(null);
+  const minutesElement = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     onChange?.({ hour, minute });
   }, [hour, minute, onChange]);
+
+  useEffect(() => {
+    hoursElement.current?.scrollTo({ top: (defaultHour ?? 0) * 24 });
+    minutesElement.current?.scrollTo({ top: (defaultMinute ?? 0) * 24 });
+  }, [defaultHour, defaultMinute]);
 
   const scrollIntoView = useCallback(
     (ev: React.MouseEvent<HTMLButtonElement, MouseEvent>, index: number) => {
@@ -69,6 +83,7 @@ export default function TimePicker({ onChange }: Props) {
           group outline-none
         "
         onScroll={(ev) => onScroll(ev, 'h')}
+        ref={hoursElement}
         tabIndex={0}
       >
         <div className="w-full leading-6 font-semibold py-7">
@@ -101,6 +116,7 @@ export default function TimePicker({ onChange }: Props) {
           group outline-none
         "
         onScroll={(ev) => onScroll(ev, 'm')}
+        ref={minutesElement}
         tabIndex={0}
       >
         <div className="w-full leading-6 font-semibold py-7">
@@ -143,19 +159,29 @@ export default function TimePicker({ onChange }: Props) {
   );
 }
 
-export function TimePickerFormInput(
-  props: React.ComponentProps<typeof Form.Input>,
-) {
-  const [minutes, setMinutes] = useState('0');
+export function TimePickerFormInput({
+  defaultValue,
+  ...props
+}: React.ComponentProps<typeof Form.Input>) {
+  const [minutes, setMinutes] = useState(defaultValue?.toString() ?? '0');
 
   const onChange = useCallback(
     ({ hour, minute }: Time) => setMinutes((hour * 60 + minute).toString()),
     [],
   );
 
+  const defaultHour =
+    typeof defaultValue === 'number' ? Math.floor(defaultValue / 60) : 0;
+  const defaultMinute =
+    typeof defaultValue === 'number' ? defaultValue % 60 : 0;
+
   return (
     <>
-      <TimePicker onChange={onChange} />
+      <TimePicker
+        onChange={onChange}
+        defaultHour={defaultHour}
+        defaultMinute={defaultMinute}
+      />
       <Form.Input {...props} type="hidden" value={minutes} />
     </>
   );

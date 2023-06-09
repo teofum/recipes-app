@@ -8,7 +8,12 @@ import { db } from '~/server/db.server';
 import { requireLogin, requireUser } from '~/server/session.server';
 
 import RouteError from '~/components/RouteError';
-import { serverError } from '~/server/request.server';
+import {
+  badRequest,
+  forbidden,
+  notFound,
+  serverError,
+} from '~/server/request.server';
 import RecipeForm from '~/components/RecipeForm';
 import RecipeView from '~/components/RecipeView';
 import type { FullRecipe } from '~/types/recipe.type';
@@ -18,20 +23,24 @@ import { newRecipeValidator } from '~/components/RecipeForm/validators';
 import buildOptimisticRecipe from '~/components/RecipeForm/buildOptimisticRecipe';
 
 export const meta: V2_MetaFunction = () => {
-  return [{ title: 'New Recipe | CookBook' }];
+  return [{ title: 'Edit Recipe | CookBook' }];
 };
 
 /**
  * === Action ==================================================================
  */
-export async function action({ request }: ActionArgs) {
+export async function action({ request, params }: ActionArgs) {
   const userId = await requireLogin(request);
   const formData = await request.formData();
+
+  const recipeId = params.recipeId;
+  if (!recipeId) throw badRequest({ message: 'Recipe ID is undefined' });
 
   const { data, error } = await newRecipeValidator.validate(formData);
   if (error) return validationError(error, formData);
 
-  const recipe = await db.recipe.create({
+  const recipe = await db.recipe.update({
+    where: { id: recipeId },
     data: {
       name: data.name,
       description: data.description,
@@ -41,22 +50,49 @@ export async function action({ request }: ActionArgs) {
       visibility: data.visibility,
 
       ingredients: {
-        create: data.ingredients.map((ingredient) => ({
-          ingredientId: ingredient.id,
-          amount: ingredient.amount,
-          unit: ingredient.unit,
+        deleteMany: {
+          ingredientId: { notIn: data.ingredients.map(({ id }) => id) },
+        },
+        upsert: data.ingredients.map((ingredient) => ({
+          where: {
+            recipeId_ingredientId: {
+              recipeId,
+              ingredientId: ingredient.id,
+            },
+          },
+          create: {
+            ingredientId: ingredient.id,
+            amount: ingredient.amount,
+            unit: ingredient.unit,
+          },
+          update: {
+            amount: ingredient.amount,
+            unit: ingredient.unit,
+          },
         })),
       },
 
       steps: {
-        create: data.steps.map((step, index) => ({
-          content: step.content,
-          stepNumber: index + 1,
+        deleteMany: {
+          id: { notIn: data.steps.map(({ id }) => id) },
+        },
+        upsert: data.steps.map((step, index) => ({
+          where: {
+            id: step.id,
+          },
+          create: {
+            content: step.content,
+            stepNumber: index + 1,
+          },
+          update: {
+            content: step.content,
+            stepNumber: index + 1,
+          },
         })),
       },
     },
   });
-  if (!recipe) throw serverError({ message: 'Failed to create recipe' });
+  if (!recipe) throw serverError({ message: 'Failed to update recipe' });
 
   return redirect(`/recipes/${recipe.id}`);
 }
@@ -64,13 +100,30 @@ export async function action({ request }: ActionArgs) {
 /**
  * === Loader ==================================================================
  */
-export async function loader({ request }: LoaderArgs) {
+export async function loader({ request, params }: LoaderArgs) {
   const user = await requireUser(request);
+
+  const recipe = await db.recipe.findUnique({
+    where: { id: params.recipeId },
+    include: { steps: true, ingredients: { include: { ingredient: true } } },
+  });
+  if (!recipe) throw notFound({ message: 'Recipe not found' });
+
+  if (user.id !== recipe.authorId)
+    throw forbidden({ message: 'You are not the owner of this recipe' });
 
   return json({
     user,
+    recipe,
     defaultValues: {
-      steps: [{ id: 'step__default', content: '' }],
+      ...recipe,
+      ingredients: recipe.ingredients.map((ri) => ({
+        id: ri.ingredientId,
+        name: ri.ingredient.name,
+        amount: ri.amount,
+        unit: ri.unit,
+      })),
+      steps: recipe.steps.sort((a, b) => a.stepNumber - b.stepNumber),
     },
   });
 }
@@ -78,8 +131,10 @@ export async function loader({ request }: LoaderArgs) {
 /**
  * === Component ===============================================================
  */
-export default function NewRecipeRoute() {
-  const { user, defaultValues } = useLoaderData<typeof loader>();
+
+export default function EditRecipeRoute() {
+  const { user, recipe, defaultValues } = useLoaderData<typeof loader>();
+  console.log(recipe);
 
   const { formData } = useNavigation();
   const [parsedData, setParsedData] = useState<FullRecipe | null>(null);
@@ -99,7 +154,7 @@ export default function NewRecipeRoute() {
       manageForm={<Loading className="text-green-700 mx-auto w-min" />}
     />
   ) : (
-    <RecipeForm defaultValues={defaultValues} />
+    <RecipeForm defaultValues={defaultValues} mode="edit" />
   );
 }
 

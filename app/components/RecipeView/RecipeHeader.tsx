@@ -3,9 +3,13 @@ import { LinkButton } from '../ui/Button';
 
 interface RecipeViewHeaderProps {
   imageUrl?: string;
+  hideBackButton?: boolean;
 }
 
-export default function RecipeViewHeader({ imageUrl }: RecipeViewHeaderProps) {
+export default function RecipeViewHeader({
+  imageUrl,
+  hideBackButton = false,
+}: RecipeViewHeaderProps) {
   return (
     <div
       className="
@@ -20,18 +24,20 @@ export default function RecipeViewHeader({ imageUrl }: RecipeViewHeaderProps) {
         className="bg-blur opacity-50 mix-blend-hard-light"
       />
 
-      <div className="relative responsive">
-        <LinkButton
-          to="/recipes"
-          className="
+      {!hideBackButton ? (
+        <div className="relative responsive">
+          <LinkButton
+            to="/recipes"
+            className="
             w-max bg-transparent text-white hover:text-white
             hover:bg-white hover:bg-opacity-20
             focus-visible:bg-white focus-visible:bg-opacity-20 focus-visible:text-white
           "
-        >
-          <ArrowLeftIcon /> Back to recipes
-        </LinkButton>
-      </div>
+          >
+            <ArrowLeftIcon /> Back to recipes
+          </LinkButton>
+        </div>
+      ) : null}
     </div>
   );
 }

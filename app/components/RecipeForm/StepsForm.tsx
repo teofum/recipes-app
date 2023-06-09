@@ -1,20 +1,16 @@
+import type { RecipeStep } from '@prisma/client';
+import { Cross1Icon, PlusCircledIcon } from '@radix-ui/react-icons';
 import { useFieldArray } from 'remix-validated-form';
 
 import Button from '~/components/ui/Button';
 import Form from '~/components/ui/Form';
 
 import { STEP_MAX_LENGTH } from './constants';
-import { Cross1Icon, PlusCircledIcon } from '@radix-ui/react-icons';
-
-interface StepField {
-  key: string;
-  content: string;
-}
 
 let key = 0;
 
 export default function StepsForm() {
-  const [steps, { push, remove }] = useFieldArray<StepField>('steps');
+  const [steps, { push, remove }] = useFieldArray<RecipeStep>('steps');
 
   return (
     <div className="card">
@@ -22,13 +18,20 @@ export default function StepsForm() {
 
       <div className="flex flex-col">
         {steps.map((step, index) => {
-          const id = `step-${index}`;
+          const id = `step-${step.id}`;
 
           return (
             <Form.Field
-              key={step.key ?? 'DEFAULT'}
+              key={step.id ?? 'DEFAULT'}
               className="flex flex-row gap-2 items-start group"
             >
+              <Form.Input
+                type="hidden"
+                name={`steps[${index}].id`}
+                id={id + '-id'}
+                value={step.id}
+              />
+
               <div className="self-stretch flex-shrink-0 flex flex-col items-center">
                 <Form.Label
                   htmlFor={id}
@@ -63,7 +66,10 @@ export default function StepsForm() {
         <Button
           onClick={(ev) => {
             ev.preventDefault();
-            push({ content: '', key: key++ });
+            push({
+              id: `step__${key++}`,
+              content: '',
+            });
           }}
         >
           <PlusCircledIcon />

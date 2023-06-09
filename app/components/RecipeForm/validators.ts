@@ -40,6 +40,7 @@ const schema = z.object({
   ),
   steps: z.array(
     z.object({
+      id: z.string(),
       content: z
         .string()
         .min(1, 'Step content is required')
@@ -54,19 +55,19 @@ const schema = z.object({
 export const newRecipeValidator = withZod(schema);
 
 // Validator debug code
-// const v = newRecipeValidator.validate;
-// const vf = newRecipeValidator.validateField;
+const v = newRecipeValidator.validate;
+const vf = newRecipeValidator.validateField;
 
-// newRecipeValidator.validate = async (data) => {
-//   console.log('validating form', [...data.entries()]);
-//   const res = await v(data);
-//   console.log('validated form', res);
-//   return res;
-// };
+newRecipeValidator.validate = async (data) => {
+  console.log('validating form', [...data.entries()]);
+  const res = await v(data);
+  console.log('validated form', res);
+  return res;
+};
 
-// newRecipeValidator.validateField = async (data, field) => {
-//   console.log(`validating ${field}`, [...data.entries()]);
-//   const res = await vf(data, field);
-//   console.log(`validated ${field}`, res);
-//   return res;
-// };
+newRecipeValidator.validateField = async (data, field) => {
+  console.log(`validating ${field}`, [...data.entries()]);
+  const res = await vf(data, field);
+  console.log(`validated ${field}`, res);
+  return res;
+};
