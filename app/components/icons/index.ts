@@ -1,11 +1,1 @@
-export { default as Error } from './Error';
-export { default as Warning } from './Warning';
-export { default as Check } from './Check';
-export { default as CheckCircle } from './CheckCircle';
-export { default as ExpandDown } from './ExpandDown';
-export { default as ExpandUp } from './ExpandUp';
-export { default as Delete } from './Delete';
-export { default as Exit } from './Exit';
-export { default as ExitAlt } from './ExitAlt';
-export { default as Add } from './Add';
-export { default as AddCircle } from './AddCircle';
+export { default as SidenavIcon } from './SidenavIcon';
