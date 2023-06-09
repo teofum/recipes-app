@@ -32,10 +32,10 @@ export default function AppRoute() {
         xl:grid-cols-[auto_1fr]
       "
     >
-      {/* Header, shown on sm+ */}
+      {/* Header, shown on sm+, hidden again on xl+ */}
       <header
         className="
-          hidden sm:flex
+          hidden sm:flex xl:hidden
           flex-row items-center p-2 h-14
           bg-white border-b border-black border-opacity-10
           row-start-1 row-span-1 col-start-1
@@ -45,7 +45,7 @@ export default function AppRoute() {
         <div className="flex flex-row gap-2 w-60 items-center z-20">
           <div className="w-7 xl:hidden" />
 
-          <div className="flex-1 font-display text-3xl text-center">
+          <div className="flex-1 font-display text-3xl leading-none text-center">
             Cook
             <span className="text-green-700">Book</span>
           </div>

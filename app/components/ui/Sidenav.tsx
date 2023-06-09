@@ -44,8 +44,15 @@ export default function Sidenav({ user }: SidenavProps) {
 
   return (
     <div className="flex flex-col h-full">
+      <div className="hidden xl:flex flex-row items-center h-14 -mt-4">
+        <div className="flex-1 font-display text-3xl leading-none text-center">
+          Cook
+          <span className="text-green-700">Book</span>
+        </div>
+      </div>
+
       <nav>
-        <ul className="mt-10 flex flex-col gap-1">
+        <ul className="flex flex-col gap-1 mt-10 xl:mt-0">
           <li>
             <SidenavLink
               currentRoute={currentRoute}
