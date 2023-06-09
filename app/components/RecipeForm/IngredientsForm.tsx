@@ -71,7 +71,7 @@ export default function IngredientsForm() {
 
               <Button
                 variant={{ type: 'icon', color: 'danger' }}
-                onClick={() => remove(index)}
+                onClick={() => {console.log(ingredients, index); remove(index);}}
               >
                 <Cross1Icon />
               </Button>

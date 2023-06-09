@@ -1,194 +1,124 @@
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
-import Form from './Form';
+import { useEffect, useState } from 'react';
 import type { FetcherWithComponents } from '@remix-run/react';
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+
+import Form from './Form';
+import { Command } from 'cmdk';
 import Loading from './Loading';
-
-const allowedKeys = ['ArrowDown', 'Escape'];
-
-/**
- * Context, used to pass value/control/available data to children
- */
-interface FetcherComboBoxContextType<Item> {
-  data: Item[] | undefined;
-  state: 'idle' | 'submitting' | 'loading';
-  dirty: boolean;
-
-  close: () => void;
-}
-
-const FetcherComboBoxContext = createContext<FetcherComboBoxContextType<any>>({
-  data: undefined,
-  state: 'idle',
-  dirty: false,
-  close: () => {},
-});
-
-function FetcherComboBoxProvider<T>({
-  children,
-  ...props
-}: React.PropsWithChildren<FetcherComboBoxContextType<T>>) {
-  return (
-    <FetcherComboBoxContext.Provider value={{ ...props }}>
-      {children}
-    </FetcherComboBoxContext.Provider>
-  );
-}
-
-export function useFetcherComboBox<T>() {
-  const context = useContext(FetcherComboBoxContext);
-  if (!context) throw new Error('FetcherComboBox context not available');
-
-  return context as FetcherComboBoxContextType<T>;
-}
+import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
 
 type ComboBoxProps<Item> = {
   valueSelector: (item: Item) => string;
   displaySelector: (item: Item) => string;
   endpoint: (search: string) => string;
   fetcher: FetcherWithComponents<Item[]>;
-  maxResults?: number;
-  selectedItem?: Item | null;
-  onChange?: (item: Item | null) => void;
-} & React.ComponentProps<typeof Form.Select>;
+  trigger: React.ReactNode;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  onSelectionChange?: (item: Item | null) => void;
+} & React.ComponentProps<'input'>;
 
 export default function FetcherComboBox<Item>({
   valueSelector,
   displaySelector,
   endpoint,
   fetcher,
-  maxResults = 5,
-  selectedItem,
-  onChange,
-  contentProps,
-  placeholder,
+  onSelectionChange,
+  open,
+  onOpenChange,
+  trigger,
+  name,
+  id,
+  placeholder = 'Type to search...',
   children,
-  ...props
 }: ComboBoxProps<Item>) {
   const { data, load, state } = fetcher;
 
-  /**
-   * Steal focus away from the Radix select component, which autofocuses the
-   * selected element whenever data changes, making the input lose focus if the
-   * selected item appears or disappears from the available items
-   */
-  const input = useRef<HTMLInputElement>(null);
+  const [item, setItem] = useState<Item | null>(null);
+  const [_open, _setOpen] = useState(false);
+
   useEffect(() => {
-    setTimeout(() => input.current?.focus(), 0);
-  }, [data]);
+    if (open !== undefined) _setOpen(open);
+  }, [open]);
 
-  /**
-   * State
-   */
-  const [_item, setItem] = useState<Item | null>(null);
-  const [open, setOpen] = useState(false);
-  const [dirty, setDirty] = useState(false);
-
-  /**
-   * External control: allows item to be set (controlled) externally via the
-   * selectedItem and onChange props
-   */
-  // External value overrides item
-  const item = selectedItem !== undefined ? selectedItem : _item; 
   useEffect(() => {
-    onChange?.(_item); // Notify on internal value change
-  }, [_item, onChange]);
+    onOpenChange?.(_open);
+  }, [_open, onOpenChange]);
 
-  /**
-   * Internal control: finds and sets an item when the user interacts with the
-   * internal Select control
-   */
-  const value = item ? valueSelector(item) : '';
-  const setValue = (value: string) => {
-    const newItem = data?.find((item) => valueSelector(item) === value);
-    if (newItem) setItem(newItem);
+  const close = () => _setOpen(false);
+
+  const select = (item: Item) => {
+    setItem(item);
+    onSelectionChange?.(item);
+    close();
   };
 
-  /**
-   * Display value
-   */
-  const displayValue = item ? displaySelector(item) : placeholder;
-
-  const close = useCallback(() => setOpen(false), [setOpen]);
+  const loading = state !== 'idle';
 
   return (
-    <Form.Select
-      contentProps={{
-        position: 'popper',
-        side: 'bottom',
-        sideOffset: -34,
-        className: 'relative w-[var(--radix-select-trigger-width)]',
-        ...contentProps,
-      }}
-      validationBehavior={{ initial: 'onChange' }}
-      value={value}
-      onValueChange={(value) => {
-        if (open) setValue(value);
-      }}
-      open={open}
-      onOpenChange={(open) => {
-        if (open) {
-          setDirty(false);
-          setTimeout(() => input.current?.focus(), 0);
-        }
-        setOpen(open);
-      }}
-      renderValue={displayValue}
-      {...props}
-    >
-      <input
-        className="
-          text-sm
-          bg-stone-50
-          border border-black border-opacity-10
-          rounded
-          pl-2 pr-10 py-0.5 w-full
-          outline-none outline-offset-0
-          focus-visible:border-green-500 focus-visible:bg-green-50
-          aria-[invalid]:border-red-500 aria-[invalid]:bg-red-50
-          transition
-        "
-        onKeyDown={(ev) => {
-          if (!allowedKeys.includes(ev.key)) ev.stopPropagation();
-        }}
-        onChange={(ev) => {
-          setDirty(true);
-          load(endpoint(ev.target.value));
-        }}
-        ref={input}
-      />
-
-      {data?.map((item) => (
-        <Form.SelectItem
-          key={valueSelector(item)}
-          value={valueSelector(item)}
-          className="first-of-type:mt-1"
-        >
-          {displaySelector(item)}
-        </Form.SelectItem>
-      ))}
-
-      {state !== 'idle' && (
-        <Loading
-          size="sm"
-          className="absolute top-[5px] right-2 text-green-500"
+    <>
+      {name && id ? (
+        <Form.Input
+          type="hidden"
+          name={name}
+          id={id}
+          value={item ? valueSelector(item) : ''}
         />
-      )}
+      ) : null}
 
-      <FetcherComboBoxProvider
-        data={data}
-        state={state}
-        dirty={dirty}
-        close={close}
-      >
-        {children}
-      </FetcherComboBoxProvider>
-    </Form.Select>
+      <DropdownMenu.Root open={_open} onOpenChange={_setOpen}>
+        <DropdownMenu.Trigger asChild>{trigger}</DropdownMenu.Trigger>
+
+        <DropdownMenu.Portal>
+          <DropdownMenu.Content
+            side="bottom"
+            sideOffset={-34}
+            className="
+              bg-white bg-opacity-70 backdrop-blur-lg
+              border border-black border-opacity-10
+              py-1 px-2 rounded-md z-20
+              w-[var(--radix-dropdown-menu-trigger-width)]
+            "
+          >
+            <Command className="w-full flex flex-col" shouldFilter={false}>
+              <div
+                className="
+                  flex flex-row items-center gap-1 mb-1
+                  border-b border-black border-opacity-10
+                "
+              >
+                <MagnifyingGlassIcon className="text-green-500" />
+
+                <Command.Input
+                  autoFocus
+                  placeholder={placeholder}
+                  className="text-sm flex-1 p-1 outline-none bg-transparent"
+                  onValueChange={(search) => load(endpoint(search))}
+                />
+
+                {loading && <Loading size="sm" className="text-green-500" />}
+              </div>
+
+              <Command.List>
+                {data?.map((item) => (
+                  <Command.Item
+                    key={valueSelector(item)}
+                    value={valueSelector(item)}
+                    className="
+                      text-sm px-1.5 py-1 rounded cursor-pointer
+                      aria-[selected]:bg-green-500 aria-[selected]:text-white
+                    "
+                    onSelect={() => select(item)}
+                  >
+                    {displaySelector(item)}
+                  </Command.Item>
+                ))}
+                {children}
+              </Command.List>
+            </Command>
+          </DropdownMenu.Content>
+        </DropdownMenu.Portal>
+      </DropdownMenu.Root>
+    </>
   );
 }
