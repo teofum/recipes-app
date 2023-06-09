@@ -10,13 +10,14 @@ import { z } from 'zod';
 import RecipeView from '~/components/RecipeView';
 import RouteError from '~/components/RouteError';
 import DeleteConfirmationDialog from './DeleteConfirmationDialog';
+import ShareDialog from './ShareDialog';
 
 import { db } from '~/server/db.server';
 import { deleteRecipe } from '~/server/delete.server';
 import { forbidden, notFound } from '~/server/request.server';
 import { getUser } from '~/server/session.server';
+
 import type { Recipe } from '~/types/recipe.type';
-import ShareDialog from './ShareDialog';
 
 export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
   return [{ title: `${data?.recipe.name ?? 'Recipe'} | CookBook` }];

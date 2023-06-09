@@ -3,7 +3,7 @@ import { useRef } from 'react';
 import type { ValidationErrorResponseData } from 'remix-validated-form';
 
 import Form from '~/components/ui/Form';
-import RecipeViewHeader from '~/components/RecipeView/RecipeViewHeader';
+import RecipeViewHeader from '~/components/RecipeView/RecipeHeader';
 import HiddenImageForm from '~/components/forms/HiddenImageForm';
 import NameInput from './NameInput';
 import ImageUpload from './ImageUpload';
@@ -11,10 +11,10 @@ import DetailsForm from './DetailsForm';
 import IngredientsForm from './IngredientsForm';
 import StepsForm from './StepsForm';
 
-import type { ImageUploadAction } from '../resources.image';
-import { newRecipeValidator } from './route';
+import type { ImageUploadAction } from '~/routes/resources.image';
+import { newRecipeValidator } from '~/routes/_app.recipes.new/route';
 
-import { PLACEHOLDER_IMAGE_URL } from './constants';
+import { PLACEHOLDER_IMAGE_URL } from '~/utils/constants';
 
 function isSuccessResponse(
   data: ValidationErrorResponseData | { fileId: string },

@@ -17,10 +17,10 @@ import {
   NAME_MAX_LENGTH,
   DESCRIPTION_MAX_LENGTH,
   STEP_MAX_LENGTH,
-} from './constants';
+} from '../../components/RecipeForm/constants';
 import RouteError from '~/components/RouteError';
 import { serverError } from '~/server/request.server';
-import NewRecipeForm from './NewRecipeForm';
+import RecipeForm from '~/components/RecipeForm';
 import RecipeView from '~/components/RecipeView';
 import type { FullRecipe } from '~/types/recipe.type';
 import type { User } from '~/types/user.type';
@@ -226,7 +226,7 @@ export default function NewRecipeRoute() {
       manageForm={<Loading className="text-green-700 mx-auto w-min" />}
     />
   ) : (
-    <NewRecipeForm defaultValues={defaultValues} />
+    <RecipeForm defaultValues={defaultValues} />
   );
 }
 

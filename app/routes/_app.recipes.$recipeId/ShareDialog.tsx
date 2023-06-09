@@ -7,7 +7,7 @@ import Dialog from '~/components/ui/Dialog';
 import Form from '~/components/ui/Form';
 import type { Recipe } from '~/types/recipe.type';
 
-import { manageRecipeValidator } from './route';
+import { manageRecipeValidator } from '~/routes/_app.recipes.$recipeId/route';
 import { visibility } from '~/types/visibility.type';
 
 interface Props {

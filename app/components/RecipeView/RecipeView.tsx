@@ -1,10 +1,11 @@
 import type { Unit } from '@prisma/client';
+import { TimerIcon } from '@radix-ui/react-icons';
+
 import type { FullRecipe, RecipeIngredient } from '~/types/recipe.type';
 import { units } from '~/types/unit.type';
 import type { User } from '~/types/user.type';
-import RecipeViewHeader from './RecipeViewHeader';
-import { PLACEHOLDER_IMAGE_URL } from '~/routes/_app.recipes.new/constants';
-import { TimerIcon } from '@radix-ui/react-icons';
+import RecipeViewHeader from './RecipeHeader';
+import { PLACEHOLDER_IMAGE_URL } from '~/utils/constants';
 
 function formatTime(totalMinutes: number): string {
   const hours = Math.floor(totalMinutes / 60);

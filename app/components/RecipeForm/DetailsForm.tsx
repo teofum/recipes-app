@@ -45,7 +45,7 @@ export default function DetailsForm() {
             {visibility.map((v) => (
               <Form.SelectItem key={v.value} value={v.value}>
                 <div className="flex flex-row items-center gap-2">
-                  <v.icon /> {v.value}
+                  <v.icon /> {v.name}
                 </div>
               </Form.SelectItem>
             ))}
