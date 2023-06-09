@@ -140,11 +140,7 @@ export default function FindRecipeRoute() {
                 onSelectionChange={(item) => {
                   if (item) addIngredient(item.name);
                 }}
-                trigger={
-                  <Button>
-                    Find ingredients
-                  </Button>
-                }
+                trigger={<Button>Find ingredients</Button>}
               />
             </Form.Root>
 
@@ -169,7 +165,7 @@ export default function FindRecipeRoute() {
             <ul className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-2">
               {haveAll.map((recipe) => (
                 <li key={recipe.id}>
-                  <Link to={recipe.id}>
+                  <Link to={`/recipes/${recipe.id}`}>
                     <RecipeCard recipe={recipe} />
                   </Link>
                 </li>
