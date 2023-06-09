@@ -12,9 +12,9 @@ import IngredientsForm from './IngredientsForm';
 import StepsForm from './StepsForm';
 
 import type { ImageUploadAction } from '~/routes/resources.image';
-import { newRecipeValidator } from '~/routes/_app.recipes.new/route';
 
 import { PLACEHOLDER_IMAGE_URL } from '~/utils/constants';
+import { newRecipeValidator } from './validators';
 
 function isSuccessResponse(
   data: ValidationErrorResponseData | { fileId: string },
