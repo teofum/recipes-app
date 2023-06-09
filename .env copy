@@ -1,0 +1,3 @@
+DATABASE_URL='mysql://tgodzrkra4ka4d03r3z9:pscale_pw_SOtEPFnlfohMlGKE0J9jGA5q5lkLkPRkYZWUnxAXVIY@aws.connect.psdb.cloud/recipes-app?sslaccept=strict'
+SESSION_SECRET = HlAflLL56XgZA1h79baC
+BREVO_API_KEY = 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
