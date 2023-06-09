@@ -38,7 +38,7 @@ export default function Navbar({ children }: NavbarProps) {
   return (
     <div className="flex flex-col h-full">
       <nav>
-        <ul className="mt-12 flex flex-col gap-1">
+        <ul className="mt-10 flex flex-col gap-1">
           <li>
             <NavbarLink
               currentRoute={currentRoute}

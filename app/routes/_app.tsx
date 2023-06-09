@@ -23,19 +23,19 @@ export default function AppRoute() {
   const matches = useMatches();
   const currentRoute = matches.at(-1) as RouteMatch;
 
-  const [expanded, setExpanded] = useState(true);
+  const [expanded, setExpanded] = useState(false);
 
   return (
-    <div className="h-screen grid grid-cols-1 lg:grid-cols-[auto_1fr] grid-rows-[auto_1fr]">
+    <div className="h-screen grid grid-cols-1 xl:grid-cols-[auto_1fr] grid-rows-[auto_1fr]">
       <header
         className="
           flex flex-row items-center p-2 h-14
           bg-white border-b border-black border-opacity-10
-          row-start-1 row-span-1 col-start-1 lg:col-[1/span_2]
+          row-start-1 row-span-1 col-start-1 xl:col-[1/span_2]
         "
       >
         <div className="flex flex-row gap-2 w-60 items-center z-20">
-          <div className="w-7" />
+          <div className="w-7 xl:hidden" />
 
           <div className="flex-1 font-display text-3xl text-center">
             Cook
@@ -43,6 +43,7 @@ export default function AppRoute() {
           </div>
 
           <Button
+            className="xl:hidden"
             variant={{ type: 'icon' }}
             onClick={() => setExpanded(!expanded)}
           >
@@ -55,7 +56,7 @@ export default function AppRoute() {
         className={cn(
           'col-start-1 col-span-1 row-start-1 row-span-2 h-full overflow-hidden transition-all',
           {
-            'w-0': !expanded,
+            'w-0 xl:w-64': !expanded,
             'w-64': expanded,
           },
         )}
@@ -113,7 +114,7 @@ export default function AppRoute() {
         </aside>
       </div>
 
-      <div className="overflow-y-auto row-start-2 row-span-1 col-start-1 lg:col-start-2">
+      <div className="overflow-y-auto row-start-2 row-span-1 col-start-1 xl:col-start-2">
         <Outlet />
       </div>
     </div>
