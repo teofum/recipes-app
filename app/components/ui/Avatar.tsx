@@ -5,17 +5,27 @@ interface AvatarProps {
   src?: string;
   alt: string;
   size?: 'sm' | 'md' | 'lg' | 'xl';
+  className?: string;
 }
 
-export default function Avatar({ src, alt, size = 'md' }: AvatarProps) {
+export default function Avatar({
+  src,
+  alt,
+  size = 'md',
+  className,
+}: AvatarProps) {
   return (
     <div
-      className={cn('border-2 border-green-400 rounded-full p-[2px]', {
-        'w-8 h-8': size === 'sm',
-        'w-10 h-10': size === 'md',
-        'w-16 h-16': size === 'lg',
-        'w-24 h-24': size === 'xl',
-      })}
+      className={cn(
+        'border-2 border-green-400 rounded-full p-[2px]',
+        {
+          'w-8 h-8': size === 'sm',
+          'w-10 h-10': size === 'md',
+          'w-16 h-16': size === 'lg',
+          'w-24 h-24': size === 'xl',
+        },
+        className,
+      )}
     >
       {src ? (
         <img
@@ -30,11 +40,13 @@ export default function Avatar({ src, alt, size = 'md' }: AvatarProps) {
             flex items-center justify-center
           "
         >
-          <PersonIcon className={cn('text-stone-50', {
-            'w-5 h-5': size === 'md',
-            'w-8 h-8': size === 'lg',
-            'w-12 h-12': size === 'xl',
-          })} />
+          <PersonIcon
+            className={cn('text-stone-50', {
+              'w-5 h-5': size === 'md',
+              'w-7 h-7': size === 'lg',
+              'w-12 h-12': size === 'xl',
+            })}
+          />
         </div>
       )}
     </div>

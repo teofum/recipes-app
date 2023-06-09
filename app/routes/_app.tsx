@@ -95,7 +95,7 @@ export default function AppRoute() {
 
       {/* Mobile navbar, hidden on sm+ */}
       <div className="h-16 sm:hidden bg-white border-t border-black border-opacity-10">
-        <MobileNavbar />
+        <MobileNavbar user={user} />
       </div>
     </div>
   );
