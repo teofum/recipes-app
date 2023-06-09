@@ -62,11 +62,11 @@ export default function RecipeView({
         className="
             relative responsive pb-8
             flex flex-col gap-4
-            sm:grid sm:grid-cols-[1fr_15rem] sm:grid-rows-[10rem_1fr] sm:items-end
+            sm:grid sm:grid-cols-[1fr_15rem] sm:grid-rows-[10rem_1fr] sm:items-start
             md:grid-cols-[1fr_20rem]
           "
       >
-        <h1 className="font-display text-5xl lg:text-6xl text-white mb-4">
+        <h1 className="font-display text-5xl lg:text-6xl text-white mb-4 sm:self-end">
           {recipe.name}
         </h1>
 
