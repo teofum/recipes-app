@@ -31,7 +31,6 @@ export default function IngredientsComboBox({ onSelect }: Props) {
   return (
     <>
       <FetcherComboBox
-        name="__ingredients_add"
         fetcher={fetcher}
         endpoint={(search) => `/api/ingredients?search=${search}`}
         valueSelector={(item) => item.id}

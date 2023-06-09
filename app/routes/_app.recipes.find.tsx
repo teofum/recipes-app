@@ -13,7 +13,7 @@ import {
   useSearchParams,
 } from '@remix-run/react';
 import type { Ingredient } from '~/types/ingredient.type';
-import { LinkButton } from '~/components/ui/Button';
+import Button, { LinkButton } from '~/components/ui/Button';
 import { Cross1Icon, Cross2Icon } from '@radix-ui/react-icons';
 import { requireLogin } from '~/server/session.server';
 import { db } from '~/server/db.server';
@@ -132,13 +132,19 @@ export default function FindRecipeRoute() {
           <div className="flex flex-row items-center gap-2">
             <Form.Root validator={validator} className="flex-1">
               <FetcherComboBox
-                name="ingredient"
                 fetcher={fetcher}
                 endpoint={(search) => `/api/ingredients?search=${search}`}
                 valueSelector={(item) => item.name}
                 displaySelector={(item) => item.name}
-                placeholder="Find ingredients"
-                onValueChange={addIngredient}
+                placeholder="Type to search ingredients..."
+                onSelectionChange={(item) => {
+                  if (item) addIngredient(item.name);
+                }}
+                trigger={
+                  <Button>
+                    Find ingredients
+                  </Button>
+                }
               />
             </Form.Root>
 
