@@ -14,7 +14,9 @@ export default function StepsForm() {
 
   return (
     <div className="card">
-      <h2 className="card-heading">Preparation</h2>
+      <div className="card-heading">
+        <h2>Preparation</h2>
+      </div>
 
       <div className="flex flex-col">
         {steps.map((step, index) => {

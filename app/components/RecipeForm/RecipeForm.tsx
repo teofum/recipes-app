@@ -3,7 +3,7 @@ import { useRef } from 'react';
 import type { ValidationErrorResponseData } from 'remix-validated-form';
 
 import Form from '~/components/ui/Form';
-import RecipeViewHeader from '~/components/RecipeView/RecipeHeader';
+import RecipeHeader from '~/components/RecipeView/RecipeHeader';
 import HiddenImageForm from '~/components/forms/HiddenImageForm';
 import NameInput from './NameInput';
 import ImageUpload from './ImageUpload';
@@ -44,7 +44,7 @@ export default function NewRecipeForm<T extends Partial<unknown> | undefined>({
 
   return (
     <div className="w-full">
-      <RecipeViewHeader
+      <RecipeHeader
         imageUrl={imageUrl || PLACEHOLDER_IMAGE_URL}
         hideBackButton={mode === 'edit'}
       />

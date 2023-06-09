@@ -104,7 +104,9 @@ export default function AccountRoute() {
       </header>
 
       <div className="card">
-        <h2 className="card-heading">Account Information</h2>
+        <div className="card-heading">
+          <h2>Account Information</h2>
+        </div>
 
         <div className="flex flex-row gap-4">
           <div>

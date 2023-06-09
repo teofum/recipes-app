@@ -24,7 +24,9 @@ export default function DetailsForm({ mode = 'create' }: DetailsFormProps) {
 
   return (
     <div className="card">
-      <h2 className="card-heading text-2xl">About this recipe</h2>
+      <div className="card-heading">
+        <h2 className="text-2xl">About this recipe</h2>
+      </div>
 
       <div className="flex flex-col gap-2 -mt-2">
         <Form.Field>
@@ -78,9 +80,7 @@ export default function DetailsForm({ mode = 'create' }: DetailsFormProps) {
         </Form.SubmitButton>
 
         {mode === 'edit' ? (
-          <LinkButton to={`/recipes/${recipeId}`}>
-            Discard changes
-          </LinkButton>
+          <LinkButton to={`/recipes/${recipeId}`}>Discard changes</LinkButton>
         ) : null}
       </div>
     </div>
