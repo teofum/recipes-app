@@ -24,6 +24,8 @@ export default {
     },
     colors: {
       // Utility colors
+      current: colors.current,
+      inherit: colors.inherit,
       transparent: colors.transparent,
       black: colors.black,
       white: colors.white,

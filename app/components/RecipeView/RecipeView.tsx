@@ -66,7 +66,7 @@ export default function RecipeView({
             md:grid-cols-[1fr_20rem]
           "
       >
-        <h1 className="font-display text-5xl lg:text-6xl text-white mb-4 sm:self-end">
+        <h1 className="font-display text-5xl lg:text-6xl mb-4 sm:self-end">
           {recipe.name}
         </h1>
 

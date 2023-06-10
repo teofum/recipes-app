@@ -72,7 +72,7 @@ export default function AppRoute() {
           },
         )}
       >
-        <aside className="p-4 border-r surface-thick h-full w-64">
+        <aside className="p-4 border-r surface h-full w-64">
           <Sidenav user={user} />
         </aside>
       </div>
