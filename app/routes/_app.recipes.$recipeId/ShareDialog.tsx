@@ -60,7 +60,7 @@ export default function ShareDialog({ recipe }: Props) {
               >
                 <div className="flex flex-row items-center gap-2">
                   <div className="p-2 bg-primary-5 rounded">
-                    <v.icon className="text-primary-high" />
+                    <v.icon className="text-primary" />
                   </div>
                   <div>
                     <div className="font-medium">{v.name}</div>

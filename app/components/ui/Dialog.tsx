@@ -38,9 +38,7 @@ export default function Dialog({
             fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-40
             w-[calc(100vw-2rem)] lg:w-[calc(100vw-4rem)]
             max-h-[calc(100vh-2rem)] lg:max-h-[calc(100vh-4rem)]
-            p-6 rounded-2xl
-            bg-white bg-opacity-80 border
-            backdrop-blur-lg
+            p-6 rounded-2xl border surface-thick
             animate-modalIn
             `,
             {

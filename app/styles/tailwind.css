@@ -28,7 +28,7 @@
 
     /* Theme colors */
     --col-primary: 14 216 88;
-    --col-primary-high: 21 128 61;
+    --col-primary-high: 22 163 74;
 
     --col-danger: 220 38 38;
     --col-danger-high: 220 38 38;
@@ -61,6 +61,31 @@
   .responsive {
     @apply w-full max-w-screen-lg mx-auto px-4 lg:px-8;
   }
+
+  /*
+  * Surface
+  */
+  /*#region*/
+  .surface-opaque {
+    background-color: theme('colors.surface' / var(--op-surface-opaque));
+  }
+  .surface-thick {
+    @apply backdrop-blur-lg;
+    background-color: theme('colors.surface' / var(--op-surface-thick));
+  }
+  .surface {
+    @apply backdrop-blur-lg;
+    background-color: theme('colors.surface' / var(--op-surface-medium));
+  }
+  .surface-thin {
+    @apply backdrop-blur-lg;
+    background-color: theme('colors.surface' / var(--op-surface-thin));
+  }
+  .surface-ultrathin {
+    @apply backdrop-blur-lg;
+    background-color: theme('colors.surface' / var(--op-surface-ultrathin));
+  }
+  /*#endregion*/
 
   /*
   * Card
@@ -294,8 +319,8 @@
   .radio {
     @apply w-5 h-5 flex justify-center items-center rounded-full;
 
-    background-color: theme('colors.white');
-    border: 1px solid theme('colors.black / 50%');
+    background-color: theme('colors.white / 20%');
+    border: 1px solid theme('colors.neutral.2');
   }
 
   .radio[data-state="checked"] {

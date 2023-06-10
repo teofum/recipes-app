@@ -74,9 +74,7 @@ export default function FetcherComboBox<Item>({
             side="bottom"
             sideOffset={-34}
             className="
-              bg-white bg-opacity-70 backdrop-blur-lg
-              border
-              py-1 px-2 rounded-md z-20
+              surface border py-1 px-2 rounded-md z-20
               w-[var(--radix-dropdown-menu-trigger-width)]
             "
           >
