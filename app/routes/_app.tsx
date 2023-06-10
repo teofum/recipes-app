@@ -72,10 +72,18 @@ export default function AppRoute() {
           },
         )}
       >
-        <aside className=" p-4 border-r surface-thick h-full w-64">
+        <aside className="p-4 border-r surface-thick h-full w-64">
           <Sidenav user={user} />
         </aside>
       </div>
+
+      <div
+        className={cn(
+          'hidden fixed inset-0 z-[5]',
+          { 'sm:block': expanded }
+        )}
+        onClick={() => setExpanded(false)}
+      />
 
       {/* Main content */}
       <div
