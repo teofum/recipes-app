@@ -96,7 +96,7 @@ export default function NewRecipeRoute() {
     <RecipeView
       recipe={parsedData}
       user={user}
-      manageForm={<Loading className="text-green-700 mx-auto w-min" />}
+      manageForm={<Loading className="text-primary-high mx-auto w-min" />}
     />
   ) : (
     <RecipeForm defaultValues={defaultValues} />

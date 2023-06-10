@@ -24,7 +24,7 @@ export default function DetailsForm({ mode = 'create' }: DetailsFormProps) {
 
   return (
     <>
-      <Form.Field className="border-t border-black border-opacity-10 pt-4">
+      <Form.Field className="border-t pt-4">
         <Form.Label htmlFor="description">Description</Form.Label>
         <Form.Textarea
           maxLength={DESCRIPTION_MAX_LENGTH}
@@ -64,7 +64,7 @@ export default function DetailsForm({ mode = 'create' }: DetailsFormProps) {
           ))}
         </Form.Select>
         <Form.Error name="visibility" id="visibility" />
-        <p className="text-xs text-stone-600">{description}</p>
+        <p className="text-xs text-light">{description}</p>
       </Form.Field>
 
       <Form.SubmitButton

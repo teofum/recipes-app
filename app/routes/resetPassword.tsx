@@ -52,13 +52,13 @@ export default function ResetPasswordRoute() {
   const obfuscatedEmailAddress = params.get('email');
 
   return (
-    <div className="min-h-screen grid place-items-center bg-green-300 bg-dots bg-repeat px-4">
+    <div className="min-h-screen grid place-items-center bg-primary-2 bg-dots bg-repeat px-4">
       <div className="card flex flex-col gap-4 max-w-sm w-full">
         <h1 className="font-display text-4xl font-semibold text-center">
           Reset your password
         </h1>
 
-        <p className="text-sm text-stone-600">
+        <p className="text-sm text-light">
           We just sent a one-time reset code to your email{' '}
           <span className="text-black font-semibold">
             {obfuscatedEmailAddress}

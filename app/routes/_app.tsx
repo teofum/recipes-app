@@ -37,7 +37,7 @@ export default function AppRoute() {
         className="
           hidden sm:flex xl:hidden
           flex-row items-center p-2 h-14
-          bg-white border-b border-black border-opacity-10
+          bg-white border-b
           row-start-1 row-span-1 col-start-1
           xl:col-[1/span_2]
         "
@@ -47,7 +47,7 @@ export default function AppRoute() {
 
           <div className="flex-1 font-display text-3xl leading-none text-center">
             Cook
-            <span className="text-green-700">Book</span>
+            <span className="text-primary-high">Book</span>
           </div>
 
           <Button
@@ -72,15 +72,18 @@ export default function AppRoute() {
           },
         )}
       >
-        <aside
-          className="
-            p-4 border-r border-black border-opacity-10
-            bg-white bg-opacity-70 backdrop-blur-lg h-full w-64
-          "
-        >
+        <aside className="p-4 border-r surface h-full w-64">
           <Sidenav user={user} />
         </aside>
       </div>
+
+      <div
+        className={cn(
+          'hidden fixed inset-0 z-[5]',
+          { 'sm:block': expanded }
+        )}
+        onClick={() => setExpanded(false)}
+      />
 
       {/* Main content */}
       <div
@@ -94,7 +97,7 @@ export default function AppRoute() {
       </div>
 
       {/* Mobile navbar, hidden on sm+ */}
-      <div className="h-16 sm:hidden bg-white border-t border-black border-opacity-10">
+      <div className="h-16 sm:hidden bg-white border-t">
         <MobileNavbar user={user} />
       </div>
     </div>

@@ -128,7 +128,7 @@ function Textarea({
         <span
           className="
             [grid-area:2/1/3/2] place-self-end
-            text-xs text-stone-500
+            text-xs text-light
             px-2 pb-1 -mt-1
           "
         >
@@ -236,7 +236,7 @@ function Error({ name, id }: ErrorProps) {
   const { error } = useField(name);
 
   return (
-    <p id={`${id}__error`} className="text-xs text-red-500">
+    <p id={`${id}__error`} className="text-xs text-danger">
       {error || ' '}
     </p>
   );

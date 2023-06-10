@@ -14,7 +14,7 @@ export default function RecipeHeader({
     <div
       className="
         relative w-full h-64 -mb-40 py-6 sm:px-6
-        bg-stone-900 overflow-hidden
+        bg-surface overflow-hidden border-b
       "
     >
       <img
@@ -27,11 +27,8 @@ export default function RecipeHeader({
         <div className="relative responsive">
           <LinkButton
             to="/recipes"
-            className="
-            w-max bg-transparent text-white hover:text-white
-            hover:bg-white hover:bg-opacity-20
-            focus-visible:bg-white focus-visible:bg-opacity-20 focus-visible:text-white
-          "
+            className="w-max"
+            variant={{ color: 'neutral' }}
           >
             <ArrowLeftIcon /> Back to recipes
           </LinkButton>

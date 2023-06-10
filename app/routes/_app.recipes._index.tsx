@@ -30,7 +30,7 @@ export default function RecipesIndexRoute() {
       <header
         className="
           flex flex-row items-center justify-between
-          border-b border-black border-opacity-10
+          border-b
           py-6 mb-4
         "
       >

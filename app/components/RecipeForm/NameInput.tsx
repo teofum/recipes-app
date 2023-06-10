@@ -14,10 +14,10 @@ export default function NameInput() {
         className="
           font-display text-4xl md:text-5xl lg:text-6xl
           min-w-0 w-full
-          p-0 bg-transparent !border-none text-white
+          p-0 bg-transparent !border-none
           focus-visible:bg-transparent
-          placeholder:text-white placeholder:text-opacity-50
-          aria-[invalid]:bg-red-500 aria-[invalid]:bg-opacity-30
+          placeholder:text-default placeholder:text-opacity-50
+          aria-[invalid]:bg-danger-4
         "
       />
     </Form.Field>

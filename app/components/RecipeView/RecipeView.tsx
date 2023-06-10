@@ -66,7 +66,7 @@ export default function RecipeView({
             md:grid-cols-[1fr_20rem]
           "
       >
-        <h1 className="font-display text-5xl lg:text-6xl text-white mb-4 sm:self-end">
+        <h1 className="font-display text-5xl lg:text-6xl mb-4 sm:self-end">
           {recipe.name}
         </h1>
 
@@ -80,12 +80,12 @@ export default function RecipeView({
           <div className="flex flex-col gap-2 p-4">
             <p className="text-sm">{recipe.description}</p>
 
-            <div className="text-sm text-stone-600">
+            <div className="text-sm text-light">
               Uploaded by {recipe.author.displayName}
             </div>
 
             {loggedUserIsOwner && (
-              <div className="mt-2 pt-4 border-t border-black border-opacity-10">
+              <div className="mt-2 pt-4 border-t">
                 {manageForm}
               </div>
             )}
@@ -130,10 +130,10 @@ export default function RecipeView({
               <div
                 className="
                   flex flex-row items-center gap-2 py-1 px-2
-                  border border-black border-opacity-10 rounded-full
+                  border rounded-full
                 "
               >
-                <TimerIcon className="text-green-500" />
+                <TimerIcon className="text-primary" />
                 <span className="text-sm hidden sm:inline">
                   {formatTime(recipe.prepTime)}
                 </span>
@@ -155,13 +155,13 @@ export default function RecipeView({
                       <div
                         className="
                           w-6 h-6 rounded-full text-sm font-medium
-                          bg-green-50 text-green-500 border border-green-500
+                          bg-primary-5 text-primary border border-primary
                           flex items-center justify-center
                         "
                       >
                         {step.stepNumber}
                       </div>
-                      <div className="w-px flex-1 bg-green-500 group-last:bg-transparent" />
+                      <div className="w-px flex-1 bg-primary group-last:bg-transparent" />
                     </div>
 
                     <p className="mb-4">{step.content}</p>

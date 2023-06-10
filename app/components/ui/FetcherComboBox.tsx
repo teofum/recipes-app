@@ -74,9 +74,7 @@ export default function FetcherComboBox<Item>({
             side="bottom"
             sideOffset={-34}
             className="
-              bg-white bg-opacity-70 backdrop-blur-lg
-              border border-black border-opacity-10
-              py-1 px-2 rounded-md z-20
+              surface border py-1 px-2 rounded-md z-20
               w-[var(--radix-dropdown-menu-trigger-width)]
             "
           >
@@ -84,10 +82,10 @@ export default function FetcherComboBox<Item>({
               <div
                 className="
                   flex flex-row items-center gap-1 mb-1
-                  border-b border-black border-opacity-10
+                  border-b
                 "
               >
-                <MagnifyingGlassIcon className="text-green-500" />
+                <MagnifyingGlassIcon className="text-primary" />
 
                 <Command.Input
                   autoFocus
@@ -96,7 +94,7 @@ export default function FetcherComboBox<Item>({
                   onValueChange={(search) => load(endpoint(search))}
                 />
 
-                {loading && <Loading size="sm" className="text-green-500" />}
+                {loading && <Loading size="sm" className="text-primary" />}
               </div>
 
               <Command.List>
@@ -106,7 +104,7 @@ export default function FetcherComboBox<Item>({
                     value={valueSelector(item)}
                     className="
                       text-sm px-1.5 py-1 rounded cursor-pointer
-                      aria-[selected]:bg-green-500 aria-[selected]:text-white
+                      aria-[selected]:bg-primary aria-[selected]:text-white
                     "
                     onSelect={() => select(item)}
                   >

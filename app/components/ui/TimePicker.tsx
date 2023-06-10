@@ -73,8 +73,8 @@ export default function TimePicker({
     <div
       className="
         flex flex-row items-center gap-1 relative
-        bg-stone-50 rounded-md overflow-hidden
-        border border-black border-opacity-10
+        bg-white rounded-md overflow-hidden
+        border
       "
     >
       <div
@@ -97,7 +97,7 @@ export default function TimePicker({
                 -outline-offset-2 transition-[outline]
                 `,
                 {
-                  'group-focus-visible:outline-green-500': h === hour,
+                  'group-focus-visible:outline-primary': h === hour,
                 },
               )}
               tabIndex={-1}
@@ -130,7 +130,7 @@ export default function TimePicker({
                 -outline-offset-2 transition-[outline]
                 `,
                 {
-                  'group-focus-visible:outline-green-500': m === minute,
+                  'group-focus-visible:outline-primary': m === minute,
                 },
               )}
               tabIndex={-1}
@@ -146,13 +146,13 @@ export default function TimePicker({
       <div
         className="
           absolute top-0 left-0 w-full h-7 pointer-events-none
-          from-stone-50 to-transparent bg-gradient-to-b
+          from-white to-transparent bg-gradient-to-b
         "
       />
       <div
         className="
           absolute bottom-0 left-0 w-full h-7 pointer-events-none
-          from-stone-50 to-transparent bg-gradient-to-t
+          from-white to-transparent bg-gradient-to-t
         "
       />
     </div>

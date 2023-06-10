@@ -48,7 +48,7 @@ function Root({
           className={cn(
             `
             bg-white
-            border border-black border-opacity-10
+            border
             rounded-md
             p-1
             `,
@@ -82,8 +82,8 @@ const Item = React.forwardRef<
         px-1 py-0.5
         outline-none outline-offset-0
         cursor-pointer
-        focus-visible:bg-green-50 focus-visible:text-green-700
-        hover:bg-green-50 hover:text-green-700
+        focus-visible:bg-primary-5 focus-visible:text-primary-high
+        hover:bg-primary-5 hover:text-primary-high
         `,
         className,
       )}

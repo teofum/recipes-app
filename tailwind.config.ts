@@ -1,5 +1,19 @@
 import type { Config } from 'tailwindcss';
 import defaultTheme from 'tailwindcss/defaultTheme';
+import colors from 'tailwindcss/colors';
+
+function themeColors(name: string) {
+  return {
+    DEFAULT: `rgb(var(--col-${name}) / <alpha-value>)`,
+    1: `rgb(var(--col-${name}) / var(--op-1))`,
+    2: `rgb(var(--col-${name}) / var(--op-2))`,
+    3: `rgb(var(--col-${name}) / var(--op-3))`,
+    4: `rgb(var(--col-${name}) / var(--op-4))`,
+    5: `rgb(var(--col-${name}) / var(--op-5))`,
+    6: `rgb(var(--col-${name}) / var(--op-6))`,
+    high: `rgb(var(--col-${name}-high) / <alpha-value>)`,
+  };
+}
 
 export default {
   content: ["./app/**/*.{js,jsx,ts,tsx}"],
@@ -8,7 +22,32 @@ export default {
       'sans': [ 'Work Sans', ...defaultTheme.fontFamily.sans ],
       'display': [ 'DM Serif Display', ...defaultTheme.fontFamily.serif ],
     },
+    colors: {
+      // Utility colors
+      current: colors.current,
+      inherit: colors.inherit,
+      transparent: colors.transparent,
+      black: colors.black,
+      white: colors.white,
+
+      // Base colors
+      surface: 'rgb(var(--col-surface) / <alpha-value>)',
+
+      // Theme colors
+      primary: themeColors('primary'),
+      danger: themeColors('danger'),
+      neutral: themeColors('neutral'),
+    },
+
     extend: {
+      backgroundColor: {
+        default: 'rgb(var(--col-background) / <alpha-value>)',
+      },
+      textColor: {
+        default: 'rgb(var(--col-text) / <alpha-value>)',
+        light: 'rgb(var(--col-text-light) / <alpha-value>)',
+      },
+
       aspectRatio: {
         '3/2': '3/2',
       },

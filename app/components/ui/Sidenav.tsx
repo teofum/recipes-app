@@ -28,11 +28,11 @@ function SidenavLink({ currentRoute, route, text, icon }: SidenavLinkProps) {
       className={cn(
         'p-1 gap-2 justify-start rounded-lg transition duration-300',
         {
-          'bg-green-50': currentRoute.pathname === route,
+          'bg-primary-5': currentRoute.pathname === route,
         },
       )}
     >
-      <div className="p-2 rounded bg-green-400 bg-opacity-10">{icon}</div>
+      <div className="p-2 rounded bg-primary-5">{icon}</div>
       <span>{text}</span>
     </LinkButton>
   );
@@ -47,7 +47,7 @@ export default function Sidenav({ user }: SidenavProps) {
       <div className="hidden xl:flex flex-row items-center h-14 -mt-4">
         <div className="flex-1 font-display text-3xl leading-none text-center">
           Cook
-          <span className="text-green-700">Book</span>
+          <span className="text-primary-high">Book</span>
         </div>
       </div>
 
@@ -80,16 +80,16 @@ export default function Sidenav({ user }: SidenavProps) {
         </ul>
       </nav>
 
-      <div className="mt-auto pt-6 border-t border-black border-opacity-10">
+      <div className="mt-auto pt-6 border-t">
         {user !== null ? (
           <div className="flex flex-col gap-2">
             <div className="flex flex-row gap-2 items-center">
               <Avatar alt={user.displayName} />
               <div className="flex-1">
-                <div className="font-semibold leading-5">
+                <div className="font-medium leading-5">
                   {user.displayName}
                 </div>
-                <div className="text-xs text-stone-500 leading-5">
+                <div className="text-xs text-light leading-5">
                   @{user.username}
                 </div>
               </div>

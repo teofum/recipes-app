@@ -24,14 +24,14 @@ export default function CodeInput({ name, id, className }: CodeInputProps) {
       classNames={{
         container: 'flex flex-row justify-center gap-1 w-min h-auto group',
         character: `
-          w-10 h-auto leading-10 text-2xl font-medium bg-stone-50
-          border border-black border-opacity-10
+          w-10 h-auto leading-10 text-2xl font-medium bg-neutral-6
+          border
           rounded-md
-          group-aria-[invalid]:border-red-500 group-aria-[invalid]:bg-red-50
+          group-aria-[invalid]:border-danger group-aria-[invalid]:bg-danger-5
           transition
         `,
         characterSelected:
-          '!border-green-500 !bg-green-50 text-green-500 outline-none',
+          '!border-primary !bg-primary-5 text-primary outline-none',
       }}
     />
   );

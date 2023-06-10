@@ -49,7 +49,7 @@ export default function IngredientsComboBox({ onSelect }: Props) {
           className="
             text-sm px-1.5 py-1 mb-1 rounded cursor-pointer
             flex flex-row items-center gap-2
-            aria-[selected]:bg-green-500 aria-[selected]:text-white
+            aria-[selected]:bg-primary aria-[selected]:text-white
           "
           onSelect={() => setDialogOpen(true)}
           disabled={fetcher.state !== 'idle'}

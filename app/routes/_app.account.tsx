@@ -96,7 +96,7 @@ export default function AccountRoute() {
     <div className="responsive">
       <header
         className="
-          border-b border-black border-opacity-10
+          border-b
           pt-6 pb-6 mb-4
         "
       >

@@ -41,7 +41,7 @@ export default function LoginRoute() {
   const redirectUrl = params.get('redirectUrl');
 
   return (
-    <div className="min-h-screen grid place-items-center bg-green-300 bg-dots bg-repeat px-4">
+    <div className="min-h-screen grid place-items-center bg-primary-2 bg-dots bg-repeat px-4">
       <div className="card flex flex-col max-w-sm w-full">
         <h1 className="font-display text-4xl font-semibold text-center">
           Login
