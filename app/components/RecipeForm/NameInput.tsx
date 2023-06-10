@@ -17,7 +17,7 @@ export default function NameInput() {
           p-0 bg-transparent !border-none text-white
           focus-visible:bg-transparent
           placeholder:text-white placeholder:text-opacity-50
-          aria-[invalid]:bg-red-500 aria-[invalid]:bg-opacity-30
+          aria-[invalid]:bg-danger-4
         "
       />
     </Form.Field>

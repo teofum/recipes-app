@@ -65,8 +65,8 @@ export default function MobileNavbar({ user }: MobileNavbarProps) {
           to="/account"
           className="
             ml-2 -mt-3 rounded-full p-0.5 z-10 relative
-            bg-white border-black border-opacity-10
-            hover:bg-white hover:border-black hover:border-opacity-10
+            bg-white
+            hover:bg-white hover:border-neutral-5
           "
         >
           <div className="absolute bg-white top-[8.5px] -bottom-1 -left-1 -right-1" />

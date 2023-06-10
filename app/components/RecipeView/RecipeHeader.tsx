@@ -14,7 +14,7 @@ export default function RecipeHeader({
     <div
       className="
         relative w-full h-64 -mb-40 py-6 sm:px-6
-        bg-stone-900 overflow-hidden
+        bg-black bg-opacity-80 overflow-hidden
       "
     >
       <img

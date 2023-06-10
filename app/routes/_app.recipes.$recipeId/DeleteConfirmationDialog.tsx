@@ -26,7 +26,7 @@ export default function DeleteConfirmationDialog({ recipe }: Props) {
       description={
         <>
           Please confirm you want to delete this recipe.{' '}
-          <span className="font-medium text-red-600">
+          <span className="font-medium text-danger">
             This action is permanent and cannot be undone.
           </span>
         </>

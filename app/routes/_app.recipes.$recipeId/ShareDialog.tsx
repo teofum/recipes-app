@@ -59,12 +59,12 @@ export default function ShareDialog({ recipe }: Props) {
                 id={`visibility_${v.value}`}
               >
                 <div className="flex flex-row items-center gap-2">
-                  <div className="p-2 bg-green-50 rounded">
-                    <v.icon className="text-green-700" />
+                  <div className="p-2 bg-primary-5 rounded">
+                    <v.icon className="text-primary-high" />
                   </div>
                   <div>
                     <div className="font-medium">{v.name}</div>
-                    <div className="text-xs text-stone-600">
+                    <div className="text-xs text-light">
                       {v.description}
                     </div>
                   </div>

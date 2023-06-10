@@ -17,7 +17,7 @@ export default function Avatar({
   return (
     <div
       className={cn(
-        'border-2 border-green-400 rounded-full p-[2px]',
+        'border-2 border-primary rounded-full p-[2px]',
         {
           'w-8 h-8': size === 'sm',
           'w-10 h-10': size === 'md',
@@ -36,12 +36,12 @@ export default function Avatar({
       ) : (
         <div
           className="
-            w-full h-full rounded-full bg-stone-400
+            w-full h-full rounded-full bg-neutral-1
             flex items-center justify-center
           "
         >
           <PersonIcon
-            className={cn('text-stone-50', {
+            className={cn('text-white', {
               'w-5 h-5': size === 'md',
               'w-7 h-7': size === 'lg',
               'w-12 h-12': size === 'xl',

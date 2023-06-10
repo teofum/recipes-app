@@ -35,11 +35,11 @@ export default function ImageUpload({
       ) : (
         <div
           className="
-            aspect-video w-full bg-stone-300 rounded-md sm:aspect-square
+            aspect-video w-full bg-neutral-2 rounded-md sm:aspect-square
             grid place-items-center
           "
         >
-          <Loading size="lg" className="text-stone-50" />
+          <Loading size="lg" className="text-white" />
         </div>
       )}
 
@@ -62,7 +62,7 @@ export default function ImageUpload({
       </LoadingButton>
 
       {fetcher.data && isErrorResponse(fetcher.data) ? (
-        <p className="text-xs text-red-500">
+        <p className="text-xs text-danger">
           {fetcher.data.fieldErrors.file || ' '}
         </p>
       ) : null}

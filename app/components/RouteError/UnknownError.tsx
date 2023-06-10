@@ -11,15 +11,15 @@ export default function UnknownError({ error }: { error: unknown }) {
 
   return (
     <div className="responsive py-8 min-h-full flex flex-col">
-      <div className="card border-2 border-red-600 flex-1 flex flex-col overflow-hidden">
-        <div className="-mt-6 -mx-6 bg-red-600 text-white text-opacity-5 p-3 bg-stripes">
+      <div className="card border-2 border-danger flex-1 flex flex-col overflow-hidden">
+        <div className="-mt-6 -mx-6 bg-danger text-white text-opacity-5 p-3 bg-stripes">
           <pre className="text-white text-xs">
             Unknown application error in route {currentPath}
           </pre>
         </div>
 
         <div className="flex-1 grid place-content-center gap-4 text-center">
-          <h1 className="font-display text-4xl pb-4 border-b border-black border-opacity-10">
+          <h1 className="font-display text-4xl pb-4 border-b">
             Something went <span className="italic">very</span> wrong
           </h1>
 
@@ -47,8 +47,8 @@ export default function UnknownError({ error }: { error: unknown }) {
 
           <details
             className="
-              max-w-lg w-full text-left bg-stone-50
-              border border-black border-opacity-10 rounded-md
+              max-w-lg w-full text-left bg-neutral-6
+              border rounded-md
             "
           >
             <summary className="text-sm p-2">Technical details</summary>

@@ -86,12 +86,12 @@ export default function FindRecipeRoute() {
     <div className="responsive">
       <header
         className="
-          border-b border-black border-opacity-10
+          border-b
           pt-6 pb-6 mb-4
         "
       >
         <h1 className="font-display text-4xl">Recipe finder</h1>
-        <p className="text-sm mt-2 -mb-2 text-stone-600">
+        <p className="text-sm mt-2 -mb-2 text-light">
           Find recipes using the ingredients you have on hand
         </p>
       </header>
@@ -109,13 +109,13 @@ export default function FindRecipeRoute() {
                   key={ingredient}
                   className="
                   flex flex-row items-center gap-1
-                  text-sm leading-[26px] p-1 pl-2 rounded-md bg-green-100
+                  text-sm leading-[26px] p-1 pl-2 rounded-md bg-primary-4
                 "
                 >
                   {ingredient}
                   <LinkButton
                     variant={{ type: 'icon', size: 'sm', color: 'neutral' }}
-                    className="bg-transparent hover:bg-green-200 focus-visible:bg-green-200"
+                    className="bg-transparent hover:bg-primary-3 focus-visible:bg-primary-3"
                     to={removeIngredient(ingredient)}
                   >
                     <Cross2Icon />
@@ -157,7 +157,7 @@ export default function FindRecipeRoute() {
               Found <span className="font-semibold">{haveAll.length}</span>{' '}
               {haveAll.length > 1 ? 'recipes' : 'recipe'} with your ingredients
             </div>
-            <div className="text-sm text-stone-600 mb-3">
+            <div className="text-sm text-light mb-3">
               You have everything you need to make{' '}
               {haveAll.length > 1 ? 'these recipes' : 'this recipe'}!
             </div>
@@ -181,7 +181,7 @@ export default function FindRecipeRoute() {
               <span className="font-semibold">{haveSome.length}</span> partial{' '}
               {haveSome.length > 1 ? 'matches' : 'match'}
             </div>
-            <div className="text-sm text-stone-600 mb-3">
+            <div className="text-sm text-light mb-3">
               You may be able to make{' '}
               {haveSome.length > 1 ? 'these recipes' : 'this recipe'} with a few
               more ingredients.

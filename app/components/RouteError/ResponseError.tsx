@@ -27,7 +27,7 @@ export default function ResponseError({ error }: ResponseErrorProps) {
     <div className="responsive py-8 min-h-full flex flex-col">
       <div className="card flex-1 flex flex-col overflow-hidden">
         <div className="flex-1 grid place-content-center gap-4 text-center">
-          <h1 className="font-display text-4xl pb-4 border-b border-black border-opacity-10">
+          <h1 className="font-display text-4xl pb-4 border-b">
             {error.status} {error.statusText}
           </h1>
 
@@ -42,8 +42,8 @@ export default function ResponseError({ error }: ResponseErrorProps) {
           {!!error.data && (
             <details
               className="
-                max-w-lg w-full text-left bg-stone-50
-                border border-black border-opacity-10 rounded-md
+                max-w-lg w-full text-left bg-neutral-6
+                border rounded-md
               "
             >
               <summary className="text-sm p-2">Technical details</summary>
@@ -56,8 +56,8 @@ export default function ResponseError({ error }: ResponseErrorProps) {
           {error.error && (
             <details
               className="
-                max-w-lg w-full text-left bg-stone-50
-                border border-black border-opacity-10 rounded-md
+                max-w-lg w-full text-left bg-neutral-6
+                border rounded-md
               "
             >
               <summary className="text-sm p-2">Technical details</summary>

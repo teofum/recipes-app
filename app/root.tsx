@@ -23,7 +23,7 @@ function Document({ children }: React.PropsWithChildren<{}>) {
         <Meta />
         <Links />
       </head>
-      <body className="bg-stone-100">
+      <body className="bg-default">
         {children}
         <ScrollRestoration />
         <Scripts />

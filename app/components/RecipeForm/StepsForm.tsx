@@ -39,13 +39,13 @@ export default function StepsForm() {
                   htmlFor={id}
                   className="
                     w-6 h-6 rounded-full text-sm font-medium
-                    bg-green-50 text-green-500 border border-green-500
+                    bg-primary-5 text-primary border border-primary
                     flex items-center justify-center
                   "
                 >
                   {index + 1}
                 </Form.Label>
-                <div className="w-px flex-1 bg-green-500 group-last-of-type:bg-transparent" />
+                <div className="w-px flex-1 bg-primary group-last-of-type:bg-transparent" />
               </div>
               <div className="flex flex-col gap-1 flex-1 mb-4">
                 <Form.Textarea

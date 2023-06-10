@@ -39,7 +39,7 @@ export default function Dialog({
             w-[calc(100vw-2rem)] lg:w-[calc(100vw-4rem)]
             max-h-[calc(100vh-2rem)] lg:max-h-[calc(100vh-4rem)]
             p-6 rounded-2xl
-            bg-white bg-opacity-80 border border-black border-opacity-20
+            bg-white bg-opacity-80 border
             backdrop-blur-lg
             animate-modalIn
             `,
@@ -57,12 +57,12 @@ export default function Dialog({
           </DialogPrimitive.Title>
 
           {description ? (
-            <DialogPrimitive.Description className="text-sm text-stone-600 mb-2">
+            <DialogPrimitive.Description className="text-sm text-light mb-2">
               {description}
             </DialogPrimitive.Description>
           ) : null}
 
-          <div className="border-t border-black border-opacity-10 pt-2">
+          <div className="border-t pt-2">
             {children}
           </div>
 
