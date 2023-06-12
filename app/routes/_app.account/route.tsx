@@ -9,29 +9,22 @@ import {
 import { json } from '@remix-run/node';
 import { useLoaderData, useRouteError } from '@remix-run/react';
 import { withZod } from '@remix-validated-form/with-zod';
-import { validationError } from 'remix-validated-form';
+import { useFormContext, validationError } from 'remix-validated-form';
 import { z } from 'zod';
 
-import Avatar from '~/components/ui/Avatar';
 import Button from '~/components/ui/Button';
 import Dialog from '~/components/ui/Dialog';
 import Form from '~/components/ui/Form';
 import { db } from '~/server/db.server';
 import { requireUser } from '~/server/session.server';
 import RouteError from '~/components/RouteError';
-import ImageUpload from '~/components/RecipeForm/ImageUpload';
 import { MAX_UPLOAD_SIZE } from '~/utils/constants';
 import uploadImage, { deleteImage } from '~/server/image.server';
+import AvatarUpload from './AvatarUpload';
 
 export const meta: V2_MetaFunction = () => {
   return [{ title: 'My Account | CookBook' }];
 };
-
-const avatarValidator = withZod(
-  z.object({
-    image: z.instanceof(File),
-  }),
-);
 
 const emailValidator = withZod(
   z.object({
@@ -39,12 +32,13 @@ const emailValidator = withZod(
   }),
 );
 
-const userInfoValidator = withZod(
+const profileValidator = withZod(
   z.object({
     displayName: z
       .string()
       .min(3, 'Display name must be at least 3 characters long')
       .max(20, 'Display name must be at most 20 characters long'),
+    image: z.instanceof(File).optional(),
   }),
 );
 
@@ -65,38 +59,34 @@ export async function action({ request }: ActionArgs) {
   const subaction = formData.get('subaction') as string;
 
   switch (subaction) {
-    case 'avatar': {
-      const { data, error } = await avatarValidator.validate(formData);
+    case 'profile': {
+      const { data, error } = await profileValidator.validate(formData);
       if (error) return validationError(error);
 
-      if (user.avatarUrl) await deleteImage(user.avatarUrl);
+      if (data.image && data.image.name) {
+        if (user.avatarUrl) await deleteImage(user.avatarUrl);
 
-      const filename = `${user.id}.${Date.now()}.webp`;
-      const imageUrl = await uploadImage(data.image, 'avatar', filename, {
-        width: 256,
-        height: 256,
-      });
+        const filename = `${user.id}.${Date.now()}.webp`;
+        const imageUrl = await uploadImage(data.image, 'avatar', filename, {
+          width: 256,
+          height: 256,
+        });
+
+        await db.user.update({
+          where: { id: user.id },
+          data: { avatarUrl: imageUrl },
+        });
+      }
 
       const newUser = await db.user.update({
         where: { id: user.id },
-        data: { avatarUrl: imageUrl },
+        data: { displayName: data.displayName },
       });
 
       return json(newUser);
     }
     case 'email': {
       const { data, error } = await emailValidator.validate(formData);
-      if (error) return validationError(error);
-
-      const newUser = await db.user.update({
-        where: { id: user.id },
-        data,
-      });
-
-      return json(newUser);
-    }
-    case 'userInfo': {
-      const { data, error } = await userInfoValidator.validate(formData);
       if (error) return validationError(error);
 
       const newUser = await db.user.update({
@@ -145,76 +135,54 @@ export async function loader({ request }: LoaderArgs) {
 
 export default function AccountRoute() {
   const { user } = useLoaderData<typeof loader>();
+  const { touchedFields } = useFormContext('profileForm');
 
   let defaultImageUrl = user.avatarUrl ?? null;
   const [imageUrl, setImageUrl] = useState<string | null>(null);
 
   return (
     <div className="responsive">
-      <header
-        className="
-          border-b
-          pt-6 pb-6 mb-4
-        "
-      >
+      <header className=" border-b pt-6 pb-6 mb-4">
         <h1 className="font-display text-4xl">My Account</h1>
       </header>
 
       <div className="flex flex-col sm:grid sm:grid-cols-[auto_1fr] sm:items-start gap-4">
-        <div className="card bg-primary p-2 sm:w-64 sm:row-span-2">
-          <div className="bg-surface p-4 rounded-lg flex flex-col mt-12">
-            <div className="bg-surface rounded-full p-1 -mt-16 self-start">
-              <Avatar src={user.avatarUrl} alt="user pic" size="xl" />
-            </div>
-
-            <div className="font-medium mt-2">{user.displayName}</div>
-            <div className="text-sm text-light">@{user.username}</div>
-          </div>
-        </div>
-
-        <div className="card sm:col-start-2">
-          <div className="card-heading">
-            <h2>Profile settings</h2>
-          </div>
-
+        <div className="card bg-primary-4 p-2 sm:w-64 sm:row-span-2">
           <Form.Root
-            validator={avatarValidator}
-            subaction="avatar"
+            validator={profileValidator}
+            subaction="profile"
             method="post"
             encType="multipart/form-data"
+            className="bg-surface p-4 rounded-lg flex flex-col mt-12"
+            id="profileForm"
           >
-            <Form.Label htmlFor="avatar">Profile picture</Form.Label>
-            <div className="max-w-[8rem] flex flex-col gap-2">
-              <ImageUpload
+            <div className="bg-surface rounded-full p-1 -mt-16 self-start">
+              <AvatarUpload
                 imageUrl={imageUrl}
                 defaultImageUrl={defaultImageUrl}
                 setImageUrl={setImageUrl}
                 imageClassName="w-full object-cover aspect-square rounded-full"
               />
-              <Form.SubmitButton className="-mt-2" />
             </div>
-          </Form.Root>
 
-          <Form.Root
-            validator={userInfoValidator}
-            subaction="userInfo"
-            method="post"
-            encType="multipart/form-data"
-          >
-            <Form.Label htmlFor="displayName">Display name</Form.Label>
-            <div>
-              <div className="flex flex-row gap-2">
-                <Form.Input
-                  name="displayName"
-                  id="displayName"
-                  defaultValue={user.displayName}
-                  className="flex-1"
-                />
-
-                <Form.SubmitButton>Change</Form.SubmitButton>
-              </div>
+            <Form.Field>
+              <Form.Input
+                name="displayName"
+                id="displayName"
+                defaultValue={user.displayName}
+                validationBehavior={{ initial: 'onChange' }}
+                className="-m-2 font-medium"
+              />
               <Form.Error name="displayName" id="displayName" />
-            </div>
+            </Form.Field>
+
+            <div className="text-xs text-light">@{user.username}</div>
+
+            <Form.SubmitButton
+              disabled={!touchedFields.displayName && !touchedFields.image}
+            >
+              Save Changes
+            </Form.SubmitButton>
           </Form.Root>
         </div>
 
