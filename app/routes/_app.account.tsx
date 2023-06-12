@@ -121,14 +121,14 @@ export default function AccountRoute() {
       </header>
 
       <div className="flex flex-col sm:flex-row sm:items-start gap-4">
-        <div className="card">
-          <div className="flex flex-col items-center gap-4 sm:w-64">
-            <Avatar alt="user pic" size="xl" />
-
-            <div className="w-full">
-              <div className="font-medium">{user.displayName}</div>
-              <div className="text-sm text-light">@{user.username}</div>
+        <div className="card bg-primary p-2 sm:w-64">
+          <div className="bg-surface p-4 rounded-lg flex flex-col mt-12">
+            <div className="bg-surface rounded-full p-1 -mt-16 self-start">
+              <Avatar alt="user pic" size="xl" />
             </div>
+
+            <div className="font-medium mt-2">{user.displayName}</div>
+            <div className="text-sm text-light">@{user.username}</div>
           </div>
         </div>
 

@@ -22,7 +22,7 @@ export default function Avatar({
           'w-8 h-8': size === 'sm',
           'w-10 h-10': size === 'md',
           'w-16 h-16': size === 'lg',
-          'w-32 h-32': size === 'xl',
+          'w-24 h-24': size === 'xl',
         },
         className,
       )}
@@ -44,7 +44,7 @@ export default function Avatar({
             className={cn('text-white', {
               'w-5 h-5': size === 'md',
               'w-7 h-7': size === 'lg',
-              'w-16 h-16': size === 'xl',
+              'w-12 h-12': size === 'xl',
             })}
           />
         </div>
