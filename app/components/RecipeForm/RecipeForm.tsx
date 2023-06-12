@@ -1,26 +1,14 @@
-import { useFetcher } from '@remix-run/react';
-import { useRef } from 'react';
-import type { ValidationErrorResponseData } from 'remix-validated-form';
-
 import Form from '~/components/ui/Form';
 import RecipeHeader from '~/components/RecipeView/RecipeHeader';
-import HiddenImageForm from '~/components/forms/HiddenImageForm';
 import NameInput from './NameInput';
 import ImageUpload from './ImageUpload';
 import DetailsForm from './DetailsForm';
 import IngredientsForm from './IngredientsForm';
 import StepsForm from './StepsForm';
 
-import type { ImageUploadAction } from '~/routes/resources.image';
-
 import { PLACEHOLDER_IMAGE_URL } from '~/utils/constants';
 import { newRecipeValidator } from './validators';
-
-function isSuccessResponse(
-  data: ValidationErrorResponseData | { fileId: string },
-): data is { fileId: string } {
-  return (data as { fileId: string }).fileId !== undefined;
-}
+import { useState } from 'react';
 
 interface NewRecipeFormProps<T> {
   defaultValues: T;
@@ -31,21 +19,16 @@ export default function NewRecipeForm<T extends Partial<unknown> | undefined>({
   defaultValues,
   mode = 'create',
 }: NewRecipeFormProps<T>) {
-  const imageUpload = useFetcher<ImageUploadAction>();
-  const fileInput = useRef<HTMLInputElement>(null);
-
-  let imageUrl =
+  let defaultImageUrl =
     (defaultValues as { imageUrl: string | null } | undefined)?.imageUrl ??
-    undefined;
+    null;
 
-  if (imageUpload.data && isSuccessResponse(imageUpload.data)) {
-    imageUrl = `/resources/image/${imageUpload.data.fileId}`;
-  }
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
 
   return (
     <div className="w-full">
       <RecipeHeader
-        imageUrl={imageUrl || PLACEHOLDER_IMAGE_URL}
+        imageUrl={imageUrl ?? defaultImageUrl ?? PLACEHOLDER_IMAGE_URL}
         hideBackButton={mode === 'edit'}
       />
 
@@ -53,6 +36,7 @@ export default function NewRecipeForm<T extends Partial<unknown> | undefined>({
         validator={newRecipeValidator}
         defaultValues={defaultValues}
         method="post"
+        encType="multipart/form-data"
       >
         <div
           className="
@@ -71,9 +55,9 @@ export default function NewRecipeForm<T extends Partial<unknown> | undefined>({
             "
           >
             <ImageUpload
-              fetcher={imageUpload}
               imageUrl={imageUrl}
-              openFile={() => fileInput.current?.click()}
+              defaultImageUrl={defaultImageUrl}
+              setImageUrl={setImageUrl}
             />
 
             <DetailsForm mode={mode} />
@@ -85,8 +69,6 @@ export default function NewRecipeForm<T extends Partial<unknown> | undefined>({
           </div>
         </div>
       </Form.Root>
-
-      <HiddenImageForm fetcher={imageUpload} ref={fileInput} />
     </div>
   );
 }

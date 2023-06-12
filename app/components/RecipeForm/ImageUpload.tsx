@@ -1,71 +1,51 @@
-import type { FetcherWithComponents } from '@remix-run/react';
-import type { ValidationErrorResponseData } from 'remix-validated-form';
-import { useFormContext } from 'remix-validated-form';
-
 import Form from '~/components/ui/Form';
-import LoadingButton from '~/components/ui/LoadingButton';
-import Loading from '~/components/ui/Loading';
+import Button from '../ui/Button';
+
 import { PLACEHOLDER_IMAGE_URL } from '~/utils/constants';
 
-function isErrorResponse(data: unknown): data is ValidationErrorResponseData {
-  return (data as ValidationErrorResponseData).fieldErrors !== undefined;
-}
-
 interface ImageUploadProps {
-  fetcher: FetcherWithComponents<unknown>;
-  imageUrl?: string;
-  openFile?: () => void;
+  imageUrl: string | null;
+  defaultImageUrl: string | null;
+  setImageUrl: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 export default function ImageUpload({
-  fetcher,
   imageUrl,
-  openFile,
+  defaultImageUrl,
+  setImageUrl,
 }: ImageUploadProps) {
-  const { clearAllErrors } = useFormContext('__hidden_img_upload_form');
+  const onUploadImage = (ev: React.ChangeEvent<HTMLInputElement>) => {
+    const file = ev.target.files ? ev.target.files[0] : null;
+    if (file) setImageUrl(URL.createObjectURL(file));
+  };
 
   return (
     <>
-      {fetcher.state === 'idle' ? (
-        <img
-          src={imageUrl || PLACEHOLDER_IMAGE_URL}
-          alt=" "
-          className="aspect-video w-full object-cover rounded-md sm:aspect-square"
-        />
-      ) : (
-        <div
-          className="
-            aspect-video w-full bg-neutral-2 rounded-md sm:aspect-square
-            grid place-items-center
-          "
-        >
-          <Loading size="lg" className="text-white" />
-        </div>
-      )}
-
-      <Form.Input
-        type="hidden"
-        name="imageUrl"
-        id="imageUrl"
-        value={imageUrl ?? ''}
+      <img
+        src={imageUrl ?? defaultImageUrl ?? PLACEHOLDER_IMAGE_URL}
+        alt=" "
+        className="aspect-video w-full object-cover rounded-md sm:aspect-square"
       />
-      <LoadingButton
+
+      <Button
         onClick={(ev) => {
           ev.preventDefault();
           ev.stopPropagation();
-          clearAllErrors();
-          openFile?.();
+          const target = ev.target as HTMLButtonElement;
+          (target.nextSibling as HTMLInputElement).click();
         }}
-        loading={fetcher.state !== 'idle'}
       >
         Upload image
-      </LoadingButton>
+      </Button>
 
-      {fetcher.data && isErrorResponse(fetcher.data) ? (
-        <p className="text-xs text-danger">
-          {fetcher.data.fieldErrors.file || ' '}
-        </p>
-      ) : null}
+      <Form.Input
+        type="file"
+        name="image"
+        id="image"
+        className="hidden"
+        onChange={onUploadImage}
+      />
+      <Form.Error name="image" id="image" />
     </>
   );
 }

@@ -19,6 +19,7 @@ import { getUser } from '~/server/session.server';
 
 import type { Recipe } from '~/types/recipe.type';
 import { LinkButton } from '~/components/ui/Button';
+import { deleteImage } from '~/server/image.server';
 
 export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
   return [{ title: `${data?.recipe.name ?? 'Recipe'} | CookBook` }];
@@ -60,7 +61,8 @@ export async function action({ request }: ActionArgs) {
 
   switch (data.intent) {
     case 'delete': {
-      await db.$transaction(deleteRecipe(data.recipeId, data.imageUrl));
+      await db.$transaction(deleteRecipe(data.recipeId));
+      if (data.imageUrl) await deleteImage(data.imageUrl);
       return redirect('/recipes');
     }
     case 'setVisibility': {
