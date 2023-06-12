@@ -1,17 +1,6 @@
 import { db } from './db.server';
-import { badRequest } from './request.server';
 
-export function deleteImage(imageUrl: string) {
-  const fileId = imageUrl.split('/').at(-1);
-  if (!fileId) throw badRequest({ message: 'Bad file ID' });
-
-  const deleteImage = db.image.delete({ where: { fileId } });
-  const deleteFile = db.file.delete({ where: { id: fileId } });
-
-  return [deleteImage, deleteFile];
-}
-
-export function deleteRecipe(recipeId: string, imageUrl?: string) {
+export function deleteRecipe(recipeId: string) {
   const deleteIngredients = db.ingredientsOnRecipes.deleteMany({
     where: { recipeId: recipeId },
   });
@@ -21,7 +10,6 @@ export function deleteRecipe(recipeId: string, imageUrl?: string) {
   const deleteRecipe = db.recipe.delete({ where: { id: recipeId } });
 
   return [
-    ...(imageUrl ? deleteImage(imageUrl) : []),
     deleteIngredients,
     deleteSteps,
     deleteRecipe,

@@ -19,7 +19,7 @@ export default async function buildOptimisticRecipe(
 
     return {
       ...data,
-      imageUrl: data.imageUrl || null,
+      imageUrl: data.image ? URL.createObjectURL(data.image) : null,
       ingredients: data.ingredients.map((ingredient) => ({
         ingredient: {
           id: ingredient.id,

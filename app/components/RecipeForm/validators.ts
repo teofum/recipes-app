@@ -29,7 +29,7 @@ const schema = z.object({
     Visibility.PRIVATE,
   ]),
   prepTime: z.coerce.number().min(0),
-  imageUrl: z.string().optional(),
+  image: z.instanceof(File).optional(),
   ingredients: z.array(
     z.object({
       id: z.string(),

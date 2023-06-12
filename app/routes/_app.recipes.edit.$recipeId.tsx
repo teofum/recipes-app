@@ -21,6 +21,7 @@ import { useEffect, useState } from 'react';
 import Loading from '~/components/ui/Loading';
 import { newRecipeValidator } from '~/components/RecipeForm/validators';
 import buildOptimisticRecipe from '~/components/RecipeForm/buildOptimisticRecipe';
+import uploadImage, { deleteImage } from '~/server/image.server';
 
 export const meta: V2_MetaFunction = () => {
   return [{ title: 'Edit Recipe | CookBook' }];
@@ -46,7 +47,6 @@ export async function action({ request, params }: ActionArgs) {
       description: data.description,
       prepTime: data.prepTime,
       authorId: userId,
-      imageUrl: data.imageUrl === '' ? undefined : data.imageUrl,
       visibility: data.visibility,
 
       ingredients: {
@@ -93,6 +93,17 @@ export async function action({ request, params }: ActionArgs) {
     },
   });
   if (!recipe) throw serverError({ message: 'Failed to update recipe' });
+
+  // If there's an image provided upload and update the recipe with its url
+  if (data.image) {
+    // If there's an existing image, delete it. We use a different image instead
+    // of updating the existing one so the user doesn't get the old cached image
+    if (recipe.imageUrl) await deleteImage(recipe.imageUrl);
+
+    const filename = `${recipe.id}.${Date.now()}.webp`;
+    const imageUrl = await uploadImage(data.image, 'recipe', filename);
+    await db.recipe.update({ where: { id: recipe.id }, data: { imageUrl } });
+  }
 
   return redirect(`/recipes/${recipe.id}`);
 }
