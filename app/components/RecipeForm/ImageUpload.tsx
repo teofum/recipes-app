@@ -7,12 +7,15 @@ interface ImageUploadProps {
   imageUrl: string | null;
   defaultImageUrl: string | null;
   setImageUrl: React.Dispatch<React.SetStateAction<string | null>>;
+
+  imageClassName?: string;
 }
 
 export default function ImageUpload({
   imageUrl,
   defaultImageUrl,
   setImageUrl,
+  imageClassName,
 }: ImageUploadProps) {
   const onUploadImage = (ev: React.ChangeEvent<HTMLInputElement>) => {
     const file = ev.target.files ? ev.target.files[0] : null;
@@ -24,7 +27,10 @@ export default function ImageUpload({
       <img
         src={imageUrl ?? defaultImageUrl ?? PLACEHOLDER_IMAGE_URL}
         alt=" "
-        className="aspect-video w-full object-cover rounded-md sm:aspect-square"
+        className={
+          imageClassName ??
+          'aspect-video w-full object-cover rounded-md sm:aspect-square'
+        }
       />
 
       <Button

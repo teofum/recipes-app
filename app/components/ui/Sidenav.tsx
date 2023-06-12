@@ -84,11 +84,9 @@ export default function Sidenav({ user }: SidenavProps) {
         {user !== null ? (
           <div className="flex flex-col gap-2">
             <div className="flex flex-row gap-2 items-center">
-              <Avatar alt={user.displayName} />
+              <Avatar src={user.avatarUrl} alt={user.displayName} />
               <div className="flex-1">
-                <div className="font-medium leading-5">
-                  {user.displayName}
-                </div>
+                <div className="font-medium leading-5">{user.displayName}</div>
                 <div className="text-xs text-light leading-5">
                   @{user.username}
                 </div>
