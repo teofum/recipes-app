@@ -7,26 +7,6 @@ datasource db {
   url           = env("DATABASE_URL")
 }
 
-model File {
-  id            String    @id @default(uuid())
-  blob          Bytes
-
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  image         Image?
-}
-
-model Image {
-  file          File      @relation(fields: [fileId], references: [id])
-  fileId        String    @unique
-
-  contentType   String
-  altText       String?
-
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-}
-
 model User {
   id            String    @id @default(uuid())
   createdAt     DateTime  @default(now())
