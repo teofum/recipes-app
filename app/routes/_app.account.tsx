@@ -18,6 +18,12 @@ export const meta: V2_MetaFunction = () => {
   return [{ title: 'My Account | CookBook' }];
 };
 
+const emailValidator = withZod(
+  z.object({
+    email: z.string().email(),
+  }),
+);
+
 const userInfoValidator = withZod(
   z.object({
     displayName: z
@@ -34,11 +40,6 @@ const passwordValidator = withZod(
   }),
 );
 
-export async function loader({ request }: LoaderArgs) {
-  const user = await requireUser(request);
-  return json({ user });
-}
-
 export async function action({ request }: ActionArgs) {
   const user = await requireUser(request);
 
@@ -46,6 +47,17 @@ export async function action({ request }: ActionArgs) {
   const subaction = formData.get('subaction') as string;
 
   switch (subaction) {
+    case 'email': {
+      const { data, error } = await emailValidator.validate(formData);
+      if (error) return validationError(error);
+
+      const newUser = await db.user.update({
+        where: { id: user.id },
+        data,
+      });
+
+      return json(newUser);
+    }
     case 'userInfo': {
       const { data, error } = await userInfoValidator.validate(formData);
       if (error) return validationError(error);
@@ -89,6 +101,11 @@ export async function action({ request }: ActionArgs) {
   }
 }
 
+export async function loader({ request }: LoaderArgs) {
+  const user = await requireUser(request);
+  return json({ user });
+}
+
 export default function AccountRoute() {
   const { user } = useLoaderData<typeof loader>();
 
@@ -103,41 +120,58 @@ export default function AccountRoute() {
         <h1 className="font-display text-4xl">My Account</h1>
       </header>
 
-      <div className="card">
-        <div className="card-heading">
-          <h2>Account Information</h2>
+      <div className="flex flex-col sm:flex-row sm:items-start gap-4">
+        <div className="card">
+          <div className="flex flex-col items-center gap-4 sm:w-64">
+            <Avatar alt="user pic" size="xl" />
+
+            <div className="w-full">
+              <div className="font-medium">{user.displayName}</div>
+              <div className="text-sm text-light">@{user.username}</div>
+            </div>
+          </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row items-center gap-4">
-          <div>
-            <Avatar alt="user pic" size="xl" />
+        <div className="card sm:flex-1">
+          <div className="card-heading">
+            <h2>Account information</h2>
           </div>
 
           <div className="flex flex-col gap-4">
             <Form.Root
+              validator={emailValidator}
+              subaction="email"
+              method="post"
+            >
+              <Form.Label htmlFor="email">Email</Form.Label>
+              <div>
+                <div className="flex flex-row gap-2">
+                  <Form.Input
+                    name="email"
+                    id="email"
+                    defaultValue={user.email}
+                    className="flex-1"
+                  />
+
+                  <Form.SubmitButton>Change</Form.SubmitButton>
+                </div>
+                <Form.Error name="email" id="email" />
+              </div>
+            </Form.Root>
+
+            <Form.Root
               validator={userInfoValidator}
               subaction="userInfo"
               method="post"
-              className="grid grid-cols-1 sm:grid-cols-[auto_1fr] max-w-lg gap-2 content-start items-baseline text-sm"
             >
-              <div className="font-semibold sm:text-right">Username</div>
-              <div className="sm:leading-8">{user.username}</div>
-
-              <div className="font-semibold sm:text-right">Email</div>
-              <div className="sm:leading-8">{user.email}</div>
-
-              <Form.Label
-                htmlFor="displayName"
-                className="font-semibold sm:text-right"
-              >
-                Display name
-              </Form.Label>
+              <Form.Label htmlFor="displayName">Display name</Form.Label>
               <div>
                 <div className="flex flex-row gap-2">
                   <Form.Input
                     name="displayName"
                     id="displayName"
                     defaultValue={user.displayName}
+                    className="flex-1"
                   />
 
                   <Form.SubmitButton>Change</Form.SubmitButton>
