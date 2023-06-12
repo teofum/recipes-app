@@ -1,29 +1,44 @@
+import { useState } from 'react';
 import bcryptjs from 'bcryptjs';
 
 import type { ActionArgs, LoaderArgs, V2_MetaFunction } from '@remix-run/node';
+import {
+  unstable_createMemoryUploadHandler,
+  unstable_parseMultipartFormData,
+} from '@remix-run/node';
 import { json } from '@remix-run/node';
 import { useLoaderData, useRouteError } from '@remix-run/react';
 import { withZod } from '@remix-validated-form/with-zod';
-import { validationError } from 'remix-validated-form';
+import { useFormContext, validationError } from 'remix-validated-form';
 import { z } from 'zod';
-import Avatar from '~/components/ui/Avatar';
+
 import Button from '~/components/ui/Button';
 import Dialog from '~/components/ui/Dialog';
 import Form from '~/components/ui/Form';
 import { db } from '~/server/db.server';
 import { requireUser } from '~/server/session.server';
 import RouteError from '~/components/RouteError';
+import { MAX_UPLOAD_SIZE } from '~/utils/constants';
+import uploadImage, { deleteImage } from '~/server/image.server';
+import AvatarUpload from './AvatarUpload';
 
 export const meta: V2_MetaFunction = () => {
   return [{ title: 'My Account | CookBook' }];
 };
 
-const userInfoValidator = withZod(
+const emailValidator = withZod(
+  z.object({
+    email: z.string().email(),
+  }),
+);
+
+const profileValidator = withZod(
   z.object({
     displayName: z
       .string()
       .min(3, 'Display name must be at least 3 characters long')
       .max(20, 'Display name must be at most 20 characters long'),
+    image: z.instanceof(File).optional(),
   }),
 );
 
@@ -34,20 +49,44 @@ const passwordValidator = withZod(
   }),
 );
 
-export async function loader({ request }: LoaderArgs) {
-  const user = await requireUser(request);
-  return json({ user });
-}
-
 export async function action({ request }: ActionArgs) {
   const user = await requireUser(request);
 
-  const formData = await request.formData();
+  const formData = await unstable_parseMultipartFormData(
+    request,
+    unstable_createMemoryUploadHandler({ maxPartSize: MAX_UPLOAD_SIZE }),
+  );
   const subaction = formData.get('subaction') as string;
 
   switch (subaction) {
-    case 'userInfo': {
-      const { data, error } = await userInfoValidator.validate(formData);
+    case 'profile': {
+      const { data, error } = await profileValidator.validate(formData);
+      if (error) return validationError(error);
+
+      if (data.image && data.image.name) {
+        if (user.avatarUrl) await deleteImage(user.avatarUrl);
+
+        const filename = `${user.id}.${Date.now()}.webp`;
+        const imageUrl = await uploadImage(data.image, 'avatar', filename, {
+          width: 256,
+          height: 256,
+        });
+
+        await db.user.update({
+          where: { id: user.id },
+          data: { avatarUrl: imageUrl },
+        });
+      }
+
+      const newUser = await db.user.update({
+        where: { id: user.id },
+        data: { displayName: data.displayName },
+      });
+
+      return json(newUser);
+    }
+    case 'email': {
+      const { data, error } = await emailValidator.validate(formData);
       if (error) return validationError(error);
 
       const newUser = await db.user.update({
@@ -89,60 +128,89 @@ export async function action({ request }: ActionArgs) {
   }
 }
 
+export async function loader({ request }: LoaderArgs) {
+  const user = await requireUser(request);
+  return json({ user });
+}
+
 export default function AccountRoute() {
   const { user } = useLoaderData<typeof loader>();
+  const { touchedFields } = useFormContext('profileForm');
+
+  let defaultImageUrl = user.avatarUrl ?? null;
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
 
   return (
     <div className="responsive">
-      <header
-        className="
-          border-b
-          pt-6 pb-6 mb-4
-        "
-      >
+      <header className=" border-b pt-6 pb-6 mb-4">
         <h1 className="font-display text-4xl">My Account</h1>
       </header>
 
-      <div className="card">
-        <div className="card-heading">
-          <h2>Account Information</h2>
+      <div className="flex flex-col sm:grid sm:grid-cols-[auto_1fr] sm:items-start gap-4">
+        <div className="card bg-primary-4 p-2 sm:w-64 sm:row-span-2">
+          <Form.Root
+            validator={profileValidator}
+            subaction="profile"
+            method="post"
+            encType="multipart/form-data"
+            className="bg-surface p-4 rounded-lg flex flex-col mt-12"
+            id="profileForm"
+          >
+            <div className="bg-surface rounded-full p-1 -mt-16 self-start">
+              <AvatarUpload
+                imageUrl={imageUrl}
+                defaultImageUrl={defaultImageUrl}
+                setImageUrl={setImageUrl}
+                imageClassName="w-full object-cover aspect-square rounded-full"
+              />
+            </div>
+
+            <Form.Field>
+              <Form.Input
+                name="displayName"
+                id="displayName"
+                defaultValue={user.displayName}
+                validationBehavior={{ initial: 'onChange' }}
+                className="-m-2 font-medium"
+              />
+              <Form.Error name="displayName" id="displayName" />
+            </Form.Field>
+
+            <div className="text-xs text-light">@{user.username}</div>
+
+            <Form.SubmitButton
+              disabled={!touchedFields.displayName && !touchedFields.image}
+            >
+              Save Changes
+            </Form.SubmitButton>
+          </Form.Root>
         </div>
 
-        <div className="flex flex-col sm:flex-row items-center gap-4">
-          <div>
-            <Avatar alt="user pic" size="xl" />
+        <div className="card sm:col-start-2">
+          <div className="card-heading">
+            <h2>Account settings</h2>
           </div>
 
           <div className="flex flex-col gap-4">
             <Form.Root
-              validator={userInfoValidator}
-              subaction="userInfo"
+              validator={emailValidator}
+              subaction="email"
               method="post"
-              className="grid grid-cols-1 sm:grid-cols-[auto_1fr] max-w-lg gap-2 content-start items-baseline text-sm"
+              encType="multipart/form-data"
             >
-              <div className="font-semibold sm:text-right">Username</div>
-              <div className="sm:leading-8">{user.username}</div>
-
-              <div className="font-semibold sm:text-right">Email</div>
-              <div className="sm:leading-8">{user.email}</div>
-
-              <Form.Label
-                htmlFor="displayName"
-                className="font-semibold sm:text-right"
-              >
-                Display name
-              </Form.Label>
+              <Form.Label htmlFor="email">Email</Form.Label>
               <div>
                 <div className="flex flex-row gap-2">
                   <Form.Input
-                    name="displayName"
-                    id="displayName"
-                    defaultValue={user.displayName}
+                    name="email"
+                    id="email"
+                    defaultValue={user.email}
+                    className="flex-1"
                   />
 
                   <Form.SubmitButton>Change</Form.SubmitButton>
                 </div>
-                <Form.Error name="displayName" id="displayName" />
+                <Form.Error name="email" id="email" />
               </div>
             </Form.Root>
 
@@ -154,6 +222,7 @@ export default function AccountRoute() {
                 validator={passwordValidator}
                 subaction="password"
                 method="post"
+                encType="multipart/form-data"
               >
                 <Form.Field>
                   <Form.Label htmlFor="currentPassword">

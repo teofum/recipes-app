@@ -70,7 +70,12 @@ export default function MobileNavbar({ user }: MobileNavbarProps) {
           "
         >
           <div className="absolute bg-white top-[8.5px] -bottom-1 -left-1 -right-1" />
-          <Avatar size="lg" className="relative z-20" alt={user.displayName} />
+          <Avatar
+            src={user.avatarUrl}
+            size="lg"
+            className="relative z-20"
+            alt={user.displayName}
+          />
         </LinkButton>
       ) : (
         <LinkButton to="/login">

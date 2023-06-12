@@ -1,5 +1,5 @@
+import Avatar from '~/components/ui/Avatar';
 import Form from '~/components/ui/Form';
-import Button from '../ui/Button';
 
 import { PLACEHOLDER_IMAGE_URL } from '~/utils/constants';
 
@@ -11,7 +11,7 @@ interface ImageUploadProps {
   imageClassName?: string;
 }
 
-export default function ImageUpload({
+export default function AvatarUpload({
   imageUrl,
   defaultImageUrl,
   setImageUrl,
@@ -24,16 +24,7 @@ export default function ImageUpload({
 
   return (
     <>
-      <img
-        src={imageUrl ?? defaultImageUrl ?? PLACEHOLDER_IMAGE_URL}
-        alt=" "
-        className={
-          imageClassName ??
-          'aspect-video w-full object-cover rounded-md sm:aspect-square'
-        }
-      />
-
-      <Button
+      <button
         onClick={(ev) => {
           ev.preventDefault();
           ev.stopPropagation();
@@ -41,8 +32,13 @@ export default function ImageUpload({
           (target.nextSibling as HTMLInputElement).click();
         }}
       >
-        Upload image
-      </Button>
+        <Avatar
+          src={imageUrl ?? defaultImageUrl ?? PLACEHOLDER_IMAGE_URL}
+          alt=""
+          size="xl"
+          className="pointer-events-none"
+        />
+      </button>
 
       <Form.Input
         type="file"

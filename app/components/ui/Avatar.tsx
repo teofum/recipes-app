@@ -2,7 +2,7 @@ import { PersonIcon } from '@radix-ui/react-icons';
 import cn from 'classnames';
 
 interface AvatarProps {
-  src?: string;
+  src?: string | null;
   alt: string;
   size?: 'sm' | 'md' | 'lg' | 'xl';
   className?: string;
