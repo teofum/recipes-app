@@ -28,14 +28,13 @@ export const handle = {
   i18n: 'common',
 };
 
-function Document({ children }: React.PropsWithChildren<{}>) {
-  const { locale } = useLoaderData<typeof loader>();
-  const { i18n } = useTranslation();
-
-  useChangeLanguage(locale);
-
+function Document({
+  children,
+  locale,
+  dir,
+}: React.PropsWithChildren<{ locale: string; dir: string }>) {
   return (
-    <html lang={locale} dir={i18n.dir()}>
+    <html lang={locale} dir={dir}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -53,8 +52,13 @@ function Document({ children }: React.PropsWithChildren<{}>) {
 }
 
 export default function App() {
+  const { locale } = useLoaderData<typeof loader>();
+  const { i18n } = useTranslation();
+
+  useChangeLanguage(locale);
+
   return (
-    <Document>
+    <Document locale={locale} dir={i18n.dir()}>
       <Outlet />
     </Document>
   );
@@ -64,7 +68,7 @@ export function ErrorBoundary() {
   const error = useRouteError();
 
   return (
-    <Document>
+    <Document locale="en" dir="ltr">
       <RouteError error={error} />
     </Document>
   );
