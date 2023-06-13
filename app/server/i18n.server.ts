@@ -11,7 +11,6 @@ const i18next = new RemixI18Next({
     supportedLanguages: i18n.supportedLngs,
     fallbackLanguage: i18n.fallbackLng,
     cookie: i18nextCookie,
-    order: ['cookie'],
   },
   i18next: {
     ...i18n,

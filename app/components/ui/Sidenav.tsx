@@ -11,8 +11,7 @@ import cn from 'classnames';
 import Avatar from './Avatar';
 import Button, { LinkButton } from './Button';
 import type { User } from '~/types/user.type';
-
-type SidenavProps = React.PropsWithChildren<{ user: User | null }>;
+import { useTranslation } from 'react-i18next';
 
 interface SidenavLinkProps {
   currentRoute: RouteMatch;
@@ -38,9 +37,13 @@ function SidenavLink({ currentRoute, route, text, icon }: SidenavLinkProps) {
   );
 }
 
+type SidenavProps = React.PropsWithChildren<{ user: User | null }>;
+
 export default function Sidenav({ user }: SidenavProps) {
   const matches = useMatches();
   const currentRoute = matches.at(-1) as RouteMatch;
+
+  const { t } = useTranslation();
 
   return (
     <div className="flex flex-col h-full">
@@ -57,7 +60,7 @@ export default function Sidenav({ user }: SidenavProps) {
             <SidenavLink
               currentRoute={currentRoute}
               route="/recipes"
-              text="My Recipes"
+              text={t('nav.my-recipes')}
               icon={<DashboardIcon />}
             />
           </li>
@@ -65,7 +68,7 @@ export default function Sidenav({ user }: SidenavProps) {
             <SidenavLink
               currentRoute={currentRoute}
               route="/recipes/find"
-              text="Recipe Finder"
+              text={t('nav.find')}
               icon={<MagnifyingGlassIcon />}
             />
           </li>
@@ -73,7 +76,7 @@ export default function Sidenav({ user }: SidenavProps) {
             <SidenavLink
               currentRoute={currentRoute}
               route="/recipes/new"
-              text="New Recipe"
+              text={t('nav.new')}
               icon={<FilePlusIcon />}
             />
           </li>
@@ -98,7 +101,7 @@ export default function Sidenav({ user }: SidenavProps) {
                 variant={{ size: 'sm' }}
                 className="flex-1"
               >
-                Account
+                {t('nav.account')}
               </LinkButton>
               <Form
                 method="post"
@@ -110,14 +113,14 @@ export default function Sidenav({ user }: SidenavProps) {
                   variant={{ size: 'sm' }}
                   className="w-full"
                 >
-                  Logout
+                  {t('session.logout')}
                 </Button>
               </Form>
             </div>
           </div>
         ) : (
           <LinkButton to={`/login?redirectUrl=${currentRoute.pathname}`}>
-            Sign in
+            {t('session.login')}
           </LinkButton>
         )}
       </div>

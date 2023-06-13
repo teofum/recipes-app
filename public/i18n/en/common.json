@@ -1,3 +1,12 @@
 {
-  "test": "Hello in English"
+  "session": {
+    "login": "Sign in",
+    "logout": "Sign out"
+  },
+  "nav": {
+    "my-recipes": "My Recipes",
+    "find": "Recipe Finder",
+    "new": "New Recipe",
+    "account": "Account"
+  }
 }
