@@ -5,7 +5,6 @@ import i18next from 'i18next';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 import I18nextBrowserLanguageDetector from 'i18next-browser-languagedetector';
 import I18NextHttpBackend from 'i18next-http-backend';
-import { getInitialNamespaces } from 'remix-i18next';
 
 import i18n from '~/i18n';
 
@@ -16,7 +15,6 @@ async function hydrate() {
     .use(I18NextHttpBackend)
     .init({
       ...i18n,
-      ns: getInitialNamespaces(),
       backend: { loadPath: '/i18n/{{lng}}/{{ns}}.json' },
       detection: {
         order: ['htmlTag'],

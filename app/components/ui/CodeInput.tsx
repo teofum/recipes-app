@@ -25,7 +25,7 @@ export default function CodeInput({ name, id, className }: CodeInputProps) {
         container: 'flex flex-row justify-center gap-1 w-min h-auto group',
         character: `
           w-10 h-auto leading-10 text-2xl font-medium bg-neutral-6
-          border
+          border border-neutral-5
           rounded-md
           group-aria-[invalid]:border-danger group-aria-[invalid]:bg-danger-5
           transition

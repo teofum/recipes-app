@@ -1,6 +1,7 @@
 import type { ActionArgs, V2_MetaFunction } from '@remix-run/node';
 import { useRouteError, useSearchParams } from '@remix-run/react';
 import { withZod } from '@remix-validated-form/with-zod';
+import { useTranslation } from 'react-i18next';
 import type { FieldErrors } from 'remix-validated-form';
 import { validationError } from 'remix-validated-form';
 import { z } from 'zod';
@@ -36,15 +37,19 @@ export async function action({ request }: ActionArgs) {
   }
 }
 
+export const handle = { i18n: 'login' };
+
 export default function LoginRoute() {
   const [params] = useSearchParams();
   const redirectUrl = params.get('redirectUrl');
+
+  const { t } = useTranslation();
 
   return (
     <div className="min-h-screen grid place-items-center bg-primary-2 bg-dots bg-repeat px-4">
       <div className="card flex flex-col max-w-sm w-full">
         <h1 className="font-display text-4xl font-semibold text-center">
-          Login
+          {t('login:title')}
         </h1>
 
         <Form.Root validator={validator} method="post" className="mt-4 mb-2">
@@ -56,23 +61,29 @@ export default function LoginRoute() {
           />
 
           <Form.Field>
-            <Form.Label htmlFor="user">Username/Email</Form.Label>
+            <Form.Label htmlFor="user">
+              {t('login:fields.username-or-email')}
+            </Form.Label>
             <Form.Input type="text" name="usernameOrEmail" id="user" />
             <Form.Error name="usernameOrEmail" id="user" />
           </Form.Field>
           <Form.Field>
-            <Form.Label htmlFor="password">Password</Form.Label>
+            <Form.Label htmlFor="password">
+              {t('login:fields.password')}
+            </Form.Label>
             <Form.Input type="password" name="password" id="password" />
             <Form.Error name="password" id="password" />
           </Form.Field>
-          <Form.SubmitButton variant="filled">Log in</Form.SubmitButton>
+          <Form.SubmitButton variant="filled">
+            {t('session.login')}
+          </Form.SubmitButton>
         </Form.Root>
 
         <LinkButton to={`/register?redirectUrl=${redirectUrl}`}>
-          I don't have an account
+          {t('login:actions.register')}
         </LinkButton>
         <LinkButton to={`/forgotPassword?redirectUrl=${redirectUrl}`}>
-          I forgot my password
+          {t('login:actions.forgot')}
         </LinkButton>
       </div>
     </div>
@@ -84,4 +95,3 @@ export function ErrorBoundary() {
 
   return <RouteError error={error} />;
 }
-

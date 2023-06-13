@@ -1,0 +1,12 @@
+{
+  "title": "Registrarse",
+  "fields": {
+    "email": "Email",
+    "username": "Usuario",
+    "display-name": "Apodo",
+    "password": "Contraseña"
+  },
+  "actions": {
+    "register": "Registrarse"
+  }
+}

@@ -1,6 +1,7 @@
 import type { ActionArgs, V2_MetaFunction } from '@remix-run/node';
 import { useRouteError, useSearchParams } from '@remix-run/react';
 import { withZod } from '@remix-validated-form/with-zod';
+import { useTranslation } from 'react-i18next';
 import type { FieldErrors } from 'remix-validated-form';
 import { validationError } from 'remix-validated-form';
 import { z } from 'zod';
@@ -35,21 +36,22 @@ export async function action({ request }: ActionArgs) {
   }
 }
 
+export const handle = { i18n: 'forgot' };
+
 export default function ForgotPasswordRoute() {
   const [params] = useSearchParams();
   const redirectUrl = params.get('redirectUrl');
+
+  const { t } = useTranslation();
 
   return (
     <div className="min-h-screen grid place-items-center bg-primary-2 bg-dots bg-repeat px-4">
       <div className="card flex flex-col gap-4 max-w-sm w-full">
         <h1 className="font-display text-4xl font-semibold text-center">
-          Reset your password
+          {t('forgot:title')}
         </h1>
 
-        <p className="text-sm text-light">
-          Forgot your password? No problem! Just enter your username or email
-          and we'll send you a one-time reset code.
-        </p>
+        <p className="text-sm text-light">{t('forgot:forgot.description')}</p>
 
         <Form.Root validator={validator} method="post">
           <Form.Input
@@ -60,11 +62,15 @@ export default function ForgotPasswordRoute() {
           />
 
           <Form.Field>
-            <Form.Label htmlFor="user">Username/Email</Form.Label>
+            <Form.Label htmlFor="user">
+              {t('forgot:forgot.fields.username-or-email')}
+            </Form.Label>
             <Form.Input type="text" name="usernameOrEmail" id="user" />
             <Form.Error name="usernameOrEmail" id="user" />
           </Form.Field>
-          <Form.SubmitButton variant="filled">Send code</Form.SubmitButton>
+          <Form.SubmitButton variant="filled">
+            {t('forgot:forgot.actions.send')}
+          </Form.SubmitButton>
         </Form.Root>
       </div>
     </div>

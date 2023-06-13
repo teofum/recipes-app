@@ -1,0 +1,25 @@
+{
+  "title": "Recover account",
+  "forgot": {
+    "description": "Forgot your password? No problem! Just enter your username or email and we'll send you a one-time reset code.",
+    "fields": {
+      "username-or-email": "Username/Email"
+    },
+    "actions": {
+      "send": "Send code"
+    }
+  },
+  "reset": {
+    "description": [
+      "We just sent a one-time reset code to your email ",
+      ", valid for the next 15 minutes. Enter the code and a new password."
+    ],
+    "fields": {
+      "reset-code": "Reset code",
+      "new-password": "New password"
+    },
+    "actions": {
+      "reset": "Reset password and sign in"
+    }
+  }
+}

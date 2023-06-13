@@ -1,0 +1,12 @@
+{
+  "title": "Register",
+  "fields": {
+    "email": "Email",
+    "username": "Username",
+    "display-name": "Nickname",
+    "password": "Password"
+  },
+  "actions": {
+    "register": "Register"
+  }
+}

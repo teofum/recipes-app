@@ -1,0 +1,11 @@
+{
+  "title": "Ingresar",
+  "fields": {
+    "username-or-email": "Usuario/Email",
+    "password": "Contraseña"
+  },
+  "actions": {
+    "register": "No tengo una cuenta",
+    "forgot": "Olvidé mi contraseña"
+  }
+}
