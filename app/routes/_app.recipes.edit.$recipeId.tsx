@@ -95,7 +95,7 @@ export async function action({ request, params }: ActionArgs) {
   if (!recipe) throw serverError({ message: 'Failed to update recipe' });
 
   // If there's an image provided upload and update the recipe with its url
-  if (data.image) {
+  if (data.image && data.image.name) {
     // If there's an existing image, delete it. We use a different image instead
     // of updating the existing one so the user doesn't get the old cached image
     if (recipe.imageUrl) await deleteImage(recipe.imageUrl);

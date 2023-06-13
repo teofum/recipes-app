@@ -68,7 +68,7 @@ export async function action({ request }: ActionArgs) {
   if (!recipe) throw serverError({ message: 'Failed to create recipe' });
 
   // If there's an image provided upload and update the recipe with its url
-  if (data.image) {
+  if (data.image && data.image.name) {
     const filename = `${recipe.id}.${Date.now()}.webp`;
     const imageUrl = await uploadImage(data.image, 'recipe', filename);
     await db.recipe.update({ where: { id: recipe.id }, data: { imageUrl } });
