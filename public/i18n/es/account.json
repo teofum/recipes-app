@@ -3,6 +3,15 @@
   "profile": {
     "actions": {
       "save": "Guardar cambios"
+    },
+    "validation": {
+      "email": {
+        "invalid": "Ingresá una dirección de email válida"
+      },
+      "display-name": {
+        "too-short": "El apodo debe tener como mínimo 3 caracteres",
+        "too-long": "El apodo debe tener como máximo 20 caracteres"
+      }
     }
   },
   "settings": {
@@ -30,6 +39,14 @@
       },
       "actions": {
         "change": "Cambiar contraseña"
+      },
+      "validation": {
+        "current": {
+          "required": "Ingresá tu contraseña actual"
+        },
+        "new": {
+          "too-short": "La contraseña debe tener como mínimo 8 caracteres"
+        }
       }
     }
   }

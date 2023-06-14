@@ -29,7 +29,7 @@ export const meta: V2_MetaFunction = () => {
 
 const emailValidator = withZod(
   z.object({
-    email: z.string().email(),
+    email: z.string().email('account:profile.validation.email.invalid'),
   }),
 );
 
@@ -37,16 +37,20 @@ const profileValidator = withZod(
   z.object({
     displayName: z
       .string()
-      .min(3, 'Display name must be at least 3 characters long')
-      .max(20, 'Display name must be at most 20 characters long'),
+      .min(3, 'account:profile.validation.display-name.too-short')
+      .max(20, 'account:profile.validation.display-name.too-long'),
     image: z.instanceof(File).optional(),
   }),
 );
 
 const passwordValidator = withZod(
   z.object({
-    current: z.string().min(1, 'Please enter your current password'),
-    new: z.string().min(8, 'Password must be at least 8 characters in length'),
+    current: z
+      .string()
+      .min(1, 'account:dialogs.change-password.validation.current.required'),
+    new: z
+      .string()
+      .min(8, 'account:dialogs.change-password.validation.new.too-short'),
   }),
 );
 

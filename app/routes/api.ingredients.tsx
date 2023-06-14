@@ -9,8 +9,8 @@ export const ingredientValidator = withZod(
   z.object({
     name: z
       .string()
-      .min(1, 'You must provide an ingredient name')
-      .max(40, 'Ingredient name must be at most 40 characters long'),
+      .min(1, 'recipe:form.dialogs.new-ingredient.validation.name.required')
+      .max(40, 'recipe:form.dialogs.new-ingredient.validation.name.too-long'),
   }),
 );
 
@@ -46,7 +46,9 @@ export async function action({ request }: ActionArgs) {
   });
   if (existing)
     return validationError({
-      fieldErrors: { name: `Ingredient ${data.name} already exists` },
+      fieldErrors: {
+        name: 'recipe:form.dialogs.new-ingredient.errors.ingredient-exists',
+      },
     });
 
   try {
@@ -54,7 +56,9 @@ export async function action({ request }: ActionArgs) {
     return json(ingredient);
   } catch (err) {
     return validationError({
-      fieldErrors: { name: 'Unable to create ingredient' },
+      fieldErrors: {
+        name: 'recipe:form.dialogs.new-ingredient.errors.create-failed',
+      },
     });
   }
 }

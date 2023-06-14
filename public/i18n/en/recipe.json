@@ -92,7 +92,34 @@
         },
         "actions": {
           "create": "Create ingredient"
+        },
+        "validation": {
+          "name": {
+            "required": "You must provide an ingredient name",
+            "too-long": "Ingredient name must be at most 40 characters long"
+          }
+        },
+        "errors": {
+          "ingredient-exists": "An ingredient with this name already exists",
+          "create-failed": "Unable to create ingredient"
         }
+      }
+    },
+    "validation": {
+      "name": {
+        "required": "Recipe must have a name",
+        "too-long": "Name must be at most 40 characters long"
+      },
+      "description": {
+        "required": "A description is required",
+        "too-long": "Description must be at most 140 characters long"
+      },
+      "ingredient-amount": {
+        "too-low": "Cannot have zero of an ingredient"
+      },
+      "step": {
+        "required": "Step content is required",
+        "too-long": "Step content must be at most 140 characters long"
       }
     }
   },

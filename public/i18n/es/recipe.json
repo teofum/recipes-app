@@ -92,7 +92,34 @@
         },
         "actions": {
           "create": "Crear ingrediente"
+        },
+        "validation": {
+          "name": {
+            "required": "El ingrediente debe tener un nombre",
+            "too-long": "El nombre puede tener como máximo 40 caracteres"
+          }
+        },
+        "errors": {
+          "ingredient-exists": "Un ingrediente con este nombre ya existe",
+          "create-failed": "Error al crear el ingreediente"
         }
+      }
+    },
+    "validation": {
+      "name": {
+        "required": "La receta debe tener un nombre",
+        "too-long": "El nombre puede tener como máximo 40 caracteres"
+      },
+      "description": {
+        "required": "La receta debe tener una descripción",
+        "too-long": "La descripción puede tener como máximo 140 caracteres"
+      },
+      "ingredient-amount": {
+        "too-low": "La cantidad de un ingrediente no puede ser cero"
+      },
+      "step": {
+        "required": "Un paso debe tener contenido",
+        "too-long": "Un paso puede tener como máximo 140 caracteres"
       }
     }
   },
