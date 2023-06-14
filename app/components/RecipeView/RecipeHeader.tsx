@@ -1,4 +1,6 @@
 import { ArrowLeftIcon } from '@radix-ui/react-icons';
+import { useTranslation } from 'react-i18next';
+
 import { LinkButton } from '../ui/Button';
 
 interface RecipeHeaderProps {
@@ -10,6 +12,8 @@ export default function RecipeHeader({
   imageUrl,
   hideBackButton = false,
 }: RecipeHeaderProps) {
+  const { t } = useTranslation();
+
   return (
     <div
       className="
@@ -30,7 +34,7 @@ export default function RecipeHeader({
             className="w-max"
             variant={{ color: 'neutral' }}
           >
-            <ArrowLeftIcon /> Back to recipes
+            <ArrowLeftIcon /> {t('recipe:view.back')}
           </LinkButton>
         </div>
       ) : null}

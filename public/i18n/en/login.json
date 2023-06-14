@@ -1,0 +1,23 @@
+{
+  "title": "Login",
+  "fields": {
+    "username-or-email": "Username/Email",
+    "password": "Password"
+  },
+  "actions": {
+    "register": "I don't have an account",
+    "forgot": "I forgot my password"
+  },
+  "validation": {
+    "username-or-email": {
+      "required": "Please enter a username or email"
+    },
+    "password": {
+      "required": "Please enter a password"
+    }
+  },
+  "errors": {
+    "bad-login": "Incorrect username/email or password",
+    "auth-failed": "Authentication error"
+  }
+}

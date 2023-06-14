@@ -19,6 +19,8 @@ export async function loader({ request }: LoaderArgs) {
   return json({ user });
 }
 
+export const handle = { i18n: 'app' };
+
 export default function AppRoute() {
   const { user } = useLoaderData<typeof loader>();
 
@@ -78,10 +80,7 @@ export default function AppRoute() {
       </div>
 
       <div
-        className={cn(
-          'hidden fixed inset-0 z-[5]',
-          { 'sm:block': expanded }
-        )}
+        className={cn('hidden fixed inset-0 z-[5]', { 'sm:block': expanded })}
         onClick={() => setExpanded(false)}
       />
 

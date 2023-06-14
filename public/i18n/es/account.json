@@ -1,0 +1,57 @@
+{
+  "title": "Mi cuenta",
+  "profile": {
+    "actions": {
+      "save": "Guardar cambios"
+    },
+    "validation": {
+      "email": {
+        "invalid": "Ingresá una dirección de email válida"
+      },
+      "display-name": {
+        "too-short": "El apodo debe tener como mínimo 3 caracteres",
+        "too-long": "El apodo debe tener como máximo 20 caracteres"
+      }
+    }
+  },
+  "settings": {
+    "title": "Opciones de cuenta",
+    "fields": {
+      "email": {
+        "label": "Email",
+        "action": "Cambiar"
+      }
+    },
+    "actions": {
+      "change-password": "Cambiar contraseña"
+    }
+  },
+  "dialogs": {
+    "change-password": {
+      "title": "Cambiar contraseña",
+      "fields": {
+        "current": {
+          "label": "Contraseña actual"
+        },
+        "new": {
+          "label": "Nueva contraseña"
+        }
+      },
+      "actions": {
+        "change": "Cambiar contraseña"
+      },
+      "validation": {
+        "current": {
+          "required": "Ingresá tu contraseña actual"
+        },
+        "new": {
+          "too-short": "La contraseña debe tener como mínimo 8 caracteres"
+        }
+      },
+      "errors": {
+        "password": "Contraseña incorrecta",
+        "auth-failed": "Error de autenticación"
+      }
+    }
+  }
+}

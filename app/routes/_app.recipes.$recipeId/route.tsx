@@ -20,6 +20,7 @@ import { getUser } from '~/server/session.server';
 import type { Recipe } from '~/types/recipe.type';
 import { LinkButton } from '~/components/ui/Button';
 import { deleteImage } from '~/server/image.server';
+import { useTranslation } from 'react-i18next';
 
 export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
   return [{ title: `${data?.recipe.name ?? 'Recipe'} | CookBook` }];
@@ -96,11 +97,17 @@ export async function loader({ request, params }: LoaderArgs) {
   return json({ recipe, user });
 }
 
+export const handle = { i18n: 'recipe' };
+
 function ManageForm({ recipe }: { recipe: Recipe }) {
+  const { t } = useTranslation();
+
   return (
     <div className="flex flex-col">
       <ShareDialog recipe={recipe} />
-      <LinkButton to={`/recipes/edit/${recipe.id}`}>Edit</LinkButton>
+      <LinkButton to={`/recipes/edit/${recipe.id}`}>
+        {t('recipe:view.actions.edit')}
+      </LinkButton>
       <DeleteConfirmationDialog recipe={recipe} />
     </div>
   );

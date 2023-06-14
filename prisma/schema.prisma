@@ -8,15 +8,16 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(uuid())
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  email         String    @unique
-  username      String    @unique
-  displayName   String
-  avatarUrl     String?
+  id                String    @id @default(uuid())
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  email             String    @unique
+  username          String    @unique
+  displayName       String
+  avatarUrl         String?
+  primaryLanguage   Language  @default(en)
 
-  recipes       Recipe[]
+  recipes           Recipe[]
 }
 
 model Auth {
@@ -31,6 +32,11 @@ model Recovery {
   oneTimeCodeHash String
 }
 
+enum Language {
+  en
+  es
+}
+
 model Recipe {
   id            String                  @id @default(uuid())
   createdAt     DateTime                @default(now())
@@ -38,6 +44,7 @@ model Recipe {
   author        User                    @relation(fields: [authorId], references: [id])
   authorId      String
   visibility    Visibility              @default(UNLISTED)
+  language      Language                @default(en)
 
   name          String
   description   String                  @db.Text // A brief description
@@ -63,6 +70,7 @@ model Ingredient {
   recipes       IngredientsOnRecipes[]
 
   name          String                  @unique
+  language      Language                @default(en)
 }
 
 model IngredientsOnRecipes {

@@ -11,8 +11,8 @@ import cn from 'classnames';
 import Avatar from './Avatar';
 import Button, { LinkButton } from './Button';
 import type { User } from '~/types/user.type';
-
-type SidenavProps = React.PropsWithChildren<{ user: User | null }>;
+import { useTranslation } from 'react-i18next';
+import LanguageSelect from './LanguageSelect';
 
 interface SidenavLinkProps {
   currentRoute: RouteMatch;
@@ -38,9 +38,13 @@ function SidenavLink({ currentRoute, route, text, icon }: SidenavLinkProps) {
   );
 }
 
+type SidenavProps = React.PropsWithChildren<{ user: User | null }>;
+
 export default function Sidenav({ user }: SidenavProps) {
   const matches = useMatches();
   const currentRoute = matches.at(-1) as RouteMatch;
+
+  const { t } = useTranslation();
 
   return (
     <div className="flex flex-col h-full">
@@ -57,7 +61,7 @@ export default function Sidenav({ user }: SidenavProps) {
             <SidenavLink
               currentRoute={currentRoute}
               route="/recipes"
-              text="My Recipes"
+              text={t('app:nav.my-recipes')}
               icon={<DashboardIcon />}
             />
           </li>
@@ -65,7 +69,7 @@ export default function Sidenav({ user }: SidenavProps) {
             <SidenavLink
               currentRoute={currentRoute}
               route="/recipes/find"
-              text="Recipe Finder"
+              text={t('app:nav.find')}
               icon={<MagnifyingGlassIcon />}
             />
           </li>
@@ -73,14 +77,18 @@ export default function Sidenav({ user }: SidenavProps) {
             <SidenavLink
               currentRoute={currentRoute}
               route="/recipes/new"
-              text="New Recipe"
+              text={t('app:nav.new')}
               icon={<FilePlusIcon />}
             />
           </li>
         </ul>
       </nav>
 
-      <div className="mt-auto pt-6 border-t">
+      <div className="mt-auto">
+        <LanguageSelect />
+      </div>
+
+      <div className="mt-4 pt-6 border-t">
         {user !== null ? (
           <div className="flex flex-col gap-2">
             <div className="flex flex-row gap-2 items-center">
@@ -98,7 +106,7 @@ export default function Sidenav({ user }: SidenavProps) {
                 variant={{ size: 'sm' }}
                 className="flex-1"
               >
-                Account
+                {t('app:nav.account')}
               </LinkButton>
               <Form
                 method="post"
@@ -110,14 +118,14 @@ export default function Sidenav({ user }: SidenavProps) {
                   variant={{ size: 'sm' }}
                   className="w-full"
                 >
-                  Logout
+                  {t('session.logout')}
                 </Button>
               </Form>
             </div>
           </div>
         ) : (
           <LinkButton to={`/login?redirectUrl=${currentRoute.pathname}`}>
-            Sign in
+            {t('session.login')}
           </LinkButton>
         )}
       </div>

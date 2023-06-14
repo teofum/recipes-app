@@ -1,0 +1,57 @@
+{
+  "title": "My account",
+  "profile": {
+    "actions": {
+      "save": "Save changes"
+    },
+    "validation": {
+      "email": {
+        "invalid": "Please enter a valid email address"
+      },
+      "display-name": {
+        "too-short": "Nickname must be at least 3 characters long",
+        "too-long": "Nickname must be at most 20 characters long"
+      }
+    }
+  },
+  "settings": {
+    "title": "Account settings",
+    "fields": {
+      "email": {
+        "label": "Email",
+        "action": "Change"
+      }
+    },
+    "actions": {
+      "change-password": "Change password"
+    }
+  },
+  "dialogs": {
+    "change-password": {
+      "title": "Change password",
+      "fields": {
+        "current": {
+          "label": "Current password"
+        },
+        "new": {
+          "label": "New password"
+        }
+      },
+      "actions": {
+        "change": "Change password"
+      },
+      "validation": {
+        "current": {
+          "required": "Please enter your current password"
+        },
+        "new": {
+          "too-short": "Password must be at least 8 characters long"
+        }
+      },
+      "errors": {
+        "password": "Incorrect password",
+        "auth-failed": "Authentication failed"
+      }
+    }
+  }
+}

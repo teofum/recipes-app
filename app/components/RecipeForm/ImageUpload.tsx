@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import Form from '~/components/ui/Form';
 import Button from '../ui/Button';
 
@@ -17,6 +19,8 @@ export default function ImageUpload({
   setImageUrl,
   imageClassName,
 }: ImageUploadProps) {
+  const { t } = useTranslation();
+
   const onUploadImage = (ev: React.ChangeEvent<HTMLInputElement>) => {
     const file = ev.target.files ? ev.target.files[0] : null;
     if (file) setImageUrl(URL.createObjectURL(file));
@@ -41,7 +45,7 @@ export default function ImageUpload({
           (target.nextSibling as HTMLInputElement).click();
         }}
       >
-        Upload image
+        {t('recipe:form.fields.image.upload')}
       </Button>
 
       <Form.Input

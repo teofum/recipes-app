@@ -1,5 +1,7 @@
 import type { Unit } from '@prisma/client';
 import { TimerIcon } from '@radix-ui/react-icons';
+import { useTranslation } from 'react-i18next';
+import type { TFunction } from 'i18next';
 
 import type { FullRecipe, RecipeIngredient } from '~/types/recipe.type';
 import { units } from '~/types/unit.type';
@@ -7,24 +9,21 @@ import type { User } from '~/types/user.type';
 import RecipeHeader from './RecipeHeader';
 import { PLACEHOLDER_IMAGE_URL } from '~/utils/constants';
 
-function formatTime(totalMinutes: number): string {
+function formatTime(totalMinutes: number, t: TFunction): string {
   const hours = Math.floor(totalMinutes / 60);
   const minutes = Math.floor(totalMinutes % 60);
 
-  return (
-    (hours > 0 ? `${hours} ${hours > 1 ? 'hours' : 'hour'}, ` : '') +
-    `${minutes} ${minutes > 1 ? 'minutes' : 'minute'}`
-  );
+  return `${hours > 0 ? t('format.hours', { count: hours }) : ''} ${t(
+    'format.minutes',
+    { count: minutes },
+  )}`;
 }
 
 function formatTimeShort(totalMinutes: number): string {
   const hours = Math.floor(totalMinutes / 60);
   const minutes = Math.floor(totalMinutes % 60);
 
-  return (
-    (hours > 0 ? `${hours} h, ` : '') +
-    `${minutes} min`
-  );
+  return (hours > 0 ? `${hours} h, ` : '') + `${minutes} min`;
 }
 
 function formatAmount(amount: number, unit: Unit): string {
@@ -52,6 +51,8 @@ export default function RecipeView({
   user,
   manageForm,
 }: RecipeViewProps) {
+  const { t } = useTranslation();
+
   const loggedUserIsOwner = user?.id === recipe.authorId;
 
   return (
@@ -81,13 +82,12 @@ export default function RecipeView({
             <p className="text-sm">{recipe.description}</p>
 
             <div className="text-sm text-light">
-              Uploaded by {recipe.author.displayName}
+              {t('recipe:view.uploaded-by')}
+              {recipe.author.displayName}
             </div>
 
             {loggedUserIsOwner && (
-              <div className="mt-2 pt-4 border-t">
-                {manageForm}
-              </div>
+              <div className="mt-2 pt-4 border-t">{manageForm}</div>
             )}
           </div>
         </aside>
@@ -100,7 +100,7 @@ export default function RecipeView({
         >
           <div className="card">
             <div className="card-heading">
-              <h2>Ingredients</h2>
+              <h2>{t('recipe:view.ingredients')}</h2>
             </div>
 
             <ul>
@@ -126,7 +126,7 @@ export default function RecipeView({
 
           <div className="card">
             <div className="card-heading">
-              <h2>Preparation</h2>
+              <h2>{t('recipe:view.preparation')}</h2>
               <div
                 className="
                   flex flex-row items-center gap-2 py-1 px-2
@@ -135,7 +135,7 @@ export default function RecipeView({
               >
                 <TimerIcon className="text-primary" />
                 <span className="text-sm hidden sm:inline">
-                  {formatTime(recipe.prepTime)}
+                  {formatTime(recipe.prepTime, t)}
                 </span>
                 <span className="text-sm sm:hidden">
                   {formatTimeShort(recipe.prepTime)}

@@ -13,6 +13,7 @@ import LoadingButton from './LoadingButton';
 import S from './Select';
 
 import type { ElementProps } from '~/utils/ElementProps.type';
+import { useTranslation } from 'react-i18next';
 
 interface ValidationBehaviorOptions {
   initial?: 'onChange' | 'onBlur' | 'onSubmit';
@@ -234,10 +235,11 @@ type ErrorProps = {
 
 function Error({ name, id }: ErrorProps) {
   const { error } = useField(name);
+  const { t } = useTranslation();
 
   return (
     <p id={`${id}__error`} className="text-xs text-danger">
-      {error || ' '}
+      {t(error ?? '')}
     </p>
   );
 }

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Form from './Form';
 import cn from 'classnames';
+import { useTranslation } from 'react-i18next';
 
 const hours = Array.from(Array(24), (_, i) => i);
 const minutes = Array.from(Array(60), (_, i) => i);
@@ -21,6 +22,8 @@ export default function TimePicker({
   defaultHour,
   defaultMinute,
 }: Props) {
+  const { t } = useTranslation();
+
   const [hour, setHour] = useState(defaultHour ?? 0);
   const [minute, setMinute] = useState(defaultMinute ?? 0);
 
@@ -108,7 +111,7 @@ export default function TimePicker({
           ))}
         </div>
       </div>
-      <div>hours</div>
+      <div>{t('format.hours')}</div>
 
       <div
         className="
@@ -141,7 +144,7 @@ export default function TimePicker({
           ))}
         </div>
       </div>
-      <div>minutes</div>
+      <div>{t('format.minutes')}</div>
 
       <div
         className="

@@ -1,6 +1,7 @@
 import type { ActionArgs, V2_MetaFunction } from '@remix-run/node';
 import { useRouteError, useSearchParams } from '@remix-run/react';
 import { withZod } from '@remix-validated-form/with-zod';
+import { useTranslation } from 'react-i18next';
 import type { FieldErrors } from 'remix-validated-form';
 import { validationError } from 'remix-validated-form';
 import { z } from 'zod';
@@ -17,11 +18,13 @@ export const meta: V2_MetaFunction = () => {
 
 const validator = withZod(
   z.object({
-    resetCode: z.string().regex(/^[a-zA-Z0-9]{0,6}$/, 'Invalid reset code'),
+    resetCode: z
+      .string()
+      .regex(/^[a-zA-Z0-9]{0,6}$/, 'forgot:reset.validation.code.invalid'),
     newPassword: z
       .string()
-      .min(8, 'Password must be at least 8 characters in length'),
-    username: z.string().min(1, 'Username unavailable'),
+      .min(8, 'forgot:reset.validation.password.too-short'),
+    username: z.string().min(1),
     redirectUrl: z.string().optional(),
   }),
 );
@@ -45,25 +48,29 @@ export async function action({ request }: ActionArgs) {
   }
 }
 
+export const handle = { i18n: 'forgot' };
+
 export default function ResetPasswordRoute() {
   const [params] = useSearchParams();
   const redirectUrl = params.get('redirectUrl');
   const username = params.get('username');
   const obfuscatedEmailAddress = params.get('email');
 
+  const { t } = useTranslation();
+
   return (
     <div className="min-h-screen grid place-items-center bg-primary-2 bg-dots bg-repeat px-4">
       <div className="card flex flex-col gap-4 max-w-sm w-full">
         <h1 className="font-display text-4xl font-semibold text-center">
-          Reset your password
+          {t('forgot:title')}
         </h1>
 
         <p className="text-sm text-light">
-          We just sent a one-time reset code to your email{' '}
+          {t('forgot:reset.description.0')}
           <span className="text-black font-semibold">
             {obfuscatedEmailAddress}
           </span>
-          , valid for the next 15 minutes. Enter the code and a new password.
+          {t('forgot:reset.description.1')}
         </p>
 
         <Form.Root validator={validator} method="post">
@@ -82,7 +89,9 @@ export default function ResetPasswordRoute() {
           />
 
           <Form.Field>
-            <Form.Label htmlFor="resetCode">Reset code</Form.Label>
+            <Form.Label htmlFor="resetCode">
+              {t('forgot:reset.fields.reset-code')}
+            </Form.Label>
             <div className="mx-auto">
               <CodeInput name="resetCode" id="resetCode" />
             </div>
@@ -90,7 +99,9 @@ export default function ResetPasswordRoute() {
           </Form.Field>
 
           <Form.Field>
-            <Form.Label htmlFor="password">New password</Form.Label>
+            <Form.Label htmlFor="password">
+              {t('forgot:reset.fields.new-password')}
+            </Form.Label>
             <Form.Input
               type="text"
               name="newPassword"
@@ -105,7 +116,7 @@ export default function ResetPasswordRoute() {
           </Form.Field>
 
           <Form.SubmitButton variant="filled">
-            Reset password and sign in
+            {t('forgot:reset.actions.reset')}
           </Form.SubmitButton>
         </Form.Root>
       </div>

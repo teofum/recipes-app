@@ -1,0 +1,34 @@
+{
+  "title": "Registrarse",
+  "fields": {
+    "email": "Email",
+    "username": "Usuario",
+    "display-name": "Apodo",
+    "password": "Contraseña"
+  },
+  "actions": {
+    "register": "Registrarse"
+  },
+  "validation": {
+    "email": {
+      "invalid": "Ingresá una dirección de email válida"
+    },
+    "username": {
+      "too-short": "El usuario debe tener como mínimo 3 caracteres",
+      "too-long": "El usuario debe tener como máximo 20 caracteres",
+      "characters": "El usuario sólo puede contener letras, números, guión y guión bajo"
+    },
+    "display-name": {
+      "too-short": "El apodo debe tener como mínimo 3 caracteres",
+      "too-long": "El apodo debe tener como máximo 20 caracteres"
+    },
+    "password": {
+      "too-short": "La contraseña debe tener como mínimo 8 caracteres"
+    }
+  },
+  "errors": {
+    "username-taken": "Este nombre de usuario ya está en uso",
+    "email-taken": "Esta dirección de mail ya está en uso",
+    "register-failed": "Error al registrar el usuario"
+  }
+}

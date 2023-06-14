@@ -9,6 +9,7 @@ import type { Recipe } from '~/types/recipe.type';
 import { visibility } from '~/types/visibility.type';
 
 import { manageRecipeValidator } from '~/routes/_app.recipes.$recipeId/route';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   recipe: Recipe;
@@ -17,6 +18,8 @@ interface Props {
 export default function ShareDialog({ recipe }: Props) {
   const [copied, setCopied] = useState(false);
 
+  const { t } = useTranslation();
+
   const shareUrl = `https://recipes.fumagalli.ar/recipes/${recipe.id}`;
   const copyLink = async () => {
     await navigator.clipboard.writeText(shareUrl);
@@ -24,7 +27,10 @@ export default function ShareDialog({ recipe }: Props) {
   };
 
   return (
-    <Dialog trigger={<Button>Share</Button>} title="Share">
+    <Dialog
+      trigger={<Button>{t('recipe:view.actions.share')}</Button>}
+      title={t('recipe:view.dialogs.share.title')}
+    >
       <Form.Root
         validator={manageRecipeValidator}
         method="post"
@@ -50,7 +56,9 @@ export default function ShareDialog({ recipe }: Props) {
         />
 
         <Form.Field>
-          <Form.Label>Visibility</Form.Label>
+          <Form.Label>
+            {t('recipe:view.dialogs.share.fields.visibility.label')}
+          </Form.Label>
           <Form.RadioGroup name="visibility" defaultValue={recipe.visibility}>
             {visibility.map((v) => (
               <Form.RadioButton
@@ -63,10 +71,8 @@ export default function ShareDialog({ recipe }: Props) {
                     <v.icon className="text-primary" />
                   </div>
                   <div>
-                    <div className="font-medium">{v.name}</div>
-                    <div className="text-xs text-light">
-                      {v.description}
-                    </div>
+                    <div className="font-medium">{t(v.name)}</div>
+                    <div className="text-xs text-light">{t(v.description)}</div>
                   </div>
                 </div>
               </Form.RadioButton>
@@ -74,12 +80,16 @@ export default function ShareDialog({ recipe }: Props) {
           </Form.RadioGroup>
         </Form.Field>
 
-        <Form.SubmitButton variant="filled">Save</Form.SubmitButton>
+        <Form.SubmitButton variant="filled">
+          {t('recipe:view.dialogs.share.fields.visibility.action')}
+        </Form.SubmitButton>
       </Form.Root>
 
       {recipe.visibility !== Visibility.PRIVATE ? (
         <Form.Field className="mt-3">
-          <Form.Label>Share a link</Form.Label>
+          <Form.Label>
+            {t('recipe:view.dialogs.share.fields.link.label')}
+          </Form.Label>
           <div className="flex flex-row">
             <input
               className="input select-all rounded-e-none border-r-0 flex-1 text-xs"
@@ -92,7 +102,11 @@ export default function ShareDialog({ recipe }: Props) {
               onClick={copyLink}
             >
               {copied ? <CheckCircledIcon /> : <CopyIcon />}
-              {copied ? 'Copied' : 'Copy link'}
+              {t(
+                copied
+                  ? 'recipe:view.dialogs.share.fields.link.action.done'
+                  : 'recipe:view.dialogs.share.fields.link.action.cta',
+              )}
             </Button>
           </div>
         </Form.Field>

@@ -1,0 +1,46 @@
+{
+  "title": "Recover account",
+  "forgot": {
+    "description": "Forgot your password? No problem! Just enter your username or email and we'll send you a one-time reset code.",
+    "fields": {
+      "username-or-email": "Username/Email"
+    },
+    "actions": {
+      "send": "Send code"
+    },
+    "validation": {
+      "username-or-email": {
+        "required": "Please enter your username or email"
+      }
+    },
+    "errors": {
+      "user-not-found": "User not found"
+    }
+  },
+  "reset": {
+    "description": [
+      "We just sent a one-time reset code to your email ",
+      ", valid for the next 15 minutes. Enter the code and a new password."
+    ],
+    "fields": {
+      "reset-code": "Reset code",
+      "new-password": "New password"
+    },
+    "actions": {
+      "reset": "Reset password and sign in"
+    },
+    "validation": {
+      "code" : {
+        "invalid": "Invalid reset code"
+      },
+      "password": {
+        "too-short": "Password must be at least 8 characters long"
+      }
+    },
+    "errors": {
+      "not-found": "No reset code exists for this user",
+      "no-match": "Incorrect reset code",
+      "expired": "Reset code is expired"
+    }
+  }
+}

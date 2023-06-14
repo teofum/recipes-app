@@ -161,7 +161,7 @@
   }
 
   .button[data-loading=true] > :not(:first-child) {
-    opacity: 0;
+    color: transparent;
   }
 
   /* Button size variants */

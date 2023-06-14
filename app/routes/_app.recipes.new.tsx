@@ -1,3 +1,4 @@
+import type { Language } from '@prisma/client';
 import type { ActionArgs, LoaderArgs, V2_MetaFunction } from '@remix-run/node';
 import {
   unstable_createMemoryUploadHandler,
@@ -22,6 +23,7 @@ import { newRecipeValidator } from '~/components/RecipeForm/validators';
 import buildOptimisticRecipe from '~/components/RecipeForm/buildOptimisticRecipe';
 import { MAX_UPLOAD_SIZE } from '~/utils/constants';
 import uploadImage from '~/server/image.server';
+import i18next from '~/server/i18n.server';
 
 export const meta: V2_MetaFunction = () => {
   return [{ title: 'New Recipe | CookBook' }];
@@ -32,6 +34,7 @@ export const meta: V2_MetaFunction = () => {
  */
 export async function action({ request }: ActionArgs) {
   const userId = await requireLogin(request);
+  const locale = (await i18next.getLocale(request)) as Language;
   const formData = await unstable_parseMultipartFormData(
     request,
     unstable_createMemoryUploadHandler({ maxPartSize: MAX_UPLOAD_SIZE }),
@@ -48,6 +51,7 @@ export async function action({ request }: ActionArgs) {
       prepTime: data.prepTime,
       authorId: userId,
       visibility: data.visibility,
+      language: locale,
 
       ingredients: {
         create: data.ingredients.map((ingredient) => ({
@@ -68,7 +72,7 @@ export async function action({ request }: ActionArgs) {
   if (!recipe) throw serverError({ message: 'Failed to create recipe' });
 
   // If there's an image provided upload and update the recipe with its url
-  if (data.image) {
+  if (data.image && data.image.name) {
     const filename = `${recipe.id}.${Date.now()}.webp`;
     const imageUrl = await uploadImage(data.image, 'recipe', filename);
     await db.recipe.update({ where: { id: recipe.id }, data: { imageUrl } });

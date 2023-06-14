@@ -46,12 +46,7 @@ function Root({
         <Select.Content
           {...contentProps}
           className={cn(
-            `
-            bg-white
-            border
-            rounded-md
-            p-1
-            `,
+            'surface border rounded-md p-1 z-20',
             contentProps?.className,
           )}
         >

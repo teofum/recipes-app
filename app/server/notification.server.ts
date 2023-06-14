@@ -27,7 +27,7 @@ export const sendRecoveryEmail = async (
   const user = await db.user.findFirst({
     where: { OR: [{ username: usernameOrEmail }, { email: usernameOrEmail }] },
   });
-  if (!user) throw { usernameOrEmail: 'User not found' };
+  if (!user) throw { usernameOrEmail: 'forgot:forgot.errors.user-not-found' };
 
   // Next, generate a one-time code, hash and store it in the database
   const oneTimeCode = generateOneTimeCode();

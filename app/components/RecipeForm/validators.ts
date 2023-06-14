@@ -11,18 +11,12 @@ import {
 const schema = z.object({
   name: z
     .string()
-    .min(1, 'Name is required')
-    .max(
-      NAME_MAX_LENGTH,
-      `Name must be at most ${NAME_MAX_LENGTH} characters long`,
-    ),
+    .min(1, 'recipe:form.validation.name.required')
+    .max(NAME_MAX_LENGTH, 'recipe:form.validation.name.too-long'),
   description: z
     .string()
-    .min(1, 'A description is required')
-    .max(
-      DESCRIPTION_MAX_LENGTH,
-      `Description must be at most ${DESCRIPTION_MAX_LENGTH} characters long`,
-    ),
+    .min(1, 'recipe:form.validation.description.required')
+    .max(DESCRIPTION_MAX_LENGTH, 'recipe:form.validation.description.too-long'),
   visibility: z.enum([
     Visibility.PUBLIC,
     Visibility.UNLISTED,
@@ -34,7 +28,9 @@ const schema = z.object({
     z.object({
       id: z.string(),
       name: z.string(), // Not written to DB, only used to render optimistic UI
-      amount: z.coerce.number().min(1, 'Cannot have zero of an ingredient'),
+      amount: z.coerce
+        .number()
+        .min(1, 'recipe:form.validation.ingredient-amount.too-low'),
       unit: z.enum([Unit.GRAMS, Unit.LITERS, Unit.UNITS]),
     }),
   ),
@@ -43,11 +39,8 @@ const schema = z.object({
       id: z.string(),
       content: z
         .string()
-        .min(1, 'Step content is required')
-        .max(
-          STEP_MAX_LENGTH,
-          `Description must be at most ${STEP_MAX_LENGTH} characters long`,
-        ),
+        .min(1, 'recipe:form.validation.step.required')
+        .max(STEP_MAX_LENGTH, 'recipe:form.validation.step.too-long'),
     }),
   ),
 });

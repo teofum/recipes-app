@@ -7,6 +7,7 @@ import { HoldSubmitButton } from '~/components/ui/HoldButton';
 import type { Recipe } from '~/types/recipe.type';
 
 import { manageRecipeValidator } from '~/routes/_app.recipes.$recipeId/route';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   recipe: Recipe;
@@ -15,19 +16,21 @@ interface Props {
 export default function DeleteConfirmationDialog({ recipe }: Props) {
   const [confirmation, setConfirmation] = useState('');
 
+  const { t } = useTranslation();
+
   return (
     <Dialog
       trigger={
         <Button variant={{ color: 'danger' }}>
-          Delete
+          {t('recipe:view.actions.delete')}
         </Button>
       }
-      title="Delete recipe"
+      title={t('recipe:view.dialogs.delete.title')}
       description={
         <>
-          Please confirm you want to delete this recipe.{' '}
+          {t('recipe:view.dialogs.delete.description.0')}
           <span className="font-medium text-danger">
-            This action is permanent and cannot be undone.
+            {t('recipe:view.dialogs.delete.description.1')}
           </span>
         </>
       }
@@ -64,7 +67,9 @@ export default function DeleteConfirmationDialog({ recipe }: Props) {
 
         <Form.Field>
           <Form.Label htmlFor="confirmation">
-            Type <span className="font-medium">{recipe.name}</span> to confirm
+            {t('recipe:view.dialogs.delete.fields.confirmation.label.0')}
+            <span className="font-medium">{recipe.name}</span>
+            {t('recipe:view.dialogs.delete.fields.confirmation.label.1')}
           </Form.Label>
           <Form.Input
             name="confirmation"
@@ -77,7 +82,7 @@ export default function DeleteConfirmationDialog({ recipe }: Props) {
           variant={{ color: 'danger', style: 'filled' }}
           disabled={confirmation !== recipe.name}
         >
-          Hold to delete
+          {t('recipe:view.dialogs.delete.actions.delete')}
         </HoldSubmitButton>
       </Form.Root>
     </Dialog>

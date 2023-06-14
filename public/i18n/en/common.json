@@ -1,0 +1,35 @@
+{
+  "session": {
+    "login": "Log in",
+    "logout": "Log out"
+  },
+  "format": {
+    "hour": "hour",
+    "hours": "hours",
+    "hours_one": "{{count}} hour",
+    "hours_other": "{{count}} hours",
+    "minute": "minute",
+    "minutes": "minutes",
+    "minutes_one": "{{count}} minute",
+    "minutes_other": "{{count}} minutes"
+  },
+  "visibility": {
+    "public": {
+      "name": "Public",
+      "description": "The recipe may be shown to other users. Only you can edit."
+    },
+    "unlisted": {
+      "name": "Unlisted",
+      "description": "Anyone with the link can view. Will not be shown to other users. Only you can edit."
+    },
+    "private": {
+      "name": "Private",
+      "description": "Only you can view and edit this recipe."
+    }
+  },
+  "units": {
+    "units": "Units",
+    "grams": "Grams",
+    "liters": "Liters"
+  }
+}
