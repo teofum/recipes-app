@@ -8,22 +8,20 @@ import {
 export const visibility = [
   // {
   //   value: Visibility.PUBLIC,
-  //   name: 'Public',
-  //   description:
-  //     '(NOT IMPLEMENTED) The recipe may be shown to other users. Only you can edit.',
+  //   name: 'visibility.public.name',
+  //   description: 'visibility.public.description',
   //   icon: EyeOpenIcon,
   // },
   {
     value: Visibility.UNLISTED,
-    name: 'Unlisted',
-    description:
-      'Anyone with the link can view. Will not be shown to other users. Only you can edit.',
+    name: 'visibility.unlisted.name',
+    description: 'visibility.unlisted.description',
     icon: EyeNoneIcon,
   },
   {
     value: Visibility.PRIVATE,
-    name: 'Private',
-    description: 'Only you can view and edit this recipe.',
+    name: 'visibility.private.name',
+    description: 'visibility.private.description',
     icon: LockClosedIcon,
   },
 ];

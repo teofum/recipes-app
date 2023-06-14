@@ -71,8 +71,8 @@ export default function ShareDialog({ recipe }: Props) {
                     <v.icon className="text-primary" />
                   </div>
                   <div>
-                    <div className="font-medium">{v.name}</div>
-                    <div className="text-xs text-light">{v.description}</div>
+                    <div className="font-medium">{t(v.name)}</div>
+                    <div className="text-xs text-light">{t(v.description)}</div>
                   </div>
                 </div>
               </Form.RadioButton>

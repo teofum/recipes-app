@@ -12,5 +12,24 @@
     "minutes": "minutos",
     "minutes_one": "{{count}} minuto",
     "minutes_other": "{{count}} minutos"
+  },
+  "visibility": {
+    "public": {
+      "name": "Pública",
+      "description": "La receta puede mostrarse a otros usuarios. Sólo vos podés editar."
+    },
+    "unlisted": {
+      "name": "Oculta",
+      "description": "Toda persona con el enlace puede ver. No se mostrará a otros usuarios. Sólo vos podés editar."
+    },
+    "private": {
+      "name": "Privada",
+      "description": "Sólo vos podés ver y editar la receta."
+    }
+  },
+  "units": {
+    "units": "Unidades",
+    "grams": "Gramos",
+    "liters": "Litros"
   }
 }

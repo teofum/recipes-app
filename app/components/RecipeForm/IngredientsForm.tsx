@@ -67,7 +67,7 @@ export default function IngredientsForm() {
               >
                 {units.map((unit) => (
                   <Form.SelectItem key={unit.type} value={unit.type}>
-                    {unit.fullName}
+                    {t(unit.fullName)}
                   </Form.SelectItem>
                 ))}
               </Form.Select>

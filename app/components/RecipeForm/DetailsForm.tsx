@@ -67,13 +67,13 @@ export default function DetailsForm({ mode = 'create' }: DetailsFormProps) {
           {visibility.map((v) => (
             <Form.SelectItem key={v.value} value={v.value}>
               <div className="flex flex-row items-center gap-2">
-                <v.icon /> {v.name}
+                <v.icon /> {t(v.name)}
               </div>
             </Form.SelectItem>
           ))}
         </Form.Select>
         <Form.Error name="visibility" id="visibility" />
-        <p className="text-xs text-light">{description}</p>
+        <p className="text-xs text-light">{t(description)}</p>
       </Form.Field>
 
       <Form.SubmitButton
