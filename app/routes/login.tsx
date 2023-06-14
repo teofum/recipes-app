@@ -18,8 +18,10 @@ export const meta: V2_MetaFunction = () => {
 
 const validator = withZod(
   z.object({
-    usernameOrEmail: z.string().min(1, 'Please enter a username or email'),
-    password: z.string().min(1, 'Please enter a password'),
+    usernameOrEmail: z
+      .string()
+      .min(1, 'login:validation.username-or-email.required'),
+    password: z.string().min(1, 'login:validation.password.required'),
     redirectUrl: z.string().optional(),
   }),
 );

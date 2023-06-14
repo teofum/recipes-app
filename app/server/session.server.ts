@@ -124,18 +124,18 @@ export const login = async (
     select: { id: true, username: true },
     where: { OR: [{ username: usernameOrEmail }, { email: usernameOrEmail }] },
   });
-  if (!user) throw { password: 'Incorrect username/email or password' };
+  if (!user) throw { password: 'login:errors.bad-login' };
 
   // Then, query the auth table with the username to get the hashed password
   const auth = await db.auth.findUnique({
     where: { username: user.username },
   });
-  if (!auth) throw { password: 'Authentication failed' };
+  if (!auth) throw { password: 'login:errors.auth-failed' };
 
   // Finally, compare the password
   const passwordMatch = await bcryptjs.compare(password, auth.passwordHash);
   if (!passwordMatch)
-    throw { password: 'Incorrect username/email or password' };
+    throw { password: 'login:errors.bad-login' };
 
   return createUserSession(user.id, redirectUrl);
 };
@@ -160,10 +160,10 @@ export const register = async (
   try {
     const usernameTaken =
       (await db.user.findFirst({ where: { username } })) !== null;
-    if (usernameTaken) throw { username: `The username ${username} is taken.` };
+    if (usernameTaken) throw { username: 'register:errors.username-taken' };
 
     const emailTaken = (await db.user.findFirst({ where: { email } })) !== null;
-    if (emailTaken) throw { email: `Email ${email} is already in use.` };
+    if (emailTaken) throw { email: 'register:errors.email-taken' };
 
     // Hash the password and create auth data
     const passwordHash = await bcryptjs.hash(password, 10);
@@ -175,7 +175,7 @@ export const register = async (
     const user = await db.user.create({
       data: { username, displayName, email },
     });
-    if (!user) throw { username: 'Something went wrong creating the user.' };
+    if (!user) throw { username: 'register:errors.register-failed' };
 
     return createUserSession(user.id, redirectUrl);
   } catch (err: unknown) {
@@ -198,19 +198,19 @@ export const resetPassword = async (
 
   // First, find the recovery code hash by username
   const recovery = await db.recovery.findUnique({ where: { username } });
-  if (!recovery) throw { resetCode: `Reset code for ${username} not found.` };
+  if (!recovery) throw { resetCode: 'forgot:reset.errors.not-found' };
 
   // If we found one, make sure it's not expired
   const age = Date.now() - recovery.updatedAt.valueOf();
   if (age > RESET_CODE_TTL) {
     // Delete it from the database, we don't need to keep expired codes around
     await db.recovery.delete({ where: { username } });
-    throw { resetCode: `Reset code is expired.` };
+    throw { resetCode: 'forgot:reset.errors.expired' };
   }
 
   // Check if it's a match
   const codeMatch = await bcryptjs.compare(resetCode, recovery.oneTimeCodeHash);
-  if (!codeMatch) throw { resetCode: `Incorrect reset code.` };
+  if (!codeMatch) throw { resetCode: 'forgot:reset.errors.no-match' };
 
   // The code matches: delete used code from db, reset password and login user
   await db.recovery.delete({ where: { username } });

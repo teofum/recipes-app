@@ -7,5 +7,17 @@
   "actions": {
     "register": "No tengo una cuenta",
     "forgot": "Olvidé mi contraseña"
+  },
+  "validation": {
+    "username-or-email": {
+      "required": "Ingresá un usuario o email"
+    },
+    "password": {
+      "required": "Ingresá una contraseña"
+    }
+  },
+  "errors": {
+    "bad-login": "Usuario/email o contraseña incorrectos",
+    "auth-failed": "Error de autenticación"
   }
 }

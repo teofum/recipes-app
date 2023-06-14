@@ -7,6 +7,14 @@
     },
     "actions": {
       "send": "Enviar código"
+    },
+    "validation": {
+      "username-or-email": {
+        "required": "Ingresá tu usuario o email"
+      }
+    },
+    "errors": {
+      "user-not-found": "No se encontró el usuario"
     }
   },
   "reset": {
@@ -20,6 +28,19 @@
     },
     "actions": {
       "reset": "Cambiar contraseña e ingresar"
+    },
+    "validation": {
+      "code" : {
+        "invalid": "Código de recuperación inválido"
+      },
+      "password": {
+        "too-short": "La contraseña debe tener como mínimo 8 caracteres"
+      }
+    },
+    "errors": {
+      "not-found": "No existe un código de recuperación para este usuario",
+      "no-match": "Código de recuperación incorrecto",
+      "expired": "El código de recuperación está vencido"
     }
   }
 }

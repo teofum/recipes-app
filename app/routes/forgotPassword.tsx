@@ -17,7 +17,9 @@ export const meta: V2_MetaFunction = () => {
 
 const validator = withZod(
   z.object({
-    usernameOrEmail: z.string().min(1, 'Please enter your username or email'),
+    usernameOrEmail: z
+      .string()
+      .min(1, 'forgot:forgot.validation.username-or-email.required'),
     redirectUrl: z.string().optional(),
   }),
 );

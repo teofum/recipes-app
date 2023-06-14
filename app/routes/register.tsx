@@ -15,22 +15,22 @@ export const meta: V2_MetaFunction = () => {
 
 const validator = withZod(
   z.object({
-    email: z.string().email('Must be a valid email address'),
+    email: z.string().email('register:validation.email.invalid'),
     username: z
       .string()
-      .min(3, 'Username must be at least 3 characters long')
-      .max(20, 'Username must be at most 20 characters long')
+      .min(3, 'register:validation.username.too-short')
+      .max(20, 'register:validation.username.too-long')
       .regex(
         /^[a-zA-Z0-9_-]+$/,
-        'Username may only contain alphanumeric characters, underscores, and hyphens',
+        'register:validation.username.characters',
       ),
     displayName: z
       .string()
-      .min(3, 'Display name must be at least 3 characters long')
-      .max(20, 'Display name must be at most 20 characters long'),
+      .min(3, 'register:validation.display-name.too-short')
+      .max(20, 'register:validation.display-name.too-long'),
     password: z
       .string()
-      .min(8, 'Password must be at least 8 characters in length'),
+      .min(8, 'register:validation.password.too-short'),
   }),
 );
 

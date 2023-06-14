@@ -18,11 +18,13 @@ export const meta: V2_MetaFunction = () => {
 
 const validator = withZod(
   z.object({
-    resetCode: z.string().regex(/^[a-zA-Z0-9]{0,6}$/, 'Invalid reset code'),
+    resetCode: z
+      .string()
+      .regex(/^[a-zA-Z0-9]{0,6}$/, 'forgot:reset.validation.code.invalid'),
     newPassword: z
       .string()
-      .min(8, 'Password must be at least 8 characters in length'),
-    username: z.string().min(1, 'Username unavailable'),
+      .min(8, 'forgot:reset.validation.password.too-short'),
+    username: z.string().min(1),
     redirectUrl: z.string().optional(),
   }),
 );
