@@ -1,3 +1,4 @@
+import type { Language } from '@prisma/client';
 import type { LoaderArgs, V2_MetaFunction } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import { Link, useLoaderData, useRouteError } from '@remix-run/react';
@@ -7,6 +8,7 @@ import { LinkButton } from '~/components/ui/Button';
 import RecipeCard from '~/components/ui/RecipeCard';
 
 import { db } from '~/server/db.server';
+import i18next from '~/server/i18n.server';
 import { requireLogin } from '~/server/session.server';
 
 export const meta: V2_MetaFunction = () => {
@@ -15,9 +17,10 @@ export const meta: V2_MetaFunction = () => {
 
 export async function loader({ request }: LoaderArgs) {
   const userId = await requireLogin(request);
+  const locale = (await i18next.getLocale(request)) as Language;
 
   const recipes = await db.recipe.findMany({
-    where: { authorId: userId },
+    where: { authorId: userId, language: locale },
   });
 
   return json({ recipes });
@@ -56,7 +59,7 @@ export default function RecipesIndexRoute() {
           ))}
         </ul>
       ) : (
-        <p>{t('recipes:list.empty')}</p>
+        <p>{t('recipe:list.empty')}</p>
       )}
     </div>
   );
