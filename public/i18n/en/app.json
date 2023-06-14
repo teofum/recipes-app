@@ -1,8 +1,8 @@
 {
   "nav": {
-    "my-recipes": "My Recipes",
-    "find": "Recipe Finder",
-    "new": "New Recipe",
+    "my-recipes": "My recipes",
+    "find": "Recipe finder",
+    "new": "New recipe",
     "account": "Account"
   },
   "mobile-nav": {

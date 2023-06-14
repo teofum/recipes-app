@@ -1,12 +1,12 @@
 {
-  "title": "Mi Cuenta",
+  "title": "Mi cuenta",
   "profile": {
     "actions": {
       "save": "Guardar cambios"
     }
   },
   "settings": {
-    "title": "Opciones de Cuenta",
+    "title": "Opciones de cuenta",
     "fields": {
       "email": {
         "label": "Email",
