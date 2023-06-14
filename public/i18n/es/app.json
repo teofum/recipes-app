@@ -9,5 +9,8 @@
     "my-recipes": "Recetas",
     "find": "Buscar",
     "new": "Nueva"
+  },
+  "lang": {
+    "label": "Idioma"
   }
 }
