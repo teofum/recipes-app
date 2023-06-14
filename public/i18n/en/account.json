@@ -24,29 +24,33 @@
     },
     "actions": {
       "change-password": "Change password"
-    },
-    "dialogs": {
-      "change-password": {
-        "title": "Change password",
-        "fields": {
-          "current": {
-            "label": "Current password"
-          },
-          "new": {
-            "label": "New password"
-          }
+    }
+  },
+  "dialogs": {
+    "change-password": {
+      "title": "Change password",
+      "fields": {
+        "current": {
+          "label": "Current password"
         },
-        "actions": {
-          "change": "Change password"
-        },
-        "validation": {
-          "current": {
-            "required": "Please enter your current password"
-          },
-          "new": {
-            "too-short": "Password must be at least 8 characters long"
-          }
+        "new": {
+          "label": "New password"
         }
+      },
+      "actions": {
+        "change": "Change password"
+      },
+      "validation": {
+        "current": {
+          "required": "Please enter your current password"
+        },
+        "new": {
+          "too-short": "Password must be at least 8 characters long"
+        }
+      },
+      "errors": {
+        "password": "Incorrect password",
+        "auth-failed": "Authentication failed"
       }
     }
   }

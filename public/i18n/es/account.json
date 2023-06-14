@@ -47,6 +47,10 @@
         "new": {
           "too-short": "La contraseña debe tener como mínimo 8 caracteres"
         }
+      },
+      "errors": {
+        "password": "Contraseña incorrecta",
+        "auth-failed": "Error de autenticación"
       }
     }
   }

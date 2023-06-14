@@ -110,7 +110,9 @@ export async function action({ request }: ActionArgs) {
       });
       if (!auth)
         return validationError({
-          fieldErrors: { current: 'Authentication failed' },
+          fieldErrors: {
+            current: 'account:dialogs.change-password.errors.auth-failed',
+          },
         });
 
       const passwordMatch = await bcryptjs.compare(
@@ -119,7 +121,9 @@ export async function action({ request }: ActionArgs) {
       );
       if (!passwordMatch)
         return validationError({
-          fieldErrors: { current: 'Incorrect password' },
+          fieldErrors: {
+            current: 'account:dialogs.change-password.errors.password',
+          },
         });
 
       const newHash = await bcryptjs.hash(data.new, 10);
