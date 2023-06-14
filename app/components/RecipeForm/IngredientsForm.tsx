@@ -17,9 +17,9 @@ interface IngredientField {
 
 export default function IngredientsForm() {
   const [ingredients, { push, remove }] =
-  useFieldArray<IngredientField>('ingredients');
-  
-  const {t} = useTranslation();
+    useFieldArray<IngredientField>('ingredients');
+
+  const { t } = useTranslation();
 
   const addIngredient = (id: string, name: string) => {
     if (!ingredients.some((ingredient) => ingredient.id === id))
@@ -74,7 +74,7 @@ export default function IngredientsForm() {
 
               <Button
                 variant={{ type: 'icon', color: 'danger' }}
-                onClick={() => {console.log(ingredients, index); remove(index);}}
+                onClick={() => remove(index)}
               >
                 <Cross1Icon />
               </Button>

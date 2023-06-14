@@ -20,12 +20,14 @@ interface CreateIngredientDialogProps {
   open?: boolean;
   setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
   onCreateIngredient?: (data: Ingredient) => void;
+  lang?: string;
 }
 
 export default function CreateIngredientDialog({
   open,
   setOpen,
   onCreateIngredient,
+  lang,
 }: CreateIngredientDialogProps) {
   const fetcher = useFetcher<IngredientsAction>();
 
@@ -51,6 +53,8 @@ export default function CreateIngredientDialog({
         fetcher={fetcher}
         validator={ingredientValidator}
       >
+        <Form.Input type="hidden" name="lang" id="lang" value={lang} />
+
         <Form.Field>
           <Form.Label htmlFor="ingredientName">
             {t('recipe:form.dialogs.new-ingredient.fields.name.label')}

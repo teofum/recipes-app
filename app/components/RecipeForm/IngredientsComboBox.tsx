@@ -9,6 +9,7 @@ import CreateIngredientDialog from './CreateIngredientDialog';
 import type { Ingredient } from '~/types/ingredient.type';
 import { Command } from 'cmdk';
 import { useTranslation } from 'react-i18next';
+import { useFormContext } from 'remix-validated-form';
 
 interface Props {
   onSelect: (id: string, name: string) => void;
@@ -16,6 +17,7 @@ interface Props {
 
 export default function IngredientsComboBox({ onSelect }: Props) {
   const fetcher = useFetcher<Ingredient[]>();
+  const { defaultValues } = useFormContext();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [comboOpen, setComboOpen] = useState(false);
 
@@ -31,11 +33,15 @@ export default function IngredientsComboBox({ onSelect }: Props) {
     setComboOpen(false);
   };
 
+  const langParam = defaultValues?.language
+    ? `&lang=${defaultValues?.language}`
+    : '';
+
   return (
     <>
       <FetcherComboBox
         fetcher={fetcher}
-        endpoint={(search) => `/api/ingredients?search=${search}`}
+        endpoint={(search) => `/api/ingredients?search=${search}${langParam}`}
         valueSelector={(item) => item.id}
         displaySelector={(item) => item.name}
         placeholder={
@@ -67,6 +73,7 @@ export default function IngredientsComboBox({ onSelect }: Props) {
         open={dialogOpen}
         setOpen={setDialogOpen}
         onCreateIngredient={onCreate}
+        lang={defaultValues?.language}
       />
     </>
   );
