@@ -39,10 +39,7 @@
         ],
         "fields": {
           "confirmation": {
-            "label": [
-              "Ingresá ",
-              " para confirmar"
-            ]
+            "label": ["Ingresá ", " para confirmar"]
           }
         },
         "actions": {
@@ -96,6 +93,46 @@
         "actions": {
           "create": "Crear ingrediente"
         }
+      }
+    }
+  },
+  "find": {
+    "title": "Buscador de recetas",
+    "description": "Encontrá recetas con los ingredientes que tengas a mano",
+    "search": {
+      "title": "Tus ingredientes",
+      "placeholder": "Agregá ingredientes que tengas para ver recetas que los usen!",
+      "actions": {
+        "find": "Buscar ingredientes",
+        "clear": "Limpiar todo"
+      },
+      "find": {
+        "placeholder": "Escribí para buscar ingredientes..."
+      }
+    },
+    "results": {
+      "full": {
+        "title": {
+          "0": "Encontramos ",
+          "1_one": " receta con tus ingredientes",
+          "1_other": " recetas con tus ingredientes"
+        },
+        "description_one": "Tenés todo lo necesario para hacer esta receta!",
+        "description_other": "Tenés todo lo necesario para hacer estas recetas!"
+      },
+      "partial": {
+        "title": {
+          "0_zero": "Encontramos ",
+          "0_other": "También encontramos ",
+          "1_one": " resultado parcial",
+          "1_other": " resultados parciales"
+        },
+        "description_one": "Tal vez puedas hacer esta receta con algunos ingredientes más.",
+        "description_other": "Tal vez puedas hacer estas recetas con algunos ingredientes más."
+      },
+      "none": {
+        "title": "No hay resultados",
+        "description": "No encontramos nada con estos ingredientes. Agregá más ingredientes para encontrar una receta!"
       }
     }
   }

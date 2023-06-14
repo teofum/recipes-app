@@ -19,6 +19,7 @@ import { requireLogin } from '~/server/session.server';
 import { db } from '~/server/db.server';
 import RecipeCard from '~/components/ui/RecipeCard';
 import RouteError from '~/components/RouteError';
+import { useTranslation } from 'react-i18next';
 
 export const meta: V2_MetaFunction = () => {
   return [{ title: 'Recipe Finder | CookBook' }];
@@ -67,6 +68,8 @@ export default function FindRecipeRoute() {
   const fetcher = useFetcher<Ingredient[]>();
   const navigate = useNavigate();
 
+  const { t } = useTranslation();
+
   const ingredients = params.get('ingredients')?.split(',') ?? [];
 
   const addIngredient = (ingredient: string) => {
@@ -90,16 +93,16 @@ export default function FindRecipeRoute() {
           pt-6 pb-6 mb-4
         "
       >
-        <h1 className="font-display text-4xl">Recipe finder</h1>
+        <h1 className="font-display text-4xl">{t('recipe:find.title')}</h1>
         <p className="text-sm mt-2 -mb-2 text-light">
-          Find recipes using the ingredients you have on hand
+          {t('recipe:find.description')}
         </p>
       </header>
 
       <div className="flex flex-col gap-6 pb-8">
         <div className="card">
           <div className="card-heading">
-            <h2>Your ingredients</h2>
+            <h2>{t('recipe:find.search.title')}</h2>
           </div>
 
           {ingredients.length > 0 ? (
@@ -124,8 +127,8 @@ export default function FindRecipeRoute() {
               ))}
             </ul>
           ) : (
-            <div className="mb-4">
-              Start adding ingredients you have to see recipes using them!
+            <div className="mb-4 text-sm">
+              {t('recipe:find.search.placeholder')}
             </div>
           )}
 
@@ -136,17 +139,21 @@ export default function FindRecipeRoute() {
                 endpoint={(search) => `/api/ingredients?search=${search}`}
                 valueSelector={(item) => item.name}
                 displaySelector={(item) => item.name}
-                placeholder="Type to search ingredients..."
+                placeholder={
+                  t('recipe:find.search.find.placeholder') ?? undefined
+                }
                 onSelectionChange={(item) => {
                   if (item) addIngredient(item.name);
                 }}
-                trigger={<Button>Find ingredients</Button>}
+                trigger={
+                  <Button>{t('recipe:find.search.actions.find')}</Button>
+                }
               />
             </Form.Root>
 
             <LinkButton to="." variant={{ color: 'danger' }}>
               <Cross1Icon />
-              Clear all
+              {t('recipe:find.search.actions.clear')}
             </LinkButton>
           </div>
         </div>
@@ -154,12 +161,14 @@ export default function FindRecipeRoute() {
         {haveAll.length > 0 && (
           <div>
             <div className="text-lg">
-              Found <span className="font-semibold">{haveAll.length}</span>{' '}
-              {haveAll.length > 1 ? 'recipes' : 'recipe'} with your ingredients
+              {t('recipe:find.results.full.title.0')}
+              <span className="font-semibold">{haveAll.length}</span>
+              {t('recipe:find.results.full.title.1', { count: haveAll.length })}
             </div>
             <div className="text-sm text-light mb-3">
-              You have everything you need to make{' '}
-              {haveAll.length > 1 ? 'these recipes' : 'this recipe'}!
+              {t('recipe:find.results.full.description', {
+                count: haveAll.length,
+              })}
             </div>
 
             <ul className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-2">
@@ -177,14 +186,18 @@ export default function FindRecipeRoute() {
         {haveSome.length > 0 && (
           <div>
             <div className="text-lg">
-              {haveAll.length > 0 ? 'Also found' : 'Found'}{' '}
-              <span className="font-semibold">{haveSome.length}</span> partial{' '}
-              {haveSome.length > 1 ? 'matches' : 'match'}
+              {t('recipe:find.results.partial.title.0', {
+                count: haveAll.length,
+              })}
+              <span className="font-semibold">{haveSome.length}</span>
+              {t('recipe:find.results.partial.title.1', {
+                count: haveSome.length,
+              })}
             </div>
             <div className="text-sm text-light mb-3">
-              You may be able to make{' '}
-              {haveSome.length > 1 ? 'these recipes' : 'this recipe'} with a few
-              more ingredients.
+              {t('recipe:find.results.partial.description', {
+                count: haveSome.length,
+              })}
             </div>
 
             <ul className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-2">
@@ -203,10 +216,11 @@ export default function FindRecipeRoute() {
           haveAll.length === 0 &&
           haveSome.length === 0 && (
             <div className="text-center max-w-sm mx-auto">
-              <div className="font-display text-4xl mt-12 mb-3">No results</div>
+              <div className="font-display text-4xl mt-12 mb-3">
+                {t('recipe:find.results.none.title')}
+              </div>
               <div className="text-sm [text-wrap:balance]">
-                We couldn't find anything using these ingredients. Keep adding
-                ingredients to find a recipe!
+                {t('recipe:find.results.none.description')}
               </div>
             </div>
           )}

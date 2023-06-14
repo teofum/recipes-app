@@ -39,10 +39,7 @@
         ],
         "fields": {
           "confirmation": {
-            "label": [
-              "Type ",
-              " to confirm"
-            ]
+            "label": ["Type ", " to confirm"]
           }
         },
         "actions": {
@@ -96,6 +93,46 @@
         "actions": {
           "create": "Create ingredient"
         }
+      }
+    }
+  },
+  "find": {
+    "title": "Recipe finder",
+    "description": "Find recipes using the ingredients you have on hand",
+    "search": {
+      "title": "Your ingredients",
+      "placeholder": "Start adding ingredients you have to see recipes using them!",
+      "actions": {
+        "find": "Find ingredients",
+        "clear": "Clear all"
+      },
+      "find": {
+        "placeholder": "Type to search ingredients..."
+      }
+    },
+    "results": {
+      "full": {
+        "title": {
+          "0": "Found ",
+          "1_one": " recipe with your ingredients",
+          "1_other": " recipes with your ingredients"
+        },
+        "description_one": "You have everything you need to make this recipe!",
+        "description_other": "You have everything you need to make these recipes!"
+      },
+      "partial": {
+        "title": {
+          "0_zero": "Found ",
+          "0_other": "Also found ",
+          "1_one": " partial match",
+          "1_other": " partial matches"
+        },
+        "description_one": "You may be able to make this recipe with a few more ingredients.",
+        "description_other": "You may be able to make these recipes with a few more ingredients."
+      },
+      "none": {
+        "title": "No results",
+        "description": "We couldn't find anything using these ingredients. Keep adding ingredients to find a recipe!"
       }
     }
   }
