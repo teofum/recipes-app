@@ -1,0 +1,36 @@
+{
+  "title": "Mi Cuenta",
+  "profile": {
+    "actions": {
+      "save": "Guardar cambios"
+    }
+  },
+  "settings": {
+    "title": "Opciones de Cuenta",
+    "fields": {
+      "email": {
+        "label": "Email",
+        "action": "Cambiar"
+      }
+    },
+    "actions": {
+      "change-password": "Cambiar contraseña"
+    }
+  },
+  "dialogs": {
+    "change-password": {
+      "title": "Cambiar contraseña",
+      "fields": {
+        "current": {
+          "label": "Contraseña actual"
+        },
+        "new": {
+          "label": "Nueva contraseña"
+        }
+      },
+      "actions": {
+        "change": "Cambiar contraseña"
+      }
+    }
+  }
+}

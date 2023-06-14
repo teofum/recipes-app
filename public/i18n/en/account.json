@@ -1,0 +1,36 @@
+{
+  "title": "My Account",
+  "profile": {
+    "actions": {
+      "save": "Save changes"
+    }
+  },
+  "settings": {
+    "title": "Account Settings",
+    "fields": {
+      "email": {
+        "label": "Email",
+        "action": "Change"
+      }
+    },
+    "actions": {
+      "change-password": "Change password"
+    },
+    "dialogs": {
+      "change-password": {
+        "title": "Change password",
+        "fields": {
+          "current": {
+            "label": "Current password"
+          },
+          "new": {
+            "label": "New password"
+          }
+        },
+        "actions": {
+          "change": "Change password"
+        }
+      }
+    }
+  }
+}

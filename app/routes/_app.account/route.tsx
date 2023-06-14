@@ -21,6 +21,7 @@ import RouteError from '~/components/RouteError';
 import { MAX_UPLOAD_SIZE } from '~/utils/constants';
 import uploadImage, { deleteImage } from '~/server/image.server';
 import AvatarUpload from './AvatarUpload';
+import { useTranslation } from 'react-i18next';
 
 export const meta: V2_MetaFunction = () => {
   return [{ title: 'My Account | CookBook' }];
@@ -133,9 +134,13 @@ export async function loader({ request }: LoaderArgs) {
   return json({ user });
 }
 
+export const handle = { i18n: 'account' };
+
 export default function AccountRoute() {
   const { user } = useLoaderData<typeof loader>();
   const { touchedFields } = useFormContext('profileForm');
+
+  const { t } = useTranslation();
 
   let defaultImageUrl = user.avatarUrl ?? null;
   const [imageUrl, setImageUrl] = useState<string | null>(null);
@@ -143,7 +148,7 @@ export default function AccountRoute() {
   return (
     <div className="responsive">
       <header className=" border-b pt-6 pb-6 mb-4">
-        <h1 className="font-display text-4xl">My Account</h1>
+        <h1 className="font-display text-4xl">{t('account:title')}</h1>
       </header>
 
       <div className="flex flex-col sm:grid sm:grid-cols-[auto_1fr] sm:items-start gap-4">
@@ -181,14 +186,14 @@ export default function AccountRoute() {
             <Form.SubmitButton
               disabled={!touchedFields.displayName && !touchedFields.image}
             >
-              Save Changes
+              {t('account:profile.actions.save')}
             </Form.SubmitButton>
           </Form.Root>
         </div>
 
         <div className="card sm:col-start-2">
           <div className="card-heading">
-            <h2>Account settings</h2>
+            <h2>{t('account:settings.title')}</h2>
           </div>
 
           <div className="flex flex-col gap-4">
@@ -198,7 +203,9 @@ export default function AccountRoute() {
               method="post"
               encType="multipart/form-data"
             >
-              <Form.Label htmlFor="email">Email</Form.Label>
+              <Form.Label htmlFor="email">
+                {t('account:settings.fields.email.label')}
+              </Form.Label>
               <div>
                 <div className="flex flex-row gap-2">
                   <Form.Input
@@ -208,15 +215,19 @@ export default function AccountRoute() {
                     className="flex-1"
                   />
 
-                  <Form.SubmitButton>Change</Form.SubmitButton>
+                  <Form.SubmitButton>
+                    {t('account:settings.fields.email.action')}
+                  </Form.SubmitButton>
                 </div>
                 <Form.Error name="email" id="email" />
               </div>
             </Form.Root>
 
             <Dialog
-              title="Change Password"
-              trigger={<Button>Change password</Button>}
+              title={t('account:dialogs.change-password.title')}
+              trigger={
+                <Button>{t('account:settings.actions.change-password')}</Button>
+              }
             >
               <Form.Root
                 validator={passwordValidator}
@@ -226,7 +237,7 @@ export default function AccountRoute() {
               >
                 <Form.Field>
                   <Form.Label htmlFor="currentPassword">
-                    Current password
+                    {t('account:dialogs.change-password.fields.current.label')}
                   </Form.Label>
                   <Form.Input
                     type="password"
@@ -237,12 +248,16 @@ export default function AccountRoute() {
                 </Form.Field>
 
                 <Form.Field>
-                  <Form.Label htmlFor="newPassword">New password</Form.Label>
+                  <Form.Label htmlFor="newPassword">
+                    {t('account:dialogs.change-password.fields.new.label')}
+                  </Form.Label>
                   <Form.Input type="password" name="new" id="newPassword" />
                   <Form.Error name="new" id="newPassword" />
                 </Form.Field>
 
-                <Form.SubmitButton>Change password</Form.SubmitButton>
+                <Form.SubmitButton>
+                  {t('account:dialogs.change-password.actions.change')}
+                </Form.SubmitButton>
               </Form.Root>
             </Dialog>
           </div>
