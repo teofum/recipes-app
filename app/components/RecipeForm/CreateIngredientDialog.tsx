@@ -1,5 +1,6 @@
 import { useFetcher } from '@remix-run/react';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { ValidationErrorResponseData } from 'remix-validated-form';
 
 import Dialog from '~/components/ui/Dialog';
@@ -28,6 +29,8 @@ export default function CreateIngredientDialog({
 }: CreateIngredientDialogProps) {
   const fetcher = useFetcher<IngredientsAction>();
 
+  const { t } = useTranslation();
+
   useEffect(() => {
     if (fetcher.data && isSuccessResponse(fetcher.data)) {
       onCreateIngredient?.(fetcher.data);
@@ -37,8 +40,8 @@ export default function CreateIngredientDialog({
   return (
     <Dialog
       trigger={null}
-      title="New ingredient"
-      description="Can't find the right ingredient? Add it yourself. This ingredient will be available for all recipes going forward."
+      title={t('recipe:form.dialogs.new-ingredient.title')}
+      description={t('recipe:form.dialogs.new-ingredient.description')}
       open={open}
       onOpenChange={setOpen}
     >
@@ -49,12 +52,16 @@ export default function CreateIngredientDialog({
         validator={ingredientValidator}
       >
         <Form.Field>
-          <Form.Label htmlFor="ingredientName">Name</Form.Label>
+          <Form.Label htmlFor="ingredientName">
+            {t('recipe:form.dialogs.new-ingredient.fields.name.label')}
+          </Form.Label>
           <Form.Input name="name" id="ingredientName" />
           <Form.Error name="name" id="ingredientName" />
         </Form.Field>
 
-        <Form.SubmitButton>Create</Form.SubmitButton>
+        <Form.SubmitButton>
+          {t('recipe:form.dialogs.new-ingredient.actions.create')}
+        </Form.SubmitButton>
       </Form.Root>
     </Dialog>
   );

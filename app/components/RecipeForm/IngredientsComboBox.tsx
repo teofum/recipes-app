@@ -8,6 +8,7 @@ import Button from '~/components/ui/Button';
 import CreateIngredientDialog from './CreateIngredientDialog';
 import type { Ingredient } from '~/types/ingredient.type';
 import { Command } from 'cmdk';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   onSelect: (id: string, name: string) => void;
@@ -17,6 +18,8 @@ export default function IngredientsComboBox({ onSelect }: Props) {
   const fetcher = useFetcher<Ingredient[]>();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [comboOpen, setComboOpen] = useState(false);
+
+  const { t } = useTranslation();
 
   const onChange = (item: Ingredient | null) => {
     if (item) onSelect(item.id, item.name);
@@ -35,13 +38,15 @@ export default function IngredientsComboBox({ onSelect }: Props) {
         endpoint={(search) => `/api/ingredients?search=${search}`}
         valueSelector={(item) => item.id}
         displaySelector={(item) => item.name}
-        placeholder="Type to search ingredients..."
+        placeholder={
+          t('recipe:form.fields.ingredients.search.placeholder') ?? undefined
+        }
         onSelectionChange={onChange}
         open={comboOpen}
         onOpenChange={setComboOpen}
         trigger={
           <Button>
-            <PlusCircledIcon /> Add ingredient
+            <PlusCircledIcon /> {t('recipe:form.fields.ingredients.add')}
           </Button>
         }
       >
@@ -54,11 +59,15 @@ export default function IngredientsComboBox({ onSelect }: Props) {
           onSelect={() => setDialogOpen(true)}
           disabled={fetcher.state !== 'idle'}
         >
-          <PlusIcon /> Add a new ingredient
+          <PlusIcon /> {t('recipe:form.fields.ingredients.search.add-new')}
         </Command.Item>
       </FetcherComboBox>
 
-      <CreateIngredientDialog open={dialogOpen} setOpen={setDialogOpen} onCreateIngredient={onCreate} />
+      <CreateIngredientDialog
+        open={dialogOpen}
+        setOpen={setDialogOpen}
+        onCreateIngredient={onCreate}
+      />
     </>
   );
 }

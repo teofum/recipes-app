@@ -1,14 +1,18 @@
+import { useTranslation } from 'react-i18next';
+
 import Form from '~/components/ui/Form';
 import { NAME_MAX_LENGTH } from './constants';
 
 export default function NameInput() {
+  const { t } = useTranslation();
+
   return (
     <Form.Field className="sm:self-end">
       <Form.Error name="name" id="name" />
       <Form.Input
         name="name"
         id="name"
-        placeholder="New recipe"
+        placeholder={t('recipe:form.fields.name.placeholder') ?? undefined}
         maxLength={NAME_MAX_LENGTH}
         autoFocus
         className="

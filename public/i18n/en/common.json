@@ -3,6 +3,12 @@
     "login": "Log in",
     "logout": "Log out"
   },
+  "format": {
+    "hours_one": "{{count}} hour",
+    "hours_other": "{{count}} hours",
+    "minutes_one": "{{count}} minute",
+    "minutes_other": "{{count}} minutes"
+  },
   "nav": {
     "my-recipes": "My Recipes",
     "find": "Recipe Finder",

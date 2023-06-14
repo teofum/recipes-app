@@ -1,6 +1,7 @@
 import type { RecipeStep } from '@prisma/client';
 import { Cross1Icon, PlusCircledIcon } from '@radix-ui/react-icons';
 import { useFieldArray } from 'remix-validated-form';
+import { useTranslation } from 'react-i18next';
 
 import Button from '~/components/ui/Button';
 import Form from '~/components/ui/Form';
@@ -12,10 +13,12 @@ let key = 0;
 export default function StepsForm() {
   const [steps, { push, remove }] = useFieldArray<RecipeStep>('steps');
 
+  const { t } = useTranslation();
+
   return (
     <div className="card">
       <div className="card-heading">
-        <h2>Preparation</h2>
+        <h2>{t('recipe:view.preparation')}</h2>
       </div>
 
       <div className="flex flex-col">
@@ -75,7 +78,7 @@ export default function StepsForm() {
           }}
         >
           <PlusCircledIcon />
-          Add step
+          {t('recipe:form.fields.steps.add')}
         </Button>
       </div>
     </div>

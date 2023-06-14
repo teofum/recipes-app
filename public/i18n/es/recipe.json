@@ -1,0 +1,102 @@
+{
+  "list": {
+    "title": "Mis Recetas",
+    "cta-create": "Crear nueva receta",
+    "empty": "No hay recetas"
+  },
+  "view": {
+    "back": "Volver a recetas",
+    "ingredients": "Ingredientes",
+    "preparation": "Preparación",
+    "uploaded-by": "Publicado por ",
+    "actions": {
+      "share": "Compartir",
+      "edit": "Editar",
+      "delete": "Eliminar"
+    },
+    "dialogs": {
+      "share": {
+        "title": "Compartir",
+        "fields": {
+          "visibility": {
+            "label": "Visibilidad",
+            "action": "Guardar"
+          },
+          "link": {
+            "label": "Compartir un enlace",
+            "action": {
+              "cta": "Copiar",
+              "done": "Copiado"
+            }
+          }
+        }
+      },
+      "delete": {
+        "title": "Eliminar receta",
+        "description": [
+          "Por favor confirmá que querés eliminar esta receta. ",
+          "Esta acción es permanente y no puede deshacerse."
+        ],
+        "fields": {
+          "confirmation": {
+            "label": [
+              "Ingresá ",
+              " para confirmar"
+            ]
+          }
+        },
+        "actions": {
+          "delete": "Mantené presionado para eliminar"
+        }
+      }
+    }
+  },
+  "form": {
+    "fields": {
+      "name": {
+        "placeholder": "Nueva receta"
+      },
+      "ingredients": {
+        "add": "Agregar ingrediente",
+        "search": {
+          "placeholder": "Escribí para buscar ingredientes...",
+          "add-new": "Agregar un nuevo ingrediente"
+        }
+      },
+      "steps": {
+        "add": "Agregar paso"
+      },
+      "image": {
+        "upload": "Subir imagen"
+      },
+      "description": {
+        "label": "Descripción"
+      },
+      "prep-time": {
+        "label": "Tiempo de preparación"
+      },
+      "visibility": {
+        "label": "Visibilidad"
+      }
+    },
+    "actions": {
+      "create": "Crear receta",
+      "save": "Guardar cambios",
+      "discard": "Descartar cambios"
+    },
+    "dialogs": {
+      "new-ingredient": {
+        "title": "Nuevo ingrediente",
+        "description": "¿No encontrás el ingrediente que buscás? Agregalo vos mismo. Este ingrediente va a estar disponible para todas las recetas a partir de ahora.",
+        "fields": {
+          "name": {
+            "label": "Nombre"
+          }
+        },
+        "actions": {
+          "create": "Crear ingrediente"
+        }
+      }
+    }
+  }
+}

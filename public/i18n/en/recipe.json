@@ -1,0 +1,102 @@
+{
+  "list": {
+    "title": "My Recipes",
+    "cta-create": "Create new recipe",
+    "empty": "You don't have any recipes"
+  },
+  "view": {
+    "back": "Back to recipes",
+    "ingredients": "Ingredients",
+    "preparation": "Preparation",
+    "uploaded-by": "Uploaded by ",
+    "actions": {
+      "share": "Share",
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "dialogs": {
+      "share": {
+        "title": "Share",
+        "fields": {
+          "visibility": {
+            "label": "Visibility",
+            "action": "Save"
+          },
+          "link": {
+            "label": "Share a link",
+            "action": {
+              "cta": "Copy link",
+              "done": "Copied"
+            }
+          }
+        }
+      },
+      "delete": {
+        "title": "Delete recipe",
+        "description": [
+          "Please confirm you want to delete this recipe. ",
+          "This action is permanent and cannot be undone."
+        ],
+        "fields": {
+          "confirmation": {
+            "label": [
+              "Type ",
+              " to confirm"
+            ]
+          }
+        },
+        "actions": {
+          "delete": "Hold to delete"
+        }
+      }
+    }
+  },
+  "form": {
+    "fields": {
+      "name": {
+        "placeholder": "New recipe"
+      },
+      "ingredients": {
+        "add": "Add ingredient",
+        "search": {
+          "placeholder": "Type to search ingredients...",
+          "add-new": "Add a new ingredient"
+        }
+      },
+      "steps": {
+        "add": "Add step"
+      },
+      "image": {
+        "upload": "Upload image"
+      },
+      "description": {
+        "label": "Description"
+      },
+      "prep-time": {
+        "label": "Preparation time"
+      },
+      "visibility": {
+        "label": "Visibility"
+      }
+    },
+    "actions": {
+      "create": "Create recipe",
+      "save": "Save changes",
+      "discard": "Discard changes"
+    },
+    "dialogs": {
+      "new-ingredient": {
+        "title": "New ingredient",
+        "description": "Can't find the right ingredient? Add it yourself. This ingredient will be available for all recipes going forward.",
+        "fields": {
+          "name": {
+            "label": "Name"
+          }
+        },
+        "actions": {
+          "create": "Create ingredient"
+        }
+      }
+    }
+  }
+}

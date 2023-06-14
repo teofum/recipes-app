@@ -1,6 +1,7 @@
 import { Unit } from '@prisma/client';
 import { Cross1Icon } from '@radix-ui/react-icons';
 import { useFieldArray } from 'remix-validated-form';
+import { useTranslation } from 'react-i18next';
 
 import Button from '~/components/ui/Button';
 import Form from '~/components/ui/Form';
@@ -16,7 +17,9 @@ interface IngredientField {
 
 export default function IngredientsForm() {
   const [ingredients, { push, remove }] =
-    useFieldArray<IngredientField>('ingredients');
+  useFieldArray<IngredientField>('ingredients');
+  
+  const {t} = useTranslation();
 
   const addIngredient = (id: string, name: string) => {
     if (!ingredients.some((ingredient) => ingredient.id === id))
@@ -26,7 +29,7 @@ export default function IngredientsForm() {
   return (
     <div className="card">
       <div className="card-heading">
-        <h2>Ingredients</h2>
+        <h2>{t('recipe:view.ingredients')}</h2>
       </div>
 
       <div className="flex flex-col gap-2">

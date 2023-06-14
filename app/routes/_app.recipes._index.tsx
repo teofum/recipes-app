@@ -1,6 +1,7 @@
 import type { LoaderArgs, V2_MetaFunction } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import { Link, useLoaderData, useRouteError } from '@remix-run/react';
+import { useTranslation } from 'react-i18next';
 import RouteError from '~/components/RouteError';
 import { LinkButton } from '~/components/ui/Button';
 import RecipeCard from '~/components/ui/RecipeCard';
@@ -22,8 +23,12 @@ export async function loader({ request }: LoaderArgs) {
   return json({ recipes });
 }
 
+export const handle = { i18n: 'recipe' };
+
 export default function RecipesIndexRoute() {
   const { recipes } = useLoaderData<typeof loader>();
+
+  const { t } = useTranslation();
 
   return (
     <div className="responsive">
@@ -34,9 +39,9 @@ export default function RecipesIndexRoute() {
           py-6 mb-4
         "
       >
-        <h1 className="font-display text-4xl">My recipes</h1>
+        <h1 className="font-display text-4xl">{t('recipe:list.title')}</h1>
         <LinkButton variant="filled" to="new">
-          Create new recipe
+          {t('recipe:list.cta-create')}
         </LinkButton>
       </header>
 
@@ -51,7 +56,7 @@ export default function RecipesIndexRoute() {
           ))}
         </ul>
       ) : (
-        <p>You don't have any recipes</p>
+        <p>{t('recipes:list.empty')}</p>
       )}
     </div>
   );
