@@ -4,15 +4,13 @@
     "logout": "Log out"
   },
   "format": {
+    "hour": "hour",
+    "hours": "hours",
     "hours_one": "{{count}} hour",
     "hours_other": "{{count}} hours",
+    "minute": "minute",
+    "minutes": "minutes",
     "minutes_one": "{{count}} minute",
     "minutes_other": "{{count}} minutes"
-  },
-  "nav": {
-    "my-recipes": "My Recipes",
-    "find": "Recipe Finder",
-    "new": "New Recipe",
-    "account": "Account"
   }
 }

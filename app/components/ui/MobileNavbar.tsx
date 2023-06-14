@@ -8,6 +8,7 @@ import {
 } from '@radix-ui/react-icons';
 import Avatar from './Avatar';
 import type { User } from '~/types/user.type';
+import { useTranslation } from 'react-i18next';
 
 interface NavbarLinkProps {
   currentRoute: RouteMatch;
@@ -39,24 +40,26 @@ export default function MobileNavbar({ user }: MobileNavbarProps) {
   const matches = useMatches();
   const currentRoute = matches.at(-1) as RouteMatch;
 
+  const { t } = useTranslation();
+
   return (
     <nav className="h-full flex flex-row items-center justify-center px-4">
       <NavbarLink
         currentRoute={currentRoute}
         route="/recipes"
-        text="Recipes"
+        text={t('app:mobile-nav.my-recipes')}
         icon={<DashboardIcon />}
       />
       <NavbarLink
         currentRoute={currentRoute}
         route="/recipes/find"
-        text="Finder"
+        text={t('app:mobile-nav.find')}
         icon={<MagnifyingGlassIcon />}
       />
       <NavbarLink
         currentRoute={currentRoute}
         route="/recipes/new"
-        text="Create"
+        text={t('app:mobile-nav.new')}
         icon={<FilePlusIcon />}
       />
 

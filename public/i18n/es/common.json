@@ -4,15 +4,13 @@
     "logout": "Cerrar sesión"
   },
   "format": {
+    "hour": "hora",
+    "hours": "horas",
     "hours_one": "{{count}} hora",
     "hours_other": "{{count}} horas",
+    "minute": "minuto",
+    "minutes": "minutos",
     "minutes_one": "{{count}} minuto",
     "minutes_other": "{{count}} minutos"
-  },
-  "nav": {
-    "my-recipes": "Mis Recetas",
-    "find": "Buscar Recetas",
-    "new": "Nueva Receta",
-    "account": "Mi Cuenta"
   }
 }

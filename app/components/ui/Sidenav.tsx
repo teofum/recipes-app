@@ -60,7 +60,7 @@ export default function Sidenav({ user }: SidenavProps) {
             <SidenavLink
               currentRoute={currentRoute}
               route="/recipes"
-              text={t('nav.my-recipes')}
+              text={t('app:nav.my-recipes')}
               icon={<DashboardIcon />}
             />
           </li>
@@ -68,7 +68,7 @@ export default function Sidenav({ user }: SidenavProps) {
             <SidenavLink
               currentRoute={currentRoute}
               route="/recipes/find"
-              text={t('nav.find')}
+              text={t('app:nav.find')}
               icon={<MagnifyingGlassIcon />}
             />
           </li>
@@ -76,7 +76,7 @@ export default function Sidenav({ user }: SidenavProps) {
             <SidenavLink
               currentRoute={currentRoute}
               route="/recipes/new"
-              text={t('nav.new')}
+              text={t('app:nav.new')}
               icon={<FilePlusIcon />}
             />
           </li>
@@ -101,7 +101,7 @@ export default function Sidenav({ user }: SidenavProps) {
                 variant={{ size: 'sm' }}
                 className="flex-1"
               >
-                {t('nav.account')}
+                {t('app:nav.account')}
               </LinkButton>
               <Form
                 method="post"

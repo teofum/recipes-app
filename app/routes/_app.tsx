@@ -19,6 +19,8 @@ export async function loader({ request }: LoaderArgs) {
   return json({ user });
 }
 
+export const handle = { i18n: 'app' };
+
 export default function AppRoute() {
   const { user } = useLoaderData<typeof loader>();
 

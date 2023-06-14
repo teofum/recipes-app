@@ -1,0 +1,13 @@
+{
+  "nav": {
+    "my-recipes": "Mis Recetas",
+    "find": "Buscar Recetas",
+    "new": "Nueva Receta",
+    "account": "Mi Cuenta"
+  },
+  "mobile-nav": {
+    "my-recipes": "Recetas",
+    "find": "Buscar",
+    "new": "Nueva"
+  }
+}
