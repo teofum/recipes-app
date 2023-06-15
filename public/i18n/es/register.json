@@ -1,13 +1,28 @@
 {
   "title": "Registrarse",
   "fields": {
-    "email": "Email",
-    "username": "Usuario",
-    "display-name": "Apodo",
-    "password": "Contraseña"
+    "username": {
+      "label": "Usuario",
+      "hint": "Tu usuario es único y te identifica en la app. No se puede cambiar más tarde, pero podrás elegir un apodo en cualquier momento."
+    },
+    "email": {
+      "label": "Email",
+      "hint": "Tu email sólo es usado para recuperar tu cuenta si olvidás tu contraseña. No lo mostramos a nadie, ni enviamos correo no solicitado."
+    },
+    "password": {
+      "label": "Contraseña",
+      "hint": "Elegí una contraseña fuerte, y nunca repitas una que usás en otro sitio. Recomendamos fuertemente usar un administrador de contraseñas."
+    },
+    "display-name": {
+      "label": "Apodo",
+      "hint": "El nombre que ven otros usuarios. Podés cambiarlo en cualquier momento en las opciones de cuenta."
+    }
   },
   "actions": {
-    "register": "Registrarse"
+    "next": "Siguiente",
+    "register": "Registrarse",
+    "finish": "Actualizar y continuar",
+    "skip-profile": "Saltar"
   },
   "validation": {
     "email": {

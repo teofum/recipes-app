@@ -47,7 +47,12 @@ export default function ForgotPasswordRoute() {
   const { t } = useTranslation();
 
   return (
-    <div className="min-h-screen grid place-items-center bg-primary-2 bg-dots bg-repeat px-4">
+    <div
+      className="
+        min-h-screen grid place-items-center px-4
+        bg-[url('/img/bg-kitchen.webp')] bg-cover
+      "
+    >
       <div className="card flex flex-col gap-4 max-w-sm w-full">
         <h1 className="font-display text-4xl font-semibold text-center">
           {t('forgot:title')}

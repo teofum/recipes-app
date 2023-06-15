@@ -251,6 +251,10 @@ function Error({ name, id }: ErrorProps) {
   );
 }
 
+function HintText({ children }: React.PropsWithChildren) {
+  return <p className="text-xs text-light">{children}</p>;
+}
+
 function SubmitButton({
   children = 'Submit',
   disabled,
@@ -281,5 +285,6 @@ export default {
   RadioGroup,
   RadioButton,
   Error,
+  HintText,
   SubmitButton,
 };
