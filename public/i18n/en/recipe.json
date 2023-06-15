@@ -114,8 +114,9 @@
         "required": "A description is required",
         "too-long": "Description must be at most 140 characters long"
       },
-      "ingredient-amount": {
-        "too-low": "Cannot have zero of an ingredient"
+      "ingredients": {
+        "amount-too-low": "Cannot have zero of an ingredient",
+        "required": "Recipe must have at least one ingredient"
       },
       "step": {
         "required": "Step content is required",

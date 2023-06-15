@@ -183,7 +183,6 @@ export default function AccountRoute() {
                 name="displayName"
                 id="displayName"
                 defaultValue={user.displayName}
-                validationBehavior={{ initial: 'onChange' }}
                 className="-m-2 font-medium"
               />
               <Form.Error name="displayName" id="displayName" />

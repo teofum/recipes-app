@@ -19,11 +19,12 @@ export default async function buildOptimisticRecipe(
 
     return {
       ...data,
-      imageUrl: data.image ? URL.createObjectURL(data.image) : null,
+      imageUrl: data.image?.name ? URL.createObjectURL(data.image) : null,
       ingredients: data.ingredients.map((ingredient) => ({
         ingredient: {
           id: ingredient.id,
           name: ingredient.name,
+          language: 'en', // We don't need this for optimistic UI
           createdAt: '',
           updatedAt: '',
         },
@@ -44,6 +45,7 @@ export default async function buildOptimisticRecipe(
       id: '',
       createdAt: '',
       updatedAt: '',
+      language: 'en'
     };
   } catch (err) {
     console.error(err);

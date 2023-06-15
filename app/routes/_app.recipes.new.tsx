@@ -91,6 +91,7 @@ export async function loader({ request }: LoaderArgs) {
     user,
     defaultValues: {
       steps: [{ id: 'step__default', content: '' }],
+      ingredients: [],
     },
   });
 }

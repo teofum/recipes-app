@@ -30,9 +30,10 @@ const schema = z.object({
       name: z.string(), // Not written to DB, only used to render optimistic UI
       amount: z.coerce
         .number()
-        .min(1, 'recipe:form.validation.ingredient-amount.too-low'),
+        .min(1, 'recipe:form.validation.ingredients.amount-too-low'),
       unit: z.enum([Unit.GRAMS, Unit.LITERS, Unit.UNITS]),
     }),
+    { required_error: 'recipe:form.validation.ingredients.required' }
   ),
   steps: z.array(
     z.object({

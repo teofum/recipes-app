@@ -1,12 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import cn from 'classnames';
-import {
-  ValidatedForm,
-  useField,
-  useIsSubmitting,
-  useIsValid,
-} from 'remix-validated-form';
+import { ValidatedForm, useField, useIsSubmitting } from 'remix-validated-form';
 import * as Radio from '@radix-ui/react-radio-group';
 
 import LoadingButton from './LoadingButton';
@@ -20,6 +15,12 @@ interface ValidationBehaviorOptions {
   whenTouched?: 'onChange' | 'onBlur' | 'onSubmit';
   whenSubmitted?: 'onChange' | 'onBlur' | 'onSubmit';
 }
+
+const defaultValidationBehavior: ValidationBehaviorOptions = {
+  initial: 'onSubmit',
+  whenTouched: 'onSubmit',
+  whenSubmitted: 'onChange',
+};
 
 function Root({
   validator,
@@ -49,29 +50,35 @@ type InputProps = {
   validationBehavior?: ValidationBehaviorOptions;
 } & ElementProps<'input'>;
 
-const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  function InputComponent(
-    { id, name, type, className, validationBehavior, value, ...props },
-    ref,
-  ) {
-    const { error, getInputProps } = useField(name, { validationBehavior });
-    const { defaultValue, ...inputProps } = getInputProps({ type });
-
-    return (
-      <input
-        className={cn('input', className)}
-        autoComplete="off"
-        aria-invalid={error ? true : undefined}
-        aria-errormessage={error ? `${id}__error` : undefined}
-        ref={ref}
-        value={value}
-        defaultValue={value === undefined ? defaultValue : undefined}
-        {...inputProps}
-        {...props}
-      />
-    );
+const Input = React.forwardRef<HTMLInputElement, InputProps>(function Input(
+  {
+    id,
+    name,
+    type,
+    className,
+    validationBehavior = defaultValidationBehavior,
+    value,
+    ...props
   },
-);
+  ref,
+) {
+  const { error, getInputProps } = useField(name, { validationBehavior });
+  const { defaultValue, ...inputProps } = getInputProps({ type });
+
+  return (
+    <input
+      className={cn('input', className)}
+      autoComplete="off"
+      aria-invalid={error ? true : undefined}
+      aria-errormessage={error ? `${id}__error` : undefined}
+      ref={ref}
+      value={value}
+      defaultValue={value === undefined ? defaultValue : undefined}
+      {...inputProps}
+      {...props}
+    />
+  );
+});
 
 type TextareaProps = {
   name: string;
@@ -85,7 +92,7 @@ function Textarea({
   name,
   className,
   containerClassName,
-  validationBehavior,
+  validationBehavior = defaultValidationBehavior,
   maxLength,
   ...props
 }: TextareaProps) {
@@ -148,7 +155,7 @@ type SelectProps = {
 function Select({
   name,
   children,
-  validationBehavior,
+  validationBehavior = defaultValidationBehavior,
   onValueChange,
   onOpenChange,
   ...props
@@ -186,7 +193,7 @@ type RadioGroupProps = {
 function RadioGroup({
   children,
   name,
-  validationBehavior,
+  validationBehavior = defaultValidationBehavior,
   className,
   ...props
 }: RadioGroupProps) {
@@ -249,13 +256,12 @@ function SubmitButton({
   disabled,
   ...props
 }: React.ComponentProps<typeof LoadingButton>) {
-  const isValid = useIsValid();
   const isSubmitting = useIsSubmitting();
 
   return (
     <LoadingButton
       type="submit"
-      disabled={!isValid || disabled}
+      disabled={disabled}
       loading={isSubmitting}
       {...props}
     >
