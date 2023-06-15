@@ -48,7 +48,9 @@
   /*
   * Defaults
   */
-  *, ::before, ::after {
+  *,
+  ::before,
+  ::after {
     /* Default border */
     border-color: theme('colors.neutral.5');
   }
@@ -61,31 +63,6 @@
   .responsive {
     @apply w-full max-w-screen-lg mx-auto px-4 lg:px-8;
   }
-
-  /*
-  * Surface
-  */
-  /*#region*/
-  .surface-opaque {
-    background-color: theme('colors.surface' / var(--op-surface-opaque));
-  }
-  .surface-thick {
-    @apply backdrop-blur-lg;
-    background-color: theme('colors.surface' / var(--op-surface-thick));
-  }
-  .surface {
-    @apply backdrop-blur-lg;
-    background-color: theme('colors.surface' / var(--op-surface-medium));
-  }
-  .surface-thin {
-    @apply backdrop-blur-lg;
-    background-color: theme('colors.surface' / var(--op-surface-thin));
-  }
-  .surface-ultrathin {
-    @apply backdrop-blur-lg;
-    background-color: theme('colors.surface' / var(--op-surface-ultrathin));
-  }
-  /*#endregion*/
 
   /*
   * Card
@@ -160,7 +137,7 @@
     border-color: var(--btn-border, transparent);
   }
 
-  .button[data-loading=true] > :not(:first-child) {
+  .button[data-loading='true'] > :not(:first-child) {
     color: transparent;
   }
 
@@ -280,7 +257,8 @@
   */
   /*#region*/
   .input {
-    @apply text-sm rounded-md px-2 py-1.5 outline-none outline-offset-0 transition;
+    @apply text-sm rounded-md px-2 py-1.5 outline-none outline-offset-0 transition
+    placeholder:text-neutral-1;
 
     background-color: theme('colors.neutral.6');
     border: 1px solid theme('colors.neutral.5');
@@ -323,7 +301,7 @@
     border: 1px solid theme('colors.neutral.2');
   }
 
-  .radio[data-state="checked"] {
+  .radio[data-state='checked'] {
     background-color: theme('colors.primary.5');
     border-color: theme('colors.primary.DEFAULT');
   }
@@ -341,6 +319,31 @@
 }
 
 @layer utilities {
+  /*
+  * Surface
+  */
+  /*#region*/
+  .surface-opaque {
+    background-color: theme('colors.surface' / var(--op-surface-opaque));
+  }
+  .surface-thick {
+    @apply backdrop-blur-lg;
+    background-color: theme('colors.surface' / var(--op-surface-thick));
+  }
+  .surface {
+    @apply backdrop-blur-lg;
+    background-color: theme('colors.surface' / var(--op-surface-medium));
+  }
+  .surface-thin {
+    @apply backdrop-blur-lg;
+    background-color: theme('colors.surface' / var(--op-surface-thin));
+  }
+  .surface-ultrathin {
+    @apply backdrop-blur-lg;
+    background-color: theme('colors.surface' / var(--op-surface-ultrathin));
+  }
+  /*#endregion*/
+
   .bg-dots {
     background-image: radial-gradient(currentColor 1px, transparent 1px);
     background-size: 12px 12px;

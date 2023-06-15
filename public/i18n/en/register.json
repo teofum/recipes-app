@@ -1,13 +1,28 @@
 {
   "title": "Register",
   "fields": {
-    "email": "Email",
-    "username": "Username",
-    "display-name": "Nickname",
-    "password": "Password"
+    "username": {
+      "label": "Username",
+      "hint": "Your username will be unique and identify you across the app. It can't be changed later, but you can set a custom nickname any time."
+    },
+    "email": {
+      "label": "Email",
+      "hint": "Your email is only used to recover your account in case you forget your password. It won't be shown to anyone, and we will never send you unsolicited mail."
+    },
+    "password": {
+      "label": "Password",
+      "hint": "Choose a strong password, and don't reuse one from a different site. We highly recommend using a password manager."
+    },
+    "display-name": {
+      "label": "Nickname",
+      "hint": "The name that will be shown to other users. You can change this at any time from account settings."
+    }
   },
   "actions": {
-    "register": "Register"
+    "next": "Next",
+    "register": "Register",
+    "finish": "Update and continue",
+    "skip-profile": "Skip"
   },
   "validation": {
     "email": {
