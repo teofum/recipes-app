@@ -114,8 +114,9 @@
         "required": "La receta debe tener una descripción",
         "too-long": "La descripción puede tener como máximo 140 caracteres"
       },
-      "ingredient-amount": {
-        "too-low": "La cantidad de un ingrediente no puede ser cero"
+      "ingredients": {
+        "amount-too-low": "La cantidad de un ingrediente no puede ser cero",
+        "required": "La receta debe tener al menos un ingrediente"
       },
       "step": {
         "required": "Un paso debe tener contenido",

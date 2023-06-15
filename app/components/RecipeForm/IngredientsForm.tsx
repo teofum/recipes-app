@@ -82,6 +82,8 @@ export default function IngredientsForm() {
           );
         })}
 
+        <Form.Error name="ingredients" id="__ingredients" />
+
         <IngredientsComboBox onSelect={addIngredient} />
       </div>
     </div>
