@@ -1,11 +1,16 @@
 import type { Language } from '@prisma/client';
 import type { LoaderArgs, V2_MetaFunction } from '@remix-run/node';
 import { json } from '@remix-run/node';
-import { Link, useLoaderData, useRouteError } from '@remix-run/react';
+import {
+  useLoaderData,
+  useNavigate,
+  useRouteError,
+  useSearchParams,
+} from '@remix-run/react';
 import { useTranslation } from 'react-i18next';
+import RecipeList from '~/components/RecipeList';
 import RouteError from '~/components/RouteError';
 import { LinkButton } from '~/components/ui/Button';
-import RecipeCard from '~/components/ui/RecipeCard';
 
 import { db } from '~/server/db.server';
 import i18next from '~/server/i18n.server';
@@ -30,8 +35,16 @@ export const handle = { i18n: 'recipe' };
 
 export default function RecipesIndexRoute() {
   const { recipes } = useLoaderData<typeof loader>();
-
   const { t } = useTranslation();
+
+  const [params] = useSearchParams();
+  const navigate = useNavigate();
+
+  const viewMode = params.get('v') === 'list' ? 'list' : 'grid';
+  const setViewMode = (mode: string) => {
+    params.set('v', mode);
+    navigate(`?${params.toString()}`);
+  };
 
   return (
     <div className="responsive">
@@ -48,19 +61,11 @@ export default function RecipesIndexRoute() {
         </LinkButton>
       </header>
 
-      {recipes.length > 0 ? (
-        <ul className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-2">
-          {recipes.map((recipe) => (
-            <li key={recipe.id}>
-              <Link to={recipe.id}>
-                <RecipeCard recipe={recipe} />
-              </Link>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>{t('recipe:list.empty')}</p>
-      )}
+      <RecipeList
+        recipes={recipes}
+        viewMode={viewMode}
+        onViewModeChange={setViewMode}
+      />
     </div>
   );
 }

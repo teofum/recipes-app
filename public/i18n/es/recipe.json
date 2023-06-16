@@ -2,7 +2,11 @@
   "list": {
     "title": "Mis recetas",
     "cta-create": "Crear nueva receta",
-    "empty": "No hay recetas"
+    "empty": "No hay recetas",
+    "count": [
+      "Encontramos ",
+      " recetas"
+    ]
   },
   "view": {
     "back": "Volver a recetas",

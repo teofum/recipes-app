@@ -55,6 +55,8 @@ export default {
         'wave': '1s cubic-bezier(0.4, 0, 0.6, 1) 0s infinite normal both running wave',
         'modalIn': '150ms cubic-bezier(0.4, 0, 0.6, 1) 100ms 1 normal both running modalIn',
         'backdropIn': '150ms cubic-bezier(0.4, 0, 0.6, 1) 0s 1 normal both running backdropIn',
+        'slideInUp': '500ms cubic-bezier(0.35, 2, 0.7, 1) 0s 1 normal both running slideInUp',
+        'slideInLeft': '500ms cubic-bezier(0.3, 1, 0.7, 1) 0s 1 normal both running slideInLeft',
       },
       keyframes: {
         'wave': {
@@ -75,6 +77,24 @@ export default {
         },
         'backdropIn': {
           from: {
+            opacity: '0',
+          },
+          to: {
+            opacity: '1',
+          },
+        },
+        'slideInUp': {
+          from: {
+            transform: 'translateY(2rem)',
+            opacity: '0',
+          },
+          to: {
+            opacity: '1',
+          },
+        },
+        'slideInLeft': {
+          from: {
+            transform: 'translateX(4rem)',
             opacity: '0',
           },
           to: {
