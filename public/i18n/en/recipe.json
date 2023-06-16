@@ -2,7 +2,11 @@
   "list": {
     "title": "My recipes",
     "cta-create": "Create new recipe",
-    "empty": "You don't have any recipes"
+    "empty": "You don't have any recipes",
+    "count": [
+      "Found ",
+      " recipes"
+    ]
   },
   "view": {
     "back": "Back to recipes",

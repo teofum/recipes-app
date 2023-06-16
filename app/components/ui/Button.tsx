@@ -1,15 +1,16 @@
 import React from 'react';
+import { useMemo } from 'react';
 import { Link } from '@remix-run/react';
 import cn from 'classnames';
+
 import type { ElementProps } from '~/utils/ElementProps.type';
-import { useMemo } from 'react';
 
-type ButtonTypeVariant = 'text' | 'icon';
-type ButtonSizeVariant = 'sm' | 'md' | 'lg';
-type ButtonStyleVariant = 'text' | 'outlined' | 'filled' | 'heavy';
-type ButtonColorVariant = 'default' | 'warning' | 'danger' | 'neutral';
+export type ButtonTypeVariant = 'text' | 'icon';
+export type ButtonSizeVariant = 'sm' | 'md' | 'lg' | 'xl';
+export type ButtonStyleVariant = 'text' | 'outlined' | 'filled' | 'heavy';
+export type ButtonColorVariant = 'default' | 'warning' | 'danger' | 'neutral';
 
-interface ButtonVariants {
+export interface ButtonVariants {
   type?: ButtonTypeVariant;
   size?: ButtonSizeVariant;
   style?: ButtonStyleVariant;
@@ -23,7 +24,9 @@ const defaultVariants: Required<ButtonVariants> = {
   color: 'default',
 };
 
-function useVariants(variant?: ButtonVariants | ButtonStyleVariant) {
+export function useButtonVariants(
+  variant?: ButtonVariants | ButtonStyleVariant,
+) {
   const dataAttributes = useMemo(() => {
     const userVars = typeof variant === 'string' ? { style: variant } : variant;
     const variants: { [key: string]: string } = {
@@ -49,31 +52,29 @@ interface BaseProps {
 type ButtonProps = BaseProps & ElementProps<'button'>;
 type LinkButtonProps = BaseProps & React.ComponentProps<typeof Link>;
 
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  function ButtonComponent({ className, children, variant, ...props }, ref) {
-    const dataAttributes = useVariants(variant);
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(function Button(
+  { className, children, variant, ...props },
+  ref,
+) {
+  const dataAttributes = useButtonVariants(variant);
 
-    return (
-      <button
-        ref={ref}
-        className={cn('button', className)}
-        {...dataAttributes}
-        {...props}
-      >
-        {children}
-      </button>
-    );
-  },
-);
+  return (
+    <button
+      ref={ref}
+      className={cn('button', className)}
+      {...dataAttributes}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+});
 
 export default Button;
 
 export const LinkButton = React.forwardRef<HTMLAnchorElement, LinkButtonProps>(
-  function LinkButtonComponent(
-    { className, children, variant, ...props },
-    ref,
-  ) {
-    const dataAttributes = useVariants(variant);
+  function LinkButton({ className, children, variant, ...props }, ref) {
+    const dataAttributes = useButtonVariants(variant);
 
     return (
       <Link

@@ -17,7 +17,7 @@ import Button, { LinkButton } from '~/components/ui/Button';
 import { Cross1Icon, Cross2Icon } from '@radix-ui/react-icons';
 import { requireLogin } from '~/server/session.server';
 import { db } from '~/server/db.server';
-import RecipeCard from '~/components/ui/RecipeCard';
+import RecipeCard from '~/components/RecipeList/RecipeCard';
 import RouteError from '~/components/RouteError';
 import { useTranslation } from 'react-i18next';
 

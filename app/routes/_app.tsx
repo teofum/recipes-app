@@ -44,14 +44,7 @@ export default function AppRoute() {
           xl:col-[1/span_2]
         "
       >
-        <div className="flex flex-row gap-2 w-60 items-center z-20">
-          <div className="w-7 xl:hidden" />
-
-          <div className="flex-1 font-display text-3xl leading-none text-center">
-            Cook
-            <span className="text-primary-high">Book</span>
-          </div>
-
+        <div className="flex flex-row gap-4 w-60 items-center z-20 px-2">
           <Button
             className="xl:hidden"
             variant={{ type: 'icon' }}
@@ -59,6 +52,11 @@ export default function AppRoute() {
           >
             <SidenavIcon />
           </Button>
+
+          <div className="flex-1 font-display text-3xl leading-none">
+            Cook
+            <span className="text-primary-high">Book</span>
+          </div>
         </div>
       </header>
 

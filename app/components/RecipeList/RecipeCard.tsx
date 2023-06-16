@@ -1,5 +1,6 @@
 import { PLACEHOLDER_IMAGE_URL } from '~/utils/constants';
 import type { Recipe } from '~/types/recipe.type';
+import TimeBadge from '../ui/TimeBadge';
 
 interface RecipeCardProps {
   recipe: Recipe;
@@ -7,18 +8,22 @@ interface RecipeCardProps {
 
 export default function RecipeCard({ recipe }: RecipeCardProps) {
   return (
-    <div className="card relative border border-neutral-4 overflow-hidden p-2 group cursor-pointer h-full">
+    <div className="card relative border border-neutral-5 overflow-hidden p-2 group cursor-pointer h-full">
       <img
         src={recipe.imageUrl ?? PLACEHOLDER_IMAGE_URL}
         alt="background"
         className="
-          bg-blur opacity-20 saturate-[1.25] brightness-150
+          bg-blur opacity-20 saturate-[1.25] brightness-200
           group-hover:scale-125 group-hover:opacity-25
           transition duration-300
         "
       />
 
       <div className="relative">
+        <div className="absolute top-2 right-2 surface-thick rounded-full z-10">
+          <TimeBadge minutes={recipe.prepTime} format="short" />
+        </div>
+
         <div className="flex w-full rounded-md overflow-hidden">
           <img
             src={recipe.imageUrl ?? PLACEHOLDER_IMAGE_URL}

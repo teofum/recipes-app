@@ -155,6 +155,12 @@
   }
 
   .button[data-variant-size='lg'] {
+    @apply text-base;
+
+    --btn-padding-base: theme(spacing[2.5]);
+  }
+
+  .button[data-variant-size='xl'] {
     @apply text-lg;
 
     --btn-padding-base: theme(spacing.3);
@@ -249,6 +255,69 @@
     --btn-color-4: theme(colors.neutral.4);
     --btn-color-5: theme(colors.neutral.5);
     --btn-color-border: theme(colors.neutral.high / 10%);
+  }
+  /*#endregion*/
+
+  /*
+  * Toggle Button (extends Button)
+  */
+  /*#region*/
+  .toggle-button:not(:first-child) {
+    @apply rounded-s-none;
+  }
+  .toggle-button:not(:last-child) {
+    @apply rounded-e-none;
+  }
+
+  /* Remove right border from all buttons but last, to "collapse" borders */
+  .toggle-button[data-state="off"]:not(:hover):not(:last-child) {
+    @apply border-r-0;
+  }
+
+  /* When an item is checked or hovered, it "steals" its right border back from
+  *  the left border of the next item */
+  .toggle-button[data-state="on"] + .toggle-button,
+  .toggle-button:hover + .toggle-button {
+    @apply border-l-0;
+  }
+
+  .toggle-button[data-state='off'] {
+    color: var(--btn-text-off, var(--btn-text, var(--btn-color-high)));
+    background-color: var(--btn-bg-off, var(--btn-bg, transparent));
+    border-color: var(--btn-border-off, var(--btn-border, transparent));
+  }
+
+  .toggle-button[data-state='off']:hover {
+    color: var(--btn-text-hover, var(--btn-text, var(--btn-color-high)));
+    background-color: var(--btn-bg-hover, var(--btn-bg, transparent));
+    border-color: var(--btn-border-hover, var(--btn-border, transparent));
+  }
+
+  .toggle-button[data-state='on'] {
+    color: var(--btn-text-on, var(--btn-text, var(--btn-color-high)));
+    background-color: var(--btn-bg-on, var(--btn-bg, transparent));
+    border-color: var(--btn-border-on, var(--btn-border, transparent));
+  }
+
+  .toggle-button[data-variant-style='text'] {
+    --btn-bg-on: var(--btn-color-4);
+  }
+
+  .toggle-button[data-variant-style='outlined'] {
+    --btn-bg-on: var(--btn-color-5);
+  }
+
+  .toggle-button[data-variant-style='filled'] {
+    --btn-bg-off: transparent;
+    --btn-border-off: transparent;
+
+    --btn-bg-on: var(--btn-color-4);
+  }
+
+  .toggle-button[data-variant-style='heavy'] {
+    --btn-bg-off: transparent;
+    --btn-border-off: transparent;
+    --btn-text-off: var(--btn-color-high);
   }
   /*#endregion*/
 
