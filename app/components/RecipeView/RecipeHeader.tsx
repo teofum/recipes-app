@@ -24,7 +24,7 @@ export default function RecipeHeader({
       <img
         src={imageUrl}
         alt="background"
-        className="bg-blur opacity-50 mix-blend-hard-light"
+        className="bg-blur opacity-30 saturate-[1.25] brightness-150"
       />
 
       {!hideBackButton ? (

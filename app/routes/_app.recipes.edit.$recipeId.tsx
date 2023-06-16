@@ -34,6 +34,10 @@ export async function action({ request, params }: ActionArgs) {
   const userId = await requireLogin(request);
   const formData = await request.formData();
 
+  // Editing a recipe with no image will return an empty string here and break
+  // validation, delete the key so that doesn't happen
+  if (typeof formData.get('image') === 'string') formData.delete('image');
+
   const recipeId = params.recipeId;
   if (!recipeId) throw badRequest({ message: 'Recipe ID is undefined' });
 
@@ -101,7 +105,10 @@ export async function action({ request, params }: ActionArgs) {
     if (recipe.imageUrl) await deleteImage(recipe.imageUrl);
 
     const filename = `${recipe.id}.${Date.now()}.webp`;
-    const imageUrl = await uploadImage(data.image, 'recipe', filename);
+    const imageUrl = await uploadImage(data.image, 'recipe', filename, {
+      width: 1350,
+      height: 900,
+    });
     await db.recipe.update({ where: { id: recipe.id }, data: { imageUrl } });
   }
 

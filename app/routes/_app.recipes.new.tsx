@@ -74,7 +74,10 @@ export async function action({ request }: ActionArgs) {
   // If there's an image provided upload and update the recipe with its url
   if (data.image && data.image.name) {
     const filename = `${recipe.id}.${Date.now()}.webp`;
-    const imageUrl = await uploadImage(data.image, 'recipe', filename);
+    const imageUrl = await uploadImage(data.image, 'recipe', filename, {
+      width: 1350,
+      height: 900,
+    });
     await db.recipe.update({ where: { id: recipe.id }, data: { imageUrl } });
   }
 
