@@ -1,5 +1,6 @@
 import { PLACEHOLDER_IMAGE_URL } from '~/utils/constants';
 import type { Recipe } from '~/types/recipe.type';
+import TimeBadge from '../ui/TimeBadge';
 
 interface RecipeCardProps {
   recipe: Recipe;
@@ -19,6 +20,10 @@ export default function RecipeCard({ recipe }: RecipeCardProps) {
       />
 
       <div className="relative">
+        <div className="absolute top-2 right-2 surface-thick rounded-full">
+          <TimeBadge minutes={recipe.prepTime} format="short" />
+        </div>
+
         <div className="flex w-full rounded-md overflow-hidden">
           <img
             src={recipe.imageUrl ?? PLACEHOLDER_IMAGE_URL}

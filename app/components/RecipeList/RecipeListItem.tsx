@@ -1,5 +1,6 @@
 import { PLACEHOLDER_IMAGE_URL } from '~/utils/constants';
 import type { Recipe } from '~/types/recipe.type';
+import TimeBadge from '../ui/TimeBadge';
 
 interface RecipeCardProps {
   recipe: Recipe;
@@ -19,7 +20,7 @@ export default function RecipeCard({ recipe }: RecipeCardProps) {
       />
 
       <div className="relative flex flex-row gap-3 items-center">
-        <div className="flex w-16 rounded-md overflow-hidden">
+        <div className="flex w-16 flex-shrink-0 rounded-md overflow-hidden">
           <img
             src={recipe.imageUrl ?? PLACEHOLDER_IMAGE_URL}
             alt="background"
@@ -27,11 +28,15 @@ export default function RecipeCard({ recipe }: RecipeCardProps) {
           />
         </div>
 
-        <div>
+        <div className="flex-1 flex-shrink">
           <h2 className="font-display text-2xl">{recipe.name}</h2>
           <p className="text-sm mt-1">
             {recipe.description}
           </p>
+        </div>
+
+        <div className="surface-thick rounded-full">
+          <TimeBadge minutes={recipe.prepTime} format="short" />
         </div>
       </div>
     </div>

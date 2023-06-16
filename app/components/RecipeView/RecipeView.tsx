@@ -1,30 +1,12 @@
 import type { Unit } from '@prisma/client';
-import { TimerIcon } from '@radix-ui/react-icons';
 import { useTranslation } from 'react-i18next';
-import type { TFunction } from 'i18next';
 
 import type { FullRecipe, RecipeIngredient } from '~/types/recipe.type';
 import { units } from '~/types/unit.type';
 import type { User } from '~/types/user.type';
 import RecipeHeader from './RecipeHeader';
 import { PLACEHOLDER_IMAGE_URL } from '~/utils/constants';
-
-function formatTime(totalMinutes: number, t: TFunction): string {
-  const hours = Math.floor(totalMinutes / 60);
-  const minutes = Math.floor(totalMinutes % 60);
-
-  return `${hours > 0 ? t('format.hours', { count: hours }) : ''} ${t(
-    'format.minutes',
-    { count: minutes },
-  )}`;
-}
-
-function formatTimeShort(totalMinutes: number): string {
-  const hours = Math.floor(totalMinutes / 60);
-  const minutes = Math.floor(totalMinutes % 60);
-
-  return (hours > 0 ? `${hours} h, ` : '') + `${minutes} min`;
-}
+import TimeBadge from '../ui/TimeBadge';
 
 function formatAmount(amount: number, unit: Unit): string {
   const unitObject = units.find((u) => u.type === unit);
@@ -127,20 +109,7 @@ export default function RecipeView({
           <div className="card">
             <div className="card-heading">
               <h2>{t('recipe:view.preparation')}</h2>
-              <div
-                className="
-                  flex flex-row items-center gap-2 py-1 px-2
-                  border rounded-full
-                "
-              >
-                <TimerIcon className="text-primary" />
-                <span className="text-sm hidden sm:inline">
-                  {formatTime(recipe.prepTime, t)}
-                </span>
-                <span className="text-sm sm:hidden">
-                  {formatTimeShort(recipe.prepTime)}
-                </span>
-              </div>
+              <TimeBadge minutes={recipe.prepTime} />
             </div>
 
             <ol>
