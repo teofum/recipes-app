@@ -20,7 +20,7 @@ export default function RecipeCard({ recipe }: RecipeCardProps) {
       />
 
       <div className="relative">
-        <div className="absolute top-2 right-2 surface-thick rounded-full">
+        <div className="absolute top-2 right-2 surface-thick rounded-full z-10">
           <TimeBadge minutes={recipe.prepTime} format="short" />
         </div>
 

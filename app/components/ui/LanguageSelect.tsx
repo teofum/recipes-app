@@ -3,7 +3,6 @@ import { useFetcher } from '@remix-run/react';
 import Form from './Form';
 import { useFormContext } from 'remix-validated-form';
 import { languageValidator } from '~/routes/api.lang';
-import { useTranslation } from 'react-i18next';
 
 type Props = Omit<
   React.ComponentProps<typeof Form.Select>,
@@ -14,8 +13,6 @@ export default function LanguageSelect(props: Props) {
   const { submit } = useFormContext('_lang-form');
   const locale = useLocale();
   const fetcher = useFetcher();
-
-  const { t } = useTranslation();
 
   const onLocaleChange = (value: string) => {
     console.log('locale change', value);
@@ -31,7 +28,6 @@ export default function LanguageSelect(props: Props) {
       id="_lang-form"
     >
       <Form.Field>
-        <Form.Label>{t('app:lang.label')}</Form.Label>
         <Form.Select
           {...props}
           name="lang"
