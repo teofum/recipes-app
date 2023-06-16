@@ -1,6 +1,7 @@
 /** @type {import('@remix-run/dev').AppConfig} */
 module.exports = {
   tailwind: true,
+  postcss: true,
   ignoredRouteFiles: ['**/.*'],
   future: {
     v2_errorBoundary: true,
