@@ -19,11 +19,6 @@ export default function LanguageSelect({ withLabel = false, ...props }: Props) {
 
   const { t } = useTranslation();
 
-  const onLocaleChange = (value: string) => {
-    console.log('locale change', value);
-    submit();
-  };
-
   return (
     <Form.Root
       method="post"
@@ -38,7 +33,7 @@ export default function LanguageSelect({ withLabel = false, ...props }: Props) {
           {...props}
           name="lang"
           defaultValue={locale}
-          onValueChange={onLocaleChange}
+          onValueChange={submit}
         >
           <Form.SelectItem value="en">English</Form.SelectItem>
           <Form.SelectItem value="es">Español</Form.SelectItem>
