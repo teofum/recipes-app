@@ -47,7 +47,7 @@ export default function RecipesIndexRoute() {
   };
 
   return (
-    <div className="responsive">
+    <div className="responsive pb-8">
       <header
         className="
           flex flex-row items-center justify-between
