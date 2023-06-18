@@ -68,11 +68,11 @@ export default function MobileNavbar({ user }: MobileNavbarProps) {
           to="/account"
           className="
             ml-2 -mt-3 rounded-full p-0.5 z-10 relative
-            bg-white
-            hover:bg-white hover:border-neutral-5
+            bg-surface
+            hover:bg-surface hover:border-neutral-5
           "
         >
-          <div className="absolute bg-white top-[8.5px] -bottom-1 -left-1 -right-1" />
+          <div className="absolute bg-surface top-[8.5px] -bottom-1 -left-1 -right-1" />
           <Avatar
             src={user.avatarUrl}
             size="lg"

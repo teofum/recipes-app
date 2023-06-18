@@ -22,6 +22,7 @@ import { MAX_UPLOAD_SIZE } from '~/utils/constants';
 import uploadImage, { deleteImage } from '~/server/image.server';
 import AvatarUpload from './AvatarUpload';
 import { useTranslation } from 'react-i18next';
+import LanguageSelect from '~/components/ui/LanguageSelect';
 
 export const meta: V2_MetaFunction = () => {
   return [{ title: 'My Account | CookBook' }];
@@ -268,6 +269,14 @@ export default function AccountRoute() {
               </Form.Root>
             </Dialog>
           </div>
+        </div>
+
+        <div className="card sm:col-start-2">
+          <div className="card-heading">
+            <h2>{t('account:app-settings.title')}</h2>
+          </div>
+
+          <LanguageSelect />
         </div>
       </div>
     </div>

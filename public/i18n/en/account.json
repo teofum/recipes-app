@@ -26,6 +26,14 @@
       "change-password": "Change password"
     }
   },
+  "app-settings": {
+    "title": "App settings",
+    "fields": {
+      "lang": {
+        "label": "Language"
+      }
+    }
+  },
   "dialogs": {
     "change-password": {
       "title": "Change password",
