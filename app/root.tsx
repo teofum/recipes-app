@@ -13,14 +13,28 @@ import {
 
 import styles from '~/styles/tailwind.css';
 import RouteError from './components/RouteError';
-import i18next from './server/i18n.server';
+import i18next, { i18nextCookie } from './server/i18n.server';
 import { useTranslation } from 'react-i18next';
 import { useChangeLanguage } from 'remix-i18next';
+import i18n from './i18n';
 
 export const links: LinksFunction = () => [{ rel: 'stylesheet', href: styles }];
 
 export async function loader({ request }: LoaderArgs) {
   const locale = await i18next.getLocale(request);
+
+  const url = new URL(request.url);
+  const setLang = url.searchParams.get('lang');
+  if (setLang !== null && i18n.supportedLngs.includes(setLang)) {
+    const cookieHeader = await i18nextCookie.serialize(setLang);
+    return json(
+      { locale: setLang },
+      {
+        headers: { 'Set-Cookie': cookieHeader },
+      },
+    );
+  }
+
   return json({ locale });
 }
 

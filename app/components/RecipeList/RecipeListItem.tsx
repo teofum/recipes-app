@@ -8,13 +8,13 @@ interface RecipeCardProps {
 
 export default function RecipeCard({ recipe }: RecipeCardProps) {
   return (
-    <div className="relative overflow-hidden p-3 group cursor-pointer">
+    <div className="relative overflow-hidden p-3 group cursor-pointer flex flex-col gap-2">
       <img
         src={recipe.imageUrl ?? PLACEHOLDER_IMAGE_URL}
         alt="background"
         className="
-          bg-blur opacity-20 saturate-[1.25] brightness-200
-          group-hover:scale-125 group-hover:opacity-25
+          bg-blur opacity-0 saturate-[1.25] brightness-200
+          group-hover:scale-125 group-hover:opacity-20
           transition duration-300
         "
       />
@@ -29,15 +29,21 @@ export default function RecipeCard({ recipe }: RecipeCardProps) {
         </div>
 
         <div className="flex-1 flex-shrink">
-          <h2 className="font-display text-2xl">{recipe.name}</h2>
-          <p className="text-sm mt-1">
+          <h2 className="font-display text-xl sm:text-2xl line-clamp-1">
+            {recipe.name}
+          </h2>
+          <p className="text-xs sm:text-sm mt-1 line-clamp-2">
             {recipe.description}
           </p>
         </div>
 
-        <div className="surface-thick rounded-full">
+        <div className="hidden sm:block surface-thick rounded-full">
           <TimeBadge minutes={recipe.prepTime} format="short" />
         </div>
+      </div>
+
+      <div className="sm:hidden self-start surface-thick rounded-full">
+        <TimeBadge minutes={recipe.prepTime} format="short" />
       </div>
     </div>
   );

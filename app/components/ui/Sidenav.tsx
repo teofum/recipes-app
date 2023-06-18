@@ -12,7 +12,6 @@ import Avatar from './Avatar';
 import Button, { LinkButton } from './Button';
 import type { User } from '~/types/user.type';
 import { useTranslation } from 'react-i18next';
-import LanguageSelect from './LanguageSelect';
 
 interface SidenavLinkProps {
   currentRoute: RouteMatch;
@@ -84,11 +83,7 @@ export default function Sidenav({ user }: SidenavProps) {
         </ul>
       </nav>
 
-      <div className="mt-auto">
-        <LanguageSelect />
-      </div>
-
-      <div className="mt-4 pt-6 border-t">
+      <div className="mt-auto pt-6 border-t">
         {user !== null ? (
           <div className="flex flex-col gap-2">
             <div className="flex flex-row gap-2 items-center">

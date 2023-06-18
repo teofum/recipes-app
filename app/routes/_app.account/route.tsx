@@ -7,9 +7,15 @@ import {
   unstable_parseMultipartFormData,
 } from '@remix-run/node';
 import { json } from '@remix-run/node';
-import { useLoaderData, useRouteError } from '@remix-run/react';
+import {
+  useLoaderData,
+  useLocation,
+  useRouteError,
+  Form as RemixForm,
+} from '@remix-run/react';
 import { withZod } from '@remix-validated-form/with-zod';
 import { useFormContext, validationError } from 'remix-validated-form';
+import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 
 import Button from '~/components/ui/Button';
@@ -21,7 +27,7 @@ import RouteError from '~/components/RouteError';
 import { MAX_UPLOAD_SIZE } from '~/utils/constants';
 import uploadImage, { deleteImage } from '~/server/image.server';
 import AvatarUpload from './AvatarUpload';
-import { useTranslation } from 'react-i18next';
+import LanguageSelect from '~/components/ui/LanguageSelect';
 
 export const meta: V2_MetaFunction = () => {
   return [{ title: 'My Account | CookBook' }];
@@ -147,6 +153,7 @@ export const handle = { i18n: 'account' };
 export default function AccountRoute() {
   const { user } = useLoaderData<typeof loader>();
   const { touchedFields } = useFormContext('profileForm');
+  const location = useLocation();
 
   const { t } = useTranslation();
 
@@ -154,7 +161,7 @@ export default function AccountRoute() {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
 
   return (
-    <div className="responsive">
+    <div className="responsive pb-8">
       <header className=" border-b pt-6 pb-6 mb-4">
         <h1 className="font-display text-4xl">{t('account:title')}</h1>
       </header>
@@ -268,6 +275,25 @@ export default function AccountRoute() {
               </Form.Root>
             </Dialog>
           </div>
+        </div>
+
+        <div className="card sm:col-start-2">
+          <div className="card-heading">
+            <h2>{t('account:app-settings.title')}</h2>
+          </div>
+
+          <LanguageSelect withLabel />
+        </div>
+
+        <div className="sm:hidden">
+          <RemixForm
+            method="post"
+            action={`/logout?redirectUrl=${location.pathname}`} 
+          >
+            <Button type="submit" className="w-full">
+              {t('session.logout')}
+            </Button>
+          </RemixForm>
         </div>
       </div>
     </div>
