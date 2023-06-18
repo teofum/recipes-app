@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { LoaderArgs } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import { useLocation, useRouteError } from '@remix-run/react';
@@ -30,6 +30,7 @@ export default function AppRoute() {
   const { t } = useTranslation();
 
   const [expanded, setExpanded] = useState(false);
+  useEffect(() => setExpanded(false), [location]);
 
   return (
     <div
