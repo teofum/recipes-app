@@ -103,6 +103,7 @@ export default function AppRoute() {
           <div className="ml-auto">
             {user !== null ? (
               <LinkButton to="/account" className="rounded-full p-0.5">
+                <div className="ml-4 mr-1 text-default">{user.displayName}</div>
                 <Avatar src={user.avatarUrl} alt={user.displayName} />
               </LinkButton>
             ) : (
