@@ -47,39 +47,32 @@ export default function ForgotPasswordRoute() {
   const { t } = useTranslation();
 
   return (
-    <div
-      className="
-        min-h-screen grid place-items-center px-4
-        bg-[url('/img/bg-kitchen.webp')] bg-cover
-      "
-    >
-      <div className="card flex flex-col gap-4 max-w-sm w-full">
-        <h1 className="font-display text-4xl font-semibold text-center">
-          {t('forgot:title')}
-        </h1>
+    <div className="card surface flex flex-col gap-4 max-w-sm w-full">
+      <h1 className="font-display text-4xl font-semibold text-center">
+        {t('forgot:title')}
+      </h1>
 
-        <p className="text-sm text-light">{t('forgot:forgot.description')}</p>
+      <p className="text-sm text-light">{t('forgot:forgot.description')}</p>
 
-        <Form.Root validator={validator} method="post">
-          <Form.Input
-            type="hidden"
-            name="redirectUrl"
-            id="redirect"
-            defaultValue={redirectUrl ?? '/recipes'}
-          />
+      <Form.Root validator={validator} method="post">
+        <Form.Input
+          type="hidden"
+          name="redirectUrl"
+          id="redirect"
+          defaultValue={redirectUrl ?? '/recipes'}
+        />
 
-          <Form.Field>
-            <Form.Label htmlFor="user">
-              {t('forgot:forgot.fields.username-or-email')}
-            </Form.Label>
-            <Form.Input type="text" name="usernameOrEmail" id="user" />
-            <Form.Error name="usernameOrEmail" id="user" />
-          </Form.Field>
-          <Form.SubmitButton variant="filled">
-            {t('forgot:forgot.actions.send')}
-          </Form.SubmitButton>
-        </Form.Root>
-      </div>
+        <Form.Field>
+          <Form.Label htmlFor="user">
+            {t('forgot:forgot.fields.username-or-email')}
+          </Form.Label>
+          <Form.Input type="text" name="usernameOrEmail" id="user" />
+          <Form.Error name="usernameOrEmail" id="user" />
+        </Form.Field>
+        <Form.SubmitButton variant="filled">
+          {t('forgot:forgot.actions.send')}
+        </Form.SubmitButton>
+      </Form.Root>
     </div>
   );
 }

@@ -3,6 +3,9 @@
     "login": "Log in",
     "logout": "Log out"
   },
+  "lang": {
+    "label": "Language"
+  },
   "format": {
     "hour": "hour",
     "hours": "hours",

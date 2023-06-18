@@ -276,7 +276,7 @@ export default function AccountRoute() {
             <h2>{t('account:app-settings.title')}</h2>
           </div>
 
-          <LanguageSelect />
+          <LanguageSelect withLabel />
         </div>
       </div>
     </div>

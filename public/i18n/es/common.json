@@ -3,6 +3,9 @@
     "login": "Ingresar",
     "logout": "Cerrar sesión"
   },
+  "lang": {
+    "label": "Idioma"
+  },
   "format": {
     "hour": "hora",
     "hours": "horas",

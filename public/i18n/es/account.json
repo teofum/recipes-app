@@ -27,12 +27,7 @@
     }
   },
   "app-settings": {
-    "title": "Opciones de aplicación",
-    "fields": {
-      "lang": {
-        "label": "Idioma"
-      }
-    }
+    "title": "Opciones de aplicación"
   },
   "dialogs": {
     "change-password": {

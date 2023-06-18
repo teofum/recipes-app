@@ -48,51 +48,44 @@ export default function LoginRoute() {
   const { t } = useTranslation();
 
   return (
-    <div
-      className="
-        min-h-screen grid place-items-center px-4
-        bg-[url('/img/bg-kitchen.webp')] bg-cover
-      "
-    >
-      <div className="card surface flex flex-col max-w-sm w-full">
-        <h1 className="font-display text-4xl font-semibold text-center">
-          {t('login:title')}
-        </h1>
+    <div className="card surface flex flex-col max-w-sm w-full">
+      <h1 className="font-display text-4xl font-semibold text-center">
+        {t('login:title')}
+      </h1>
 
-        <Form.Root validator={validator} method="post" className="mt-4 mb-2">
-          <Form.Input
-            type="hidden"
-            name="redirectUrl"
-            id="redirect"
-            defaultValue={redirectUrl ?? '/recipes'}
-          />
+      <Form.Root validator={validator} method="post" className="mt-4 mb-2">
+        <Form.Input
+          type="hidden"
+          name="redirectUrl"
+          id="redirect"
+          defaultValue={redirectUrl ?? '/recipes'}
+        />
 
-          <Form.Field>
-            <Form.Label htmlFor="user">
-              {t('login:fields.username-or-email')}
-            </Form.Label>
-            <Form.Input type="text" name="usernameOrEmail" id="user" />
-            <Form.Error name="usernameOrEmail" id="user" />
-          </Form.Field>
-          <Form.Field>
-            <Form.Label htmlFor="password">
-              {t('login:fields.password')}
-            </Form.Label>
-            <Form.Input type="password" name="password" id="password" />
-            <Form.Error name="password" id="password" />
-          </Form.Field>
-          <Form.SubmitButton variant="filled">
-            {t('session.login')}
-          </Form.SubmitButton>
-        </Form.Root>
+        <Form.Field>
+          <Form.Label htmlFor="user">
+            {t('login:fields.username-or-email')}
+          </Form.Label>
+          <Form.Input type="text" name="usernameOrEmail" id="user" />
+          <Form.Error name="usernameOrEmail" id="user" />
+        </Form.Field>
+        <Form.Field>
+          <Form.Label htmlFor="password">
+            {t('login:fields.password')}
+          </Form.Label>
+          <Form.Input type="password" name="password" id="password" />
+          <Form.Error name="password" id="password" />
+        </Form.Field>
+        <Form.SubmitButton variant="filled">
+          {t('session.login')}
+        </Form.SubmitButton>
+      </Form.Root>
 
-        <LinkButton to={`/register?redirectUrl=${redirectUrl}`}>
-          {t('login:actions.register')}
-        </LinkButton>
-        <LinkButton to={`/forgotPassword?redirectUrl=${redirectUrl}`}>
-          {t('login:actions.forgot')}
-        </LinkButton>
-      </div>
+      <LinkButton to={`/register?redirectUrl=${redirectUrl}`}>
+        {t('login:actions.register')}
+      </LinkButton>
+      <LinkButton to={`/forgotPassword?redirectUrl=${redirectUrl}`}>
+        {t('login:actions.forgot')}
+      </LinkButton>
     </div>
   );
 }
