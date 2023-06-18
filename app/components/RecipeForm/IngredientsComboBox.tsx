@@ -9,6 +9,9 @@ import { Command } from 'cmdk';
 import { useTranslation } from 'react-i18next';
 import { useFormContext } from 'remix-validated-form';
 import AlgoliaSearch from '../ui/AlgoliaSearch';
+import { useLocale } from 'remix-i18next';
+
+const dev = process.env.NODE_ENV !== 'production';
 
 interface Props {
   onSelect: (id: string, name: string) => void;
@@ -19,6 +22,7 @@ export default function IngredientsComboBox({ onSelect }: Props) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [comboOpen, setComboOpen] = useState(false);
 
+  const locale = useLocale();
   const { t } = useTranslation();
 
   const select = (id: string, name: string) => {
@@ -32,10 +36,14 @@ export default function IngredientsComboBox({ onSelect }: Props) {
     setComboOpen(false);
   }, [onSelect]);
 
+  const lang = defaultValues?.language as string ?? locale;
+  let indexName = `ingredients_${lang}`;
+  if (dev) indexName += '_dev';
+
   return (
     <>
       <AlgoliaSearch.Root
-        indexName="ingredients_dev"
+        indexName={indexName}
         trigger={
           <Button>
             <PlusCircledIcon /> {t('recipe:form.fields.ingredients.add')}

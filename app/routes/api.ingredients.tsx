@@ -10,8 +10,7 @@ import { db } from '~/server/db.server';
 import i18next from '~/server/i18n.server';
 
 // Use a different Algolia index for dev/prod
-const INGREDIENTS_INDEX =
-  process.env.NODE_ENV === 'production' ? 'ingredients' : 'ingredients_dev';
+const dev = process.env.NODE_ENV !== 'production';
 
 // Validator
 export const ingredientValidator = withZod(
@@ -85,7 +84,10 @@ export async function action({ request }: ActionArgs) {
     });
 
     // Add it to the Algolia index
-    const index = algoliaAdmin.initIndex(INGREDIENTS_INDEX);
+    let indexName = `ingredients_${locale}`;
+    if (dev) indexName += '_dev';
+    const index = algoliaAdmin.initIndex(indexName);
+
     await index.saveObject({
       objectID: ingredient.id,
       language: ingredient.language,
