@@ -65,7 +65,7 @@ export default function Sidenav({ user }: SidenavProps) {
               icon={<StarIcon />}
             />
           </li>
-          <li>
+          <li className={user === null ? 'hidden' : ''}>
             <SidenavLink
               currentRoute={currentRoute}
               route="/recipes"
@@ -73,7 +73,7 @@ export default function Sidenav({ user }: SidenavProps) {
               icon={<DashboardIcon />}
             />
           </li>
-          <li>
+          <li className={user === null ? 'hidden' : ''}>
             <SidenavLink
               currentRoute={currentRoute}
               route="/recipes/find"
@@ -81,7 +81,7 @@ export default function Sidenav({ user }: SidenavProps) {
               icon={<MagnifyingGlassIcon />}
             />
           </li>
-          <li>
+          <li className={user === null ? 'hidden' : ''}>
             <SidenavLink
               currentRoute={currentRoute}
               route="/recipes/new"
