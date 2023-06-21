@@ -5,6 +5,7 @@ import {
   DashboardIcon,
   FilePlusIcon,
   MagnifyingGlassIcon,
+  StarIcon,
 } from '@radix-ui/react-icons';
 import Avatar from './Avatar';
 import type { User } from '~/types/user.type';
@@ -44,6 +45,12 @@ export default function MobileNavbar({ user }: MobileNavbarProps) {
 
   return (
     <nav className="h-full flex flex-row items-center justify-center px-4">
+      <NavbarLink
+        currentRoute={currentRoute}
+        route="/discover"
+        text={t('app:mobile-nav.discover')}
+        icon={<StarIcon />}
+      />
       <NavbarLink
         currentRoute={currentRoute}
         route="/recipes"

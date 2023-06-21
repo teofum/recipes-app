@@ -1,11 +1,13 @@
 {
   "nav": {
+    "discover": "Discover",
     "my-recipes": "My recipes",
     "find": "Recipe finder",
     "new": "New recipe",
     "account": "Account"
   },
   "mobile-nav": {
+    "discover": "Discover",
     "my-recipes": "Recipes",
     "find": "Finder",
     "new": "Create"

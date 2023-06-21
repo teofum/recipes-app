@@ -5,6 +5,7 @@ import {
   DashboardIcon,
   FilePlusIcon,
   MagnifyingGlassIcon,
+  StarIcon,
 } from '@radix-ui/react-icons';
 import cn from 'classnames';
 
@@ -56,6 +57,14 @@ export default function Sidenav({ user }: SidenavProps) {
 
       <nav>
         <ul className="flex flex-col gap-1 mt-10 xl:mt-0">
+          <li>
+            <SidenavLink
+              currentRoute={currentRoute}
+              route="/discover"
+              text={t('app:nav.discover')}
+              icon={<StarIcon />}
+            />
+          </li>
           <li>
             <SidenavLink
               currentRoute={currentRoute}

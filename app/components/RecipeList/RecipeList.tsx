@@ -50,25 +50,23 @@ function RecipeListView({ recipes }: RecipeViewProps) {
 type RecipeListProps = {
   viewMode: 'grid' | 'list';
   onViewModeChange: (mode: 'grid' | 'list') => void;
+  title?: React.ReactNode;
 } & RecipeViewProps;
 
 export default function RecipeList({
   recipes,
   viewMode,
   onViewModeChange,
+  title,
 }: RecipeListProps) {
   const { t } = useTranslation();
 
   const ViewComponent = viewMode === 'grid' ? RecipeGridView : RecipeListView;
 
   return (
-    <div className="card flex flex-col gap-4">
+    <div className="flex flex-col gap-4">
       <div className="flex flex-row items-center">
-        <div className="text-sm">
-          {t('recipe:list.count.0')}
-          <span className="font-semibold">{recipes.length}</span>
-          {t('recipe:list.count.1')}
-        </div>
+        {title}
 
         <ToggleGroup.Root
           type="single"
