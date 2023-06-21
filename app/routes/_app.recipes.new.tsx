@@ -71,13 +71,19 @@ export async function action({ request }: ActionArgs) {
   });
   if (!recipe) throw serverError({ message: 'Failed to create recipe' });
 
+  console.log('created recipe');
+
   // If there's an image provided upload and update the recipe with its url
   if (data.image && data.image.name) {
+    console.log('uploading image');
+
     const filename = `${recipe.id}.${Date.now()}.webp`;
     const imageUrl = await uploadImage(data.image, 'recipe', filename, {
       width: 1350,
       height: 900,
     });
+
+    console.log('uploaded image');
     await db.recipe.update({ where: { id: recipe.id }, data: { imageUrl } });
   }
 
