@@ -24,6 +24,7 @@ import buildOptimisticRecipe from '~/components/RecipeForm/buildOptimisticRecipe
 import { MAX_UPLOAD_SIZE } from '~/utils/constants';
 import uploadImage from '~/server/image.server';
 import i18next from '~/server/i18n.server';
+import validateUploadSize from '~/server/validate-upload.server';
 
 export const meta: V2_MetaFunction = () => {
   return [{ title: 'New Recipe | CookBook' }];
@@ -33,6 +34,14 @@ export const meta: V2_MetaFunction = () => {
  * === Action ==================================================================
  */
 export async function action({ request }: ActionArgs) {
+  try {
+    validateUploadSize(request);
+  } catch {
+    return validationError({
+      fieldErrors: { image: 'recipe:form.errors.upload-too-large' },
+    });
+  }
+
   const userId = await requireLogin(request);
   const locale = (await i18next.getLocale(request)) as Language;
   const formData = await unstable_parseMultipartFormData(

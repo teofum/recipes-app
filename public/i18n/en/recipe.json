@@ -3,10 +3,7 @@
     "title": "My recipes",
     "cta-create": "Create new recipe",
     "empty": "You don't have any recipes",
-    "count": [
-      "Found ",
-      " recipes"
-    ]
+    "count": ["Found ", " recipes"]
   },
   "view": {
     "back": "Back to recipes",
@@ -125,7 +122,14 @@
       "step": {
         "required": "Step content is required",
         "too-long": "Step content must be at most 140 characters long"
+      },
+      "image": {
+        "size-error": "The image was not loaded because the file ({{size}}) exceeds the {{max}} limit on file uploads. Please upload a smaller file.",
+        "size-warning": "Your image ({{size}}) is over the recommended size of {{max}}. Upload may take a while."
       }
+    },
+    "errors": {
+      "upload-too-large": "Upload exceeds the size limit. Try a smaller file."
     }
   },
   "find": {

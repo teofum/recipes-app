@@ -35,6 +35,7 @@ export default {
 
       // Theme colors
       primary: themeColors('primary'),
+      warn: themeColors('warn'),
       danger: themeColors('danger'),
       neutral: themeColors('neutral'),
     },

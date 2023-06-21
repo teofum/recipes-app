@@ -22,6 +22,7 @@ import Loading from '~/components/ui/Loading';
 import { newRecipeValidator } from '~/components/RecipeForm/validators';
 import buildOptimisticRecipe from '~/components/RecipeForm/buildOptimisticRecipe';
 import uploadImage, { deleteImage } from '~/server/image.server';
+import validateUploadSize from '~/server/validate-upload.server';
 
 export const meta: V2_MetaFunction = () => {
   return [{ title: 'Edit Recipe | CookBook' }];
@@ -31,6 +32,14 @@ export const meta: V2_MetaFunction = () => {
  * === Action ==================================================================
  */
 export async function action({ request, params }: ActionArgs) {
+  try {
+    validateUploadSize(request);
+  } catch {
+    return validationError({
+      fieldErrors: { image: 'recipe:form.errors.upload-too-large' },
+    });
+  }
+
   const userId = await requireLogin(request);
   const formData = await request.formData();
 

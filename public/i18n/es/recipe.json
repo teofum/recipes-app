@@ -125,7 +125,14 @@
       "step": {
         "required": "Un paso debe tener contenido",
         "too-long": "Un paso puede tener como máximo 140 caracteres"
+      },
+      "image": {
+        "size-error": "No se cargó la imagen porque el archivo ({{size}}) excede el límite de subida de {{max}}. Intentá de nuevo con un archivo más liviano.",
+        "size-warning": "Tu imagen ({{size}}) excede el tamaño recomendado de {{max}}. Puede tardar un tiempo en subir."
       }
+    },
+    "errors": {
+      "upload-too-large": "Se excedió el límite de subida. Intentá de nuevo con una imagen más chica."
     }
   },
   "find": {
