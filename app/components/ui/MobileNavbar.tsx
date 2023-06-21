@@ -5,23 +5,32 @@ import {
   DashboardIcon,
   FilePlusIcon,
   MagnifyingGlassIcon,
+  StarIcon,
 } from '@radix-ui/react-icons';
 import Avatar from './Avatar';
 import type { User } from '~/types/user.type';
 import { useTranslation } from 'react-i18next';
+import cn from 'classnames';
 
 interface NavbarLinkProps {
   currentRoute: RouteMatch;
   route: string;
   text: string;
   icon: React.ReactNode;
+  className?: string;
 }
 
-function NavbarLink({ currentRoute, route, text, icon }: NavbarLinkProps) {
+function NavbarLink({
+  currentRoute,
+  route,
+  text,
+  icon,
+  className,
+}: NavbarLinkProps) {
   return (
     <LinkButton
       to={route}
-      className="flex-1 flex-col gap-1"
+      className={cn('flex-1 flex-col gap-1', className)}
       variant={{
         color: route === currentRoute.pathname ? 'default' : 'neutral',
       }}
@@ -46,21 +55,30 @@ export default function MobileNavbar({ user }: MobileNavbarProps) {
     <nav className="h-full flex flex-row items-center justify-center px-4">
       <NavbarLink
         currentRoute={currentRoute}
+        route="/discover"
+        text={t('app:mobile-nav.discover')}
+        icon={<StarIcon />}
+      />
+      <NavbarLink
+        currentRoute={currentRoute}
         route="/recipes"
         text={t('app:mobile-nav.my-recipes')}
         icon={<DashboardIcon />}
+        className={user === null ? 'hidden' : ''}
       />
       <NavbarLink
         currentRoute={currentRoute}
         route="/recipes/find"
         text={t('app:mobile-nav.find')}
         icon={<MagnifyingGlassIcon />}
+        className={user === null ? 'hidden' : ''}
       />
       <NavbarLink
         currentRoute={currentRoute}
         route="/recipes/new"
         text={t('app:mobile-nav.new')}
         icon={<FilePlusIcon />}
+        className={user === null ? 'hidden' : ''}
       />
 
       {user !== null ? (
@@ -82,6 +100,7 @@ export default function MobileNavbar({ user }: MobileNavbarProps) {
         </LinkButton>
       ) : (
         <LinkButton to="/login">
+          <div className="text-xs mr-2">{t('session.login')}</div>
           <Avatar alt="No user" />
         </LinkButton>
       )}

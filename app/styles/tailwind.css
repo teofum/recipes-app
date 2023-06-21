@@ -76,9 +76,7 @@
   }
 
   .card-heading {
-    @apply flex flex-row items-center justify-between mb-6 -mt-1 pb-4;
-
-    border-bottom: 1px solid theme('colors.black / 10%');
+    @apply flex flex-row items-center justify-between mb-6 -mt-1 pb-4 border-b;
   }
 
   .card-heading > h2 {

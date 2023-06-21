@@ -1,6 +1,5 @@
 import type { Language } from '@prisma/client';
-import type { LoaderArgs, V2_MetaFunction } from '@remix-run/node';
-import { json } from '@remix-run/node';
+import { json, type LoaderArgs } from '@remix-run/node';
 import {
   useLoaderData,
   useNavigate,
@@ -10,30 +9,24 @@ import {
 import { useTranslation } from 'react-i18next';
 import RecipeList from '~/components/RecipeList';
 import RouteError from '~/components/RouteError';
-import { LinkButton } from '~/components/ui/Button';
-
 import { db } from '~/server/db.server';
 import i18next from '~/server/i18n.server';
-import { requireLogin } from '~/server/session.server';
-
-export const meta: V2_MetaFunction = () => {
-  return [{ title: 'My Recipes | CookBook' }];
-};
 
 export async function loader({ request }: LoaderArgs) {
-  const userId = await requireLogin(request);
   const locale = (await i18next.getLocale(request)) as Language;
 
   const recipes = await db.recipe.findMany({
-    where: { authorId: userId, language: locale },
+    where: { visibility: 'PUBLIC', language: locale },
+    orderBy: { createdAt: 'desc' },
+    take: 10,
   });
 
   return json({ recipes });
 }
 
-export const handle = { i18n: 'recipe' };
+export const handle = { i18n: 'discover' };
 
-export default function RecipesIndexRoute() {
+export default function DiscoverRoute() {
   const { recipes } = useLoaderData<typeof loader>();
   const { t } = useTranslation();
 
@@ -55,10 +48,7 @@ export default function RecipesIndexRoute() {
           py-6 mb-4
         "
       >
-        <h1 className="font-display text-4xl">{t('recipe:list.title')}</h1>
-        <LinkButton variant="filled" to="new">
-          {t('recipe:list.cta-create')}
-        </LinkButton>
+        <h1 className="font-display text-4xl">{t('discover:title')}</h1>
       </header>
 
       <div className="card">
@@ -67,11 +57,7 @@ export default function RecipesIndexRoute() {
           viewMode={viewMode}
           onViewModeChange={setViewMode}
           title={
-            <div className="text-sm">
-              {t('recipe:list.count.0')}
-              <span className="font-semibold">{recipes.length}</span>
-              {t('recipe:list.count.1')}
-            </div>
+            <h2 className="font-display text-3xl">{t('discover:new.title')}</h2>
           }
         />
       </div>
