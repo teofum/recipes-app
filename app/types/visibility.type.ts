@@ -6,12 +6,12 @@ import {
 } from '@radix-ui/react-icons';
 
 export const visibility = [
-  // {
-  //   value: Visibility.PUBLIC,
-  //   name: 'visibility.public.name',
-  //   description: 'visibility.public.description',
-  //   icon: EyeOpenIcon,
-  // },
+  {
+    value: Visibility.PUBLIC,
+    name: 'visibility.public.name',
+    description: 'visibility.public.description',
+    icon: EyeOpenIcon,
+  },
   {
     value: Visibility.UNLISTED,
     name: 'visibility.unlisted.name',
